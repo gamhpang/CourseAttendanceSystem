@@ -36,4 +36,5 @@ public class CourseOfferingDTO {
     public void addSession(SessionDTO session){
         sessionList.add(session);
     }
+
 }

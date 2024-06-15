@@ -17,11 +17,11 @@ spring:
 #    user: admin
 #    password: admin
 
-logging:
-  level:
-    root: ERROR
-    org:
-      springframework: ERROR
+#logging:
+#  level:
+#    root: ERROR
+#    org:
+#      springframework: ERROR
 
 #management:
 #  endpoint:

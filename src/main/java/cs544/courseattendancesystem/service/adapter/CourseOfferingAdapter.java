@@ -29,4 +29,5 @@ public class CourseOfferingAdapter {
         //CourseOfferingDTO courseOfferingDTO = new CourseOfferingDTO(courseOffering.getId(),courseOffering.getCredits(),courseOffering.getRoom(),courseOffering.getStartDate(),courseOffering.getEndDate(),courseOffering.getCapacity(),courseOffering.getCourseOfferingType(),);
         return null;
     }
+
 }

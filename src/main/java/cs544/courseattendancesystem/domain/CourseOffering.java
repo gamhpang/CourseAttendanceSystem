@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -34,11 +35,13 @@ public class CourseOffering {
     private AuditData auditData;
     protected CourseOffering(){}
 
-    public CourseOffering(double credits, String room, LocalDate startDate, LocalDate endDate, int capacity) {
+    public CourseOffering(double credits, String room,  LocalDate startDate, LocalDate endDate, int capacity, CourseOfferingType courseOfferingType) {
         this.credits = credits;
         this.room = room;
         this.startDate = startDate;
         this.endDate = endDate;
         this.capacity = capacity;
+        this.courseOfferingType = courseOfferingType;
+        this.sessionList = new ArrayList<>();
     }
 }

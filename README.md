@@ -113,7 +113,7 @@ Clone the repository:
 
 bash
 Copy code
-git clone https://github.com/yourusername/course-attendance-system.git
+git clone https://github.com/gamhpang/CourseAttendanceSystem.git
 cd course-attendance-system
 Configure the database:
 

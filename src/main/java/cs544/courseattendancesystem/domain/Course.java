@@ -3,6 +3,7 @@ package cs544.courseattendancesystem.domain;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -33,5 +34,6 @@ public class Course {
         this.code = code;
         this.name = name;
         this.department = department;
+        this.prerequisites = new ArrayList<>();
     }
 }

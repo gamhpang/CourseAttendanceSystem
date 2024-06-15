@@ -7,7 +7,7 @@ import java.time.LocalDate;
 import java.util.Collection;
 
 public interface CourseOfferingService {
-    public CourseOfferingDTO createCourseOffering(double credits, String room, LocalDate startDate, LocalDate endDate,int capacity, Long courseId,Long facultyId,CourseOfferingType courseOfferingType);
+    public CourseOfferingDTO createCourseOffering(CourseOfferingDTO courseOfferingDTO);
 
     public CourseOfferingDTO getCourseOffering(long courseOfferingId);
 

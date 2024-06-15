@@ -1,18 +1,48 @@
 package cs544.courseattendancesystem.service;
 
-import cs544.courseattendancesystem.domain.CourseOffering;
-import cs544.courseattendancesystem.domain.CourseOfferingType;
+import cs544.courseattendancesystem.domain.*;
+import cs544.courseattendancesystem.service.adapter.CourseAdapter;
+import cs544.courseattendancesystem.service.adapter.CourseOfferingAdapter;
+import cs544.courseattendancesystem.service.adapter.FacultyAdapter;
 import cs544.courseattendancesystem.service.dto.CourseOfferingDTO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
+
+@Service
 public class CourseOfferingServiceImpl implements CourseOfferingService {
+    @Autowired
+    private CourseService courseService;
+    @Autowired
+    private FacultyService facultyService;
+    @Autowired
+    private SessionService sessionService;
 
     @Override
-    public CourseOfferingDTO createCourseOffering(double credits, String room, LocalDate startDate, LocalDate endDate, int capacity, Long courseId, Long facultyId, CourseOfferingType courseOfferingType) {
-        CourseOffering courseOffering = new CourseOffering(credits,room,startDate,endDate,capacity,courseOfferingType);
-        return null;
+    public CourseOfferingDTO createCourseOffering(CourseOfferingDTO courseOfferingDTO) {
+        CourseOffering courseOffering = new CourseOffering(
+                courseOfferingDTO.getCredits(),
+                courseOfferingDTO.getRoom(),
+                courseOfferingDTO.getStartDate(),
+                courseOfferingDTO.getEndDate(),
+                courseOfferingDTO.getCapacity(),
+                courseOfferingDTO.getCourseOfferingType());
+
+       Course course = CourseAdapter.getCourseFromCourseDTO(courseService.getCourse(courseOfferingDTO.getCourseId()));
+       courseOffering.setCourse(course);
+        Faculty faculty = facultyService.getFaculty(courseOfferingDTO.getFacultyId());
+        courseOffering.setFaculty(faculty);
+        List<Session> sessionList = new ArrayList<>();
+        courseOfferingDTO.getSessionList().stream().forEach(session->{
+           sessionList.add(sessionService.getSession(session));
+        });
+        courseOffering.setSessionList(sessionList);
+       return CourseOfferingAdapter.getCourseOfferingDTOFromCourseOffering(courseOffering);
     }
 
     @Override

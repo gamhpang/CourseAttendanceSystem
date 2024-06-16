@@ -1,28 +1,42 @@
 package cs544.courseattendancesystem.service.adapter;
 
 import cs544.courseattendancesystem.domain.Course;
+import cs544.courseattendancesystem.repository.CourseRepository;
 import cs544.courseattendancesystem.service.dto.CourseDTO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-
+@Service
 public class CourseAdapter {
+    @Autowired
+    public static CourseRepository courseRepository;
     public static Course getCourseFromCourseDTO(CourseDTO courseDTO){
+        if(courseDTO==null){
+            return null;
+        }
         Course course = new Course(courseDTO.getCredits(),courseDTO.getDescription(),courseDTO.getCode(),courseDTO.getName(),courseDTO.getDepartment());
         List<Course> courses = new ArrayList<>();
         courseDTO.getPrerequisites().forEach(dto -> {
-            courses.add(CourseAdapter.getCourseFromCourseDTO(dto));
+            Course temp = courseRepository.findById(dto).orElse(null);
+            if(temp!=null){
+                courses.add(temp);
+            }
         });
-
         course.setPrerequisites(courses);
         return course;
     }
 
     public static CourseDTO getCourseDTOFromCourse(Course course){
+        if(course == null){
+            return null;
+        }
+        System.out.println(course.getId()+"======================");
         CourseDTO courseDTO = new CourseDTO(course.getId(),course.getCredits(),course.getDescription(),course.getCode(),course.getName(),course.getDepartment());
-        List<CourseDTO> courseDTOS = new ArrayList<>();
+        List<Long> courseDTOS = new ArrayList<>();
         for (Course c : course.getPrerequisites()) {
-            courseDTOS.add(getCourseDTOFromCourse(c));
+            courseDTOS.add(c.getId());
         }
         courseDTO.setPrerequisites(courseDTOS);
 

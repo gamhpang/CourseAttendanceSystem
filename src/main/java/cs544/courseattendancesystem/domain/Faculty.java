@@ -18,7 +18,7 @@ public class Faculty extends Person{
         return "Faculty";
     }
 
-    protected Faculty() {
+    public Faculty() {
     }
 
     public Faculty(LocalDate birthDate, String emailAddress, String firstName, String lastName, String userName, String password, String salutation, List<String> hobbies) {

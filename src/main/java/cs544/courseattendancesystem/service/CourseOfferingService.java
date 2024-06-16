@@ -13,7 +13,7 @@ public interface CourseOfferingService {
 
     public Collection<CourseOfferingDTO> getAllCourseOfferings();
 
-    public CourseOfferingDTO updateCourseOffering(CourseOfferingDTO courseOfferingDTO);
+    public CourseOfferingDTO updateCourseOffering(long courseOfferingId,CourseOfferingDTO courseOfferingDTO);
 
     public void deleteCourseOffering(long courseOfferingId);
 }

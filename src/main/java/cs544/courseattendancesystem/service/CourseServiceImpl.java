@@ -30,18 +30,18 @@ public class CourseServiceImpl implements CourseService{
         });
         course.setPrerequisites(preCourses);
         courseRepository.save(course);
-        return CourseAdapter.getCourseDTOFromCourse(course);
+        return new CourseAdapter().getCourseDTOFromCourse(course);
     }
 
     @Override
     public Optional<CourseDTO> getCourse(long courseId) {
         Optional<Course> course = courseRepository.findById(courseId);
-        return course.map(CourseAdapter::getCourseDTOFromCourse);
+        return course.map(new CourseAdapter()::getCourseDTOFromCourse);
     }
 
     @Override
     public Collection<CourseDTO> getAllCourses() {
-        return courseRepository.findAll().stream().map(CourseAdapter::getCourseDTOFromCourse).collect(Collectors.toList());
+        return courseRepository.findAll().stream().map(new CourseAdapter()::getCourseDTOFromCourse).collect(Collectors.toList());
     }
 
     @Override
@@ -64,7 +64,7 @@ public class CourseServiceImpl implements CourseService{
             course.setPrerequisites(preCourses);
            courseRepository.save(course);
            System.out.println("------------------------------21");
-            return CourseAdapter.getCourseDTOFromCourse(course);
+            return new CourseAdapter().getCourseDTOFromCourse(course);
         }
         return null;
 

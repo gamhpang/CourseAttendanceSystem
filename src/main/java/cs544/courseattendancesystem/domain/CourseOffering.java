@@ -44,4 +44,8 @@ public class CourseOffering {
         this.courseOfferingType = courseOfferingType;
         this.sessionList = new ArrayList<>();
     }
+
+    public void addSession(Session session){
+        sessionList.add(session);
+    }
 }

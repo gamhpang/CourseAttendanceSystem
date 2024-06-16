@@ -35,7 +35,7 @@ public class SessionServiceImpl implements SessionService{
                 //// Add morning session for all days exceptSunday
                 sessions.add(new Session(date,morningStartTime,morningEndTime));
 
-                // Add afternoon session for all days except Saturday
+                // Add afternoon session for all days except Saturday and Sunday
                 if(date.getDayOfWeek() != DayOfWeek.SATURDAY){
                     sessions.add(new Session(date,afternoonStartTime,afternoonEndTime));
                 }

@@ -35,7 +35,7 @@ public class CourseOfferingAdapter {
            sessionList.add( sessionService.getSession(sess));
         });
         courseOffering.setSessionList(sessionList);
-        Course course = CourseAdapter.getCourseFromCourseDTO(courseService.getCourse(courseOfferingDTO.getCourseId()).orElse(null));
+        Course course = new CourseAdapter().getCourseFromCourseDTO(courseService.getCourse(courseOfferingDTO.getCourseId()).orElse(null));
         courseOffering.setCourse(course);
         return courseOffering;
     }

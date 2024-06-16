@@ -42,12 +42,12 @@ public class CourseOfferingServiceImpl implements CourseOfferingService {
 
         //Checking course exit or not
         if(courseOfferingDTO.getCourseId() > 0){
-            CourseDTO courseDTO = courseService.getCourse(courseOfferingDTO.getCourseId());
+            CourseDTO courseDTO = courseService.getCourse(courseOfferingDTO.getCourseId()).orElse(null);
             if(courseDTO == null){
                 throw new ResourceNotFoundException("Course not found with Id: "+courseOfferingDTO.getCourseId());
             }
             else{
-                Course course = CourseAdapter.getCourseFromCourseDTO(courseService.getCourse(courseOfferingDTO.getCourseId()));
+                Course course = CourseAdapter.getCourseFromCourseDTO(courseService.getCourse(courseOfferingDTO.getCourseId()).orElse(null));
                 System.out.println(course);
                 courseOffering.setCourse(course);
             }

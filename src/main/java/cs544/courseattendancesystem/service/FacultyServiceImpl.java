@@ -4,11 +4,13 @@ import cs544.courseattendancesystem.domain.Faculty;
 import cs544.courseattendancesystem.repository.FacultyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
 
 @Service
+@Transactional
 public class FacultyServiceImpl implements FacultyService{
 
     @Autowired

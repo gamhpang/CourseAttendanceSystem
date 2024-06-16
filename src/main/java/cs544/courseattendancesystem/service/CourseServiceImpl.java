@@ -34,9 +34,9 @@ public class CourseServiceImpl implements CourseService{
     }
 
     @Override
-    public CourseDTO getCourse(long courseId) {
+    public Optional<CourseDTO> getCourse(long courseId) {
         Optional<Course> course = courseRepository.findById(courseId);
-        return course.map(CourseAdapter::getCourseDTOFromCourse).orElse(null);
+        return course.map(CourseAdapter::getCourseDTOFromCourse);
     }
 
     @Override

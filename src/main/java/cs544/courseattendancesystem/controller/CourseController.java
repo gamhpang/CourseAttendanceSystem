@@ -24,7 +24,7 @@ public class CourseController {
 
     @GetMapping("/courses/{courseId}")
     public ResponseEntity<?> getCourseById(@PathVariable long courseId){
-        CourseDTO courseDTO = courseService.getCourse(courseId);
+        CourseDTO courseDTO = courseService.getCourse(courseId).orElse(null);
         if(courseDTO==null){
             return new ResponseEntity<CustomerErrorType>(new CustomerErrorType("Course with id= "+courseId+" is not available"),HttpStatus.NOT_FOUND);
         }

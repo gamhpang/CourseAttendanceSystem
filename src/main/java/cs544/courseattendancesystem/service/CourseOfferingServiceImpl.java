@@ -106,7 +106,7 @@ public class CourseOfferingServiceImpl implements CourseOfferingService {
             courseOffering.setStartDate(courseOfferingDTO.getStartDate());
             courseOffering.setEndDate(courseOfferingDTO.getEndDate());
             courseOffering.setCourseOfferingType(courseOfferingDTO.getCourseOfferingType());
-            Course course = CourseAdapter.getCourseFromCourseDTO(courseService.getCourse(courseOfferingDTO.getCourseId()));
+            Course course = CourseAdapter.getCourseFromCourseDTO(courseService.getCourse(courseOfferingDTO.getCourseId()).orElse(null));
             courseOffering.setCourse(course);
             Faculty faculty = facultyService.getFaculty(courseOfferingDTO.getFacultyId());
             courseOffering.setFaculty(faculty);

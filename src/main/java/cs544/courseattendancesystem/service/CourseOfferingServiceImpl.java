@@ -47,7 +47,7 @@ public class CourseOfferingServiceImpl implements CourseOfferingService {
                 throw new ResourceNotFoundException("Course not found with Id: "+courseOfferingDTO.getCourseId());
             }
             else{
-                Course course = CourseAdapter.getCourseFromCourseDTO(courseService.getCourse(courseOfferingDTO.getCourseId()).orElse(null));
+                Course course =new CourseAdapter().getCourseFromCourseDTO(courseService.getCourse(courseOfferingDTO.getCourseId()).orElse(null));
                 System.out.println(course);
                 courseOffering.setCourse(course);
             }
@@ -106,7 +106,7 @@ public class CourseOfferingServiceImpl implements CourseOfferingService {
             courseOffering.setStartDate(courseOfferingDTO.getStartDate());
             courseOffering.setEndDate(courseOfferingDTO.getEndDate());
             courseOffering.setCourseOfferingType(courseOfferingDTO.getCourseOfferingType());
-            Course course = CourseAdapter.getCourseFromCourseDTO(courseService.getCourse(courseOfferingDTO.getCourseId()).orElse(null));
+            Course course = new CourseAdapter().getCourseFromCourseDTO(courseService.getCourse(courseOfferingDTO.getCourseId()).orElse(null));
             courseOffering.setCourse(course);
             Faculty faculty = facultyService.getFaculty(courseOfferingDTO.getFacultyId());
             courseOffering.setFaculty(faculty);

@@ -11,8 +11,8 @@ import java.util.List;
 @Service
 public class CourseAdapter {
     @Autowired
-    public static CourseRepository courseRepository;
-    public static Course getCourseFromCourseDTO(CourseDTO courseDTO){
+    public CourseRepository courseRepository;
+    public Course getCourseFromCourseDTO(CourseDTO courseDTO){
         if(courseDTO==null){
             return null;
         }
@@ -29,7 +29,7 @@ public class CourseAdapter {
         return course;
     }
 
-    public static CourseDTO getCourseDTOFromCourse(Course course){
+    public CourseDTO getCourseDTOFromCourse(Course course){
         if(course == null){
             return null;
         }

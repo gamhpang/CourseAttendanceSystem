@@ -9,6 +9,7 @@ import cs544.courseattendancesystem.service.dto.CourseDTO;
 import cs544.courseattendancesystem.service.dto.CourseOfferingDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 
 
 @Service
+@Transactional
 public class CourseOfferingServiceImpl implements CourseOfferingService {
     @Autowired
     private CourseService courseService;

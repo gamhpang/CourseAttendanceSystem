@@ -29,6 +29,10 @@ public class CourseOfferingServiceImpl implements CourseOfferingService {
     private SessionService sessionService;
     @Autowired
     private CourseOfferingRepository courseOfferingRepository;
+    @Autowired
+    private CourseAdapter courseAdapter;
+    @Autowired
+    private CourseOfferingAdapter courseOfferingAdapter;
 
     @Override
     public CourseOfferingDTO createCourseOffering(CourseOfferingDTO courseOfferingDTO) {
@@ -47,7 +51,7 @@ public class CourseOfferingServiceImpl implements CourseOfferingService {
                 throw new ResourceNotFoundException("Course not found with Id: "+courseOfferingDTO.getCourseId());
             }
             else{
-                Course course =new CourseAdapter().getCourseFromCourseDTO(courseService.getCourse(courseOfferingDTO.getCourseId()).orElse(null));
+                Course course =courseAdapter.getCourseFromCourseDTO(courseService.getCourse(courseOfferingDTO.getCourseId()).orElse(null));
                 System.out.println(course);
                 courseOffering.setCourse(course);
             }
@@ -79,20 +83,20 @@ public class CourseOfferingServiceImpl implements CourseOfferingService {
         });}
         courseOffering.setSessionList(sessionList);
         CourseOffering result = courseOfferingRepository.save(courseOffering);
-       return CourseOfferingAdapter.getCourseOfferingDTOFromCourseOffering(result);
+       return courseOfferingAdapter.getCourseOfferingDTOFromCourseOffering(result);
     }
 
     @Override
     public CourseOfferingDTO getCourseOffering(long courseOfferingId) {
         Optional<CourseOffering> courseOffering = courseOfferingRepository.findById(courseOfferingId);
-        return courseOffering.map(CourseOfferingAdapter::getCourseOfferingDTOFromCourseOffering).orElse(null);
+        return courseOffering.map(courseOfferingAdapter::getCourseOfferingDTOFromCourseOffering).orElse(null);
     }
 
     @Override
     public Collection<CourseOfferingDTO> getAllCourseOfferings() {
         return courseOfferingRepository.findAll()
                 .stream()
-                .map(CourseOfferingAdapter::getCourseOfferingDTOFromCourseOffering)
+                .map(courseOfferingAdapter::getCourseOfferingDTOFromCourseOffering)
                 .collect(Collectors.toList());
     }
 
@@ -106,7 +110,7 @@ public class CourseOfferingServiceImpl implements CourseOfferingService {
             courseOffering.setStartDate(courseOfferingDTO.getStartDate());
             courseOffering.setEndDate(courseOfferingDTO.getEndDate());
             courseOffering.setCourseOfferingType(courseOfferingDTO.getCourseOfferingType());
-            Course course = new CourseAdapter().getCourseFromCourseDTO(courseService.getCourse(courseOfferingDTO.getCourseId()).orElse(null));
+            Course course = courseAdapter.getCourseFromCourseDTO(courseService.getCourse(courseOfferingDTO.getCourseId()).orElse(null));
             courseOffering.setCourse(course);
             Faculty faculty = facultyService.getFaculty(courseOfferingDTO.getFacultyId());
             courseOffering.setFaculty(faculty);
@@ -116,7 +120,7 @@ public class CourseOfferingServiceImpl implements CourseOfferingService {
             });
             courseOffering.setSessionList(sessionList);
             courseOfferingRepository.save(courseOffering);
-            return CourseOfferingAdapter.getCourseOfferingDTOFromCourseOffering(courseOffering);
+            return courseOfferingAdapter.getCourseOfferingDTOFromCourseOffering(courseOffering);
         }
         return null;
     }

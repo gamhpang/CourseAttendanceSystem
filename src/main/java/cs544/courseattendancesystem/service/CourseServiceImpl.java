@@ -17,6 +17,8 @@ import java.util.stream.Collectors;
 public class CourseServiceImpl implements CourseService{
     @Autowired
     private CourseRepository courseRepository;
+    @Autowired
+    private CourseAdapter courseAdapter;
 
     @Override
     public CourseDTO createCourse(CourseDTO courseDTO) {
@@ -30,18 +32,18 @@ public class CourseServiceImpl implements CourseService{
         });
         course.setPrerequisites(preCourses);
         courseRepository.save(course);
-        return new CourseAdapter().getCourseDTOFromCourse(course);
+        return courseAdapter.getCourseDTOFromCourse(course);
     }
 
     @Override
     public Optional<CourseDTO> getCourse(long courseId) {
         Optional<Course> course = courseRepository.findById(courseId);
-        return course.map(new CourseAdapter()::getCourseDTOFromCourse);
+        return course.map(courseAdapter::getCourseDTOFromCourse);
     }
 
     @Override
     public Collection<CourseDTO> getAllCourses() {
-        return courseRepository.findAll().stream().map(new CourseAdapter()::getCourseDTOFromCourse).collect(Collectors.toList());
+        return courseRepository.findAll().stream().map(courseAdapter::getCourseDTOFromCourse).collect(Collectors.toList());
     }
 
     @Override
@@ -64,7 +66,7 @@ public class CourseServiceImpl implements CourseService{
             course.setPrerequisites(preCourses);
            courseRepository.save(course);
            System.out.println("------------------------------21");
-            return new CourseAdapter().getCourseDTOFromCourse(course);
+            return courseAdapter.getCourseDTOFromCourse(course);
         }
         return null;
 

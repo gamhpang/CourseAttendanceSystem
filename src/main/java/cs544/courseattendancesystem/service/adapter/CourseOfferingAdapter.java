@@ -18,15 +18,18 @@ import java.util.stream.Collectors;
 public class CourseOfferingAdapter {
 
     @Autowired
-    private static FacultyService facultyService;
+    private FacultyService facultyService;
 
     @Autowired
-    private static SessionService sessionService;
+    private SessionService sessionService;
 
     @Autowired
-    private static CourseService courseService;
+    private CourseService courseService;
 
-    public static CourseOffering getCourseOfferingFromCourseOfferingDTO(CourseOfferingDTO courseOfferingDTO){
+    @Autowired
+    private CourseAdapter courseAdapter;
+
+    public CourseOffering getCourseOfferingFromCourseOfferingDTO(CourseOfferingDTO courseOfferingDTO){
         CourseOffering courseOffering = new CourseOffering(courseOfferingDTO.getCredits(),courseOfferingDTO.getRoom(),courseOfferingDTO.getStartDate(),courseOfferingDTO.getEndDate(),courseOfferingDTO.getCapacity(),courseOfferingDTO.getCourseOfferingType());
         Faculty faculty = facultyService.getFaculty(courseOfferingDTO.getFacultyId());
         courseOffering.setFaculty(faculty);
@@ -35,13 +38,13 @@ public class CourseOfferingAdapter {
            sessionList.add( sessionService.getSession(sess));
         });
         courseOffering.setSessionList(sessionList);
-        Course course = new CourseAdapter().getCourseFromCourseDTO(courseService.getCourse(courseOfferingDTO.getCourseId()).orElse(null));
+        Course course = courseAdapter.getCourseFromCourseDTO(courseService.getCourse(courseOfferingDTO.getCourseId()).orElse(null));
         courseOffering.setCourse(course);
         return courseOffering;
     }
 
 
-    public static CourseOfferingDTO getCourseOfferingDTOFromCourseOffering(CourseOffering courseOffering){
+    public CourseOfferingDTO getCourseOfferingDTOFromCourseOffering(CourseOffering courseOffering){
         long courseId = courseOffering.getCourse().getId();
         long facultyId = 0;
         if(courseOffering.getFaculty()!=null){
@@ -53,7 +56,7 @@ public class CourseOfferingAdapter {
         return courseOfferingDTO;
     }
 
-    public static List<SessionDTO> getSessionDTOsFromSession(List<Session> sessionList){
+    public List<SessionDTO> getSessionDTOsFromSession(List<Session> sessionList){
         List<SessionDTO> sessionDTOList = new ArrayList<>();
         for(Session session: sessionList){
             sessionDTOList.add(new SessionDTO(session.getId(),session.getSessionDate(),session.getStartTime(),session.getEndTime()));

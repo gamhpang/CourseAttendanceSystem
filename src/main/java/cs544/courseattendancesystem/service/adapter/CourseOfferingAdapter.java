@@ -28,16 +28,13 @@ public class CourseOfferingAdapter {
 
     public static CourseOffering getCourseOfferingFromCourseOfferingDTO(CourseOfferingDTO courseOfferingDTO){
         CourseOffering courseOffering = new CourseOffering(courseOfferingDTO.getCredits(),courseOfferingDTO.getRoom(),courseOfferingDTO.getStartDate(),courseOfferingDTO.getEndDate(),courseOfferingDTO.getCapacity(),courseOfferingDTO.getCourseOfferingType());
-
         Faculty faculty = facultyService.getFaculty(courseOfferingDTO.getFacultyId());
         courseOffering.setFaculty(faculty);
-
         List<Session> sessionList = new ArrayList<>();
         courseOfferingDTO.getSessionList().forEach(sess->{
            sessionList.add( sessionService.getSession(sess));
         });
         courseOffering.setSessionList(sessionList);
-
         Course course = CourseAdapter.getCourseFromCourseDTO(courseService.getCourse(courseOfferingDTO.getCourseId()));
         courseOffering.setCourse(course);
         return courseOffering;
@@ -46,7 +43,11 @@ public class CourseOfferingAdapter {
 
     public static CourseOfferingDTO getCourseOfferingDTOFromCourseOffering(CourseOffering courseOffering){
         long courseId = courseOffering.getCourse().getId();
-        long facultyId = courseOffering.getFaculty().getId();
+        long facultyId = 0;
+        if(courseOffering.getFaculty()!=null){
+            facultyId = courseOffering.getFaculty().getId();
+        }
+
         List<Long> sessionIDList = courseOffering.getSessionList().stream().map(Session::getId).toList();
         CourseOfferingDTO courseOfferingDTO = new CourseOfferingDTO(courseOffering.getId(),courseOffering.getCredits(),courseOffering.getRoom(),courseOffering.getStartDate(),courseOffering.getEndDate(),courseOffering.getCapacity(),courseOffering.getCourseOfferingType(),courseId,facultyId,sessionIDList);
         return courseOfferingDTO;

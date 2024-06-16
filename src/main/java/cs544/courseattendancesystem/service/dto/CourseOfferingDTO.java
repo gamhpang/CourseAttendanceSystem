@@ -22,6 +22,7 @@ public class CourseOfferingDTO {
     private List<Long> sessionList;
 
     public CourseOfferingDTO(long id,double credits, String room, LocalDate startDate, LocalDate endDate, int capacity, CourseOfferingType courseOfferingType,long courseId,long facultyId,List<Long> sessionList) {
+        this.id = id;
         this.credits = credits;
         this.room = room;
         this.startDate = startDate;

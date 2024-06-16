@@ -33,14 +33,15 @@ public class CourseController {
 
     @PostMapping("/courses")
     public ResponseEntity<?> addCourse(@RequestBody CourseDTO courseDTO){
-        CourseDTO cDTO = courseService.createCourse(courseDTO.getCredits(),courseDTO.getDescription(),courseDTO.getCode(),courseDTO.getName(),courseDTO.getDepartment());
+        CourseDTO cDTO = courseService.createCourse(courseDTO);
         return new ResponseEntity<CourseDTO>(cDTO,HttpStatus.OK);
     }
 
     @PutMapping("/courses/{courseId}")
-    public ResponseEntity<?> updateCourse(@PathVariable long courseId,CourseDTO courseDTO){
-        courseService.updateCourse(courseId,courseDTO);
-        return new ResponseEntity<>(courseDTO,HttpStatus.OK);
+    public ResponseEntity<?> updateCourse(@PathVariable long courseId,@RequestBody CourseDTO courseDTO){
+        System.out.println("-123");
+        CourseDTO resultDTO = courseService.updateCourse(courseId,courseDTO);
+        return new ResponseEntity<CourseDTO>(resultDTO,HttpStatus.OK);
     }
 
     @DeleteMapping("/courses/{courseId}")

@@ -13,7 +13,7 @@ public class CourseDTO {
     private String code;
     private String name;
     private String department;
-    private List<CourseDTO> prerequisites;
+    private List<Long> prerequisites = new ArrayList<>();
 
     public CourseDTO(long id,double credits, String description, String code, String name, String department) {
         this.id = id;
@@ -22,6 +22,5 @@ public class CourseDTO {
         this.code = code;
         this.name = name;
         this.department = department;
-        this.prerequisites = new ArrayList<>();
     }
 }

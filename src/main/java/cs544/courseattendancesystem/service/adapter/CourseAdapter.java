@@ -16,7 +16,8 @@ public class CourseAdapter {
         if(courseDTO==null){
             return null;
         }
-        Course course = new Course(courseDTO.getCredits(),courseDTO.getDescription(),courseDTO.getCode(),courseDTO.getName(),courseDTO.getDepartment());
+        //Course course = new Course(courseDTO.getCredits(),courseDTO.getDescription(),courseDTO.getCode(),courseDTO.getName(),courseDTO.getDepartment());
+        Course course = courseRepository.findById(courseDTO.getId()).orElse(null);
         List<Course> courses = new ArrayList<>();
         courseDTO.getPrerequisites().forEach(dto -> {
             Course temp = courseRepository.findById(dto).orElse(null);

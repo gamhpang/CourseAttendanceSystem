@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface LocationService {
 
-    LocationDTO createLocation(String name, int capacity);
+    LocationDTO createLocation(String name, int capacity, Long locationTypeId);
 
     LocationDTO updateLocation(LocationDTO locationDTO);
 

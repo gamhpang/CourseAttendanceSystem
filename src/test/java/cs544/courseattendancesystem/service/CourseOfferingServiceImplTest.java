@@ -29,16 +29,18 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
-public class CourseOfferingServiceImplTest {
+class CourseOfferingServiceImplTest {
 
     @TestConfiguration
     static class CourseOfferingServiceImplTestContextConfiguration{
+        // Define a bean for the service under test
         @Bean
         public CourseOfferingServiceImpl courseOfferingService(){
             return new CourseOfferingServiceImpl();
         }
     }
 
+    // Autowire the service to be tested
     @Autowired
     private CourseOfferingService courseOfferingService;
 
@@ -60,6 +62,7 @@ public class CourseOfferingServiceImplTest {
     @MockBean
     private CourseOfferingAdapter courseOfferingAdapter;
 
+    //Define the test data
     private CourseOfferingDTO courseOfferingDTO;
     private CourseOffering courseOffering;
     private CourseDTO courseDTO;
@@ -69,6 +72,7 @@ public class CourseOfferingServiceImplTest {
 
     @BeforeEach
     public void setUp() {
+        // Initialize test data before each test
         courseOfferingDTO = new CourseOfferingDTO(1L, 3, "Room 101", LocalDate.of(2023, 6, 1), LocalDate.of(2023, 12, 1), 30, CourseOfferingType.ON_CAMPUS, 1L, 1L, new ArrayList<>());
         courseOffering = new CourseOffering(3, "Room 101", LocalDate.of(2023, 6, 1), LocalDate.of(2023, 12, 1), 30, CourseOfferingType.ON_CAMPUS);
         courseDTO = new CourseDTO(1L, 3, "Description", "C-1", "Course 1", "Department 1");
@@ -84,7 +88,8 @@ public class CourseOfferingServiceImplTest {
     }
 
     @Test
-    public void testCreateCourseOffering_Success() {
+    void testCreateCourseOffering_Success() {
+        //Define behaviour
         when(courseService.getCourse(courseOfferingDTO.getCourseId())).thenReturn(Optional.of(courseDTO));
         when(courseAdapter.getCourseFromCourseDTO(courseDTO)).thenReturn(course);
         when(facultyService.getFaculty(courseOfferingDTO.getFacultyId())).thenReturn(faculty);
@@ -92,17 +97,23 @@ public class CourseOfferingServiceImplTest {
         when(courseOfferingRepository.save(any(CourseOffering.class))).thenReturn(courseOffering);
         when(courseOfferingAdapter.getCourseOfferingDTOFromCourseOffering(courseOffering)).thenReturn(courseOfferingDTO);
 
+        // Call the service method and assert the result
         CourseOfferingDTO result = courseOfferingService.createCourseOffering(courseOfferingDTO);
 
+        // Ensure the result is not null
         assertNotNull(result);
+        // Ensure the result matches the expected DTO
         assertEquals(courseOfferingDTO, result);
+        // Verify the save method was called once
         verify(courseOfferingRepository, times(1)).save(any(CourseOffering.class));
     }
 
     @Test
-    public void testCreateCourseOffering_CourseNotFound() {
+    void testCreateCourseOffering_CourseNotFound() {
+        //Define behaviour
         when(courseService.getCourse(courseOfferingDTO.getCourseId())).thenReturn(Optional.empty());
 
+        // Call the service method and assert the exception
         ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, () -> {
             courseOfferingService.createCourseOffering(courseOfferingDTO);
         });
@@ -111,10 +122,12 @@ public class CourseOfferingServiceImplTest {
     }
 
     @Test
-    public void testGetCourseOffering_Success() {
+    void testGetCourseOffering_Success() {
+        //Define behavior
         when(courseOfferingRepository.findById(1L)).thenReturn(Optional.of(courseOffering));
         when(courseOfferingAdapter.getCourseOfferingDTOFromCourseOffering(courseOffering)).thenReturn(courseOfferingDTO);
 
+        //Call the service method and assert the result
         CourseOfferingDTO result = courseOfferingService.getCourseOffering(1L);
 
         assertNotNull(result);
@@ -122,7 +135,7 @@ public class CourseOfferingServiceImplTest {
     }
 
     @Test
-    public void testGetCourseOffering_NotFound() {
+    void testGetCourseOffering_NotFound() {
         when(courseOfferingRepository.findById(1L)).thenReturn(Optional.empty());
 
         CourseOfferingDTO result = courseOfferingService.getCourseOffering(1L);
@@ -131,7 +144,7 @@ public class CourseOfferingServiceImplTest {
     }
 
     @Test
-    public void testGetAllCourseOfferings() {
+    void testGetAllCourseOfferings() {
         List<CourseOffering> courseOfferings = Arrays.asList(courseOffering);
         List<CourseOfferingDTO> courseOfferingDTOS = Arrays.asList(courseOfferingDTO);
 
@@ -145,7 +158,7 @@ public class CourseOfferingServiceImplTest {
     }
 
     @Test
-    public void testUpdateCourseOffering_Success() {
+    void testUpdateCourseOffering_Success() {
         when(courseOfferingRepository.findById(1L)).thenReturn(Optional.of(courseOffering));
         when(courseService.getCourse(courseOfferingDTO.getCourseId())).thenReturn(Optional.of(courseDTO));
         when(courseAdapter.getCourseFromCourseDTO(courseDTO)).thenReturn(course);
@@ -164,7 +177,7 @@ public class CourseOfferingServiceImplTest {
     }
 
     @Test
-    public void testUpdateCourseOffering_NotFound() {
+    void testUpdateCourseOffering_NotFound() {
         when(courseOfferingRepository.findById(1L)).thenReturn(Optional.empty());
 
         CourseOfferingDTO result = courseOfferingService.updateCourseOffering(1L, courseOfferingDTO);
@@ -173,11 +186,9 @@ public class CourseOfferingServiceImplTest {
     }
 
     @Test
-    public void testDeleteCourseOffering() {
+    void testDeleteCourseOffering() {
         doNothing().when(courseOfferingRepository).deleteById(1L);
-
         courseOfferingService.deleteCourseOffering(1L);
-
         verify(courseOfferingRepository, times(1)).deleteById(1L);
     }
 }

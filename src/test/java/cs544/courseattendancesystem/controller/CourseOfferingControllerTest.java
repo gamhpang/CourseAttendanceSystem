@@ -28,6 +28,8 @@ import java.util.List;
 @SpringBootTest
 @AutoConfigureMockMvc
 public class CourseOfferingControllerTest {
+
+    // MockMvc is used to perform HTTP requests and assert responses
     @Autowired
     private MockMvc mockMvc;
 
@@ -35,14 +37,17 @@ public class CourseOfferingControllerTest {
     private CourseOfferingService courseOfferingService;
 
     @Test
-    public void testGetAllCourseOfferings() throws Exception{
+    void testGetAllCourseOfferings() throws Exception{
+        // Prepare test data
         List<CourseOfferingDTO> courseOfferingDTOS = Arrays.asList(
                 new CourseOfferingDTO(1L, 3, "Room 101", LocalDate.of(2023, 6, 1), LocalDate.of(2023, 12, 1), 30, CourseOfferingType.ON_CAMPUS, 1L, 1L, null),
                 new CourseOfferingDTO(2L, 4, "Room 202", LocalDate.of(2023, 7, 1), LocalDate.of(2023, 12, 1), 40, CourseOfferingType.ON_CAMPUS, 2L, 2L, null)
         );
+        //Mock the service method
         Mockito.when(courseOfferingService.getAllCourseOfferings())
                 .thenReturn(courseOfferingDTOS);
 
+        // Perform the GET request and check the response
         mockMvc.perform(get("/sys-admin/course-offerings"))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(1L))
@@ -66,10 +71,12 @@ public class CourseOfferingControllerTest {
     }
 
     @Test
-    public void testGetCourseOfferingById() throws Exception{
+    void testGetCourseOfferingById() throws Exception{
+        // Prepare test data
         CourseOfferingDTO courseOfferingDTO = new CourseOfferingDTO(1L, 3, "Room 101", LocalDate.of(2023, 6, 1), LocalDate.of(2023, 12, 1), 30, CourseOfferingType.ON_CAMPUS, 1L, 1L, Arrays.asList(1L, 2L));
         Mockito.when(courseOfferingService.getCourseOffering(1L)).thenReturn(courseOfferingDTO);
 
+        // Perform the GET request and check the response
         mockMvc.perform(get("/sys-admin/course-offerings/1"))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(1L))
@@ -86,7 +93,8 @@ public class CourseOfferingControllerTest {
     }
 
     @Test
-    public void testGetCourseOfferingById_NotFound() throws Exception {
+    void testGetCourseOfferingById_NotFound() throws Exception {
+        // Mock the service method to return null
         Mockito.when(courseOfferingService.getCourseOffering(1L)).thenReturn(null);
 
         mockMvc.perform(get("/sys-admin/course-offerings/1"))
@@ -95,11 +103,8 @@ public class CourseOfferingControllerTest {
     }
 
     @Test
-    public void testUpdateCourseOffering() throws Exception {
-        // Define the initial state (existing CourseOffering)
-        CourseOfferingDTO courseOfferingDTO = new CourseOfferingDTO(1L, 3, "Room 101", LocalDate.of(2023, 6, 1), LocalDate.of(2023, 12, 1), 30, CourseOfferingType.ON_CAMPUS, 1L, 1L, Arrays.asList(1L, 2L));
-
-        // Define the updated state (updated CourseOffering)
+    void testUpdateCourseOffering() throws Exception {
+        // Prepare the test data
         CourseOfferingDTO updatedCourseOfferingDTO = new CourseOfferingDTO(1L, 4, "Room 101 Updated", LocalDate.of(2023, 6, 1), LocalDate.of(2023, 12, 1), 30, CourseOfferingType.ON_CAMPUS, 1L, 1L, Arrays.asList(1L, 2L));
         Mockito.when(courseOfferingService.updateCourseOffering(1L, updatedCourseOfferingDTO)).thenReturn(updatedCourseOfferingDTO);
 
@@ -120,11 +125,12 @@ public class CourseOfferingControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.sessionList[0]").value(1L))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.sessionList[1]").value(2L));
 
+        // Verify that the service method was called once
         verify(courseOfferingService, times(1)).updateCourseOffering(1L, updatedCourseOfferingDTO);
     }
 
     @Test
-    public void testCreateCourseOffering() throws Exception {
+    void testCreateCourseOffering() throws Exception {
         CourseOfferingDTO courseOfferingDTO = new CourseOfferingDTO(1L, 3, "Room 101", LocalDate.of(2023, 6, 1), LocalDate.of(2023, 12, 1), 30, CourseOfferingType.ON_CAMPUS, 1L, 1L, Arrays.asList(1L, 2L));
         Mockito.when(courseOfferingService.createCourseOffering(courseOfferingDTO)).thenReturn(courseOfferingDTO);
 
@@ -146,13 +152,16 @@ public class CourseOfferingControllerTest {
     }
 
     @Test
-    public void testDeleteCourseOffering() throws Exception {
+    void testDeleteCourseOffering() throws Exception {
+        //Prepare test data
         CourseOfferingDTO courseOfferingDTO = new CourseOfferingDTO(1L, 3, "Room 101", LocalDate.of(2023, 6, 1), LocalDate.of(2023, 12, 1), 30, CourseOfferingType.ON_CAMPUS, 1L, 1L, Arrays.asList(1L, 2L));
+
         Mockito.when(courseOfferingService.getCourseOffering(1L)).thenReturn(courseOfferingDTO);
 
         mockMvc.perform(delete("/sys-admin/course-offerings/1"))
                 .andExpect(status().isOk());
 
+        // Verify that the service method was called once
         verify(courseOfferingService, times(1)).deleteCourseOffering(1L);
     }
 

@@ -10,12 +10,10 @@ import cs544.courseattendancesystem.service.dto.CourseOfferingDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 
 @Service
@@ -52,14 +50,11 @@ public class CourseOfferingServiceImpl implements CourseOfferingService {
             }
             else{
                 Course course =courseAdapter.getCourseFromCourseDTO(courseService.getCourse(courseOfferingDTO.getCourseId()).orElse(null));
-                System.out.println(course);
                 courseOffering.setCourse(course);
             }
         }else{
             throw new ResourceNotFoundException("Course not found!");
         }
-
-        System.out.println(courseOffering.getCourse()+"------------------------------");
 
         //Checking Faculty existence, if not, just leave null
         if(courseOfferingDTO.getFacultyId() > 0){
@@ -73,16 +68,7 @@ public class CourseOfferingServiceImpl implements CourseOfferingService {
         }
         else{
             courseOffering.setFaculty(null);
-            //throw new ResourceNotFoundException("Faculty Not found");
         }
-
-//        List<Session> sessionList = new ArrayList<>();
-//        if(courseOfferingDTO.getSessionList()!=null){
-//            courseOfferingDTO.getSessionList().forEach(session->{
-//            sessionList.add(sessionService.getSession(session));
-//        });}
-//        courseOffering.setSessionList(sessionList);
-
 
         //Generate Sessions for the course Offering
         List<Session> sessions = sessionService.generateSessions(courseOfferingDTO.getStartDate(),courseOfferingDTO.getEndDate());
@@ -104,7 +90,7 @@ public class CourseOfferingServiceImpl implements CourseOfferingService {
         return courseOfferingRepository.findAll()
                 .stream()
                 .map(courseOfferingAdapter::getCourseOfferingDTOFromCourseOffering)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override

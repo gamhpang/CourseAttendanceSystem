@@ -23,7 +23,7 @@ public class AttendanceRecord {
     @JoinColumn(name = "sessionId")
     private Session session;
 
-    protected AttendanceRecord(){}
+    public AttendanceRecord(){}
     public AttendanceRecord(Student student, Location location) {
         this.scanDateTime = LocalDateTime.now();
         this.student = student;

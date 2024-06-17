@@ -9,7 +9,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -21,8 +20,9 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
-public class SessionServiceImplTest {
+class SessionServiceImplTest {
 
+    // Define the SessionServiceImpl bean for testing
     @TestConfiguration
     static class SessionServiceImplTestContextConfiguration {
         @Bean
@@ -36,7 +36,7 @@ public class SessionServiceImplTest {
 
     @MockBean
     private SessionRepository sessionRepository;
-
+    // Declare a session instance for use in tests
     private Session session;
 
     @BeforeEach
@@ -46,7 +46,7 @@ public class SessionServiceImplTest {
     }
 
     @Test
-    public void testGetSession_Success() {
+    void testGetSession_Success() {
         when(sessionRepository.findById(1L)).thenReturn(Optional.of(session));
 
         Session foundSession = sessionService.getSession(1L);
@@ -57,7 +57,7 @@ public class SessionServiceImplTest {
     }
 
     @Test
-    public void testGetSession_NotFound() {
+    void testGetSession_NotFound() {
         when(sessionRepository.findById(1L)).thenReturn(Optional.empty());
 
         Session foundSession = sessionService.getSession(1L);
@@ -67,10 +67,11 @@ public class SessionServiceImplTest {
     }
 
     @Test
-    public void testGenerateSessions() {
+    void testGenerateSessions() {
         LocalDate startDate = LocalDate.of(2023, 6, 1);
         LocalDate endDate = LocalDate.of(2023, 6, 2);
 
+        // Expected sessions based on the input date range
         List<Session> expectedSessions = Arrays.asList(
                 new Session(LocalDate.of(2023, 6, 1), LocalTime.of(10, 0), LocalTime.of(12, 30)),
                 new Session(LocalDate.of(2023, 6, 1), LocalTime.of(13, 30), LocalTime.of(15, 30)),
@@ -78,10 +79,14 @@ public class SessionServiceImplTest {
                 new Session(LocalDate.of(2023, 6, 2), LocalTime.of(13, 30), LocalTime.of(15, 30))
         );
 
+        // Call the service method to generate sessions
         List<Session> generatedSessions = sessionService.generateSessions(startDate, endDate);
 
+        // Assert the generated sessions list is not null
         assertNotNull(generatedSessions);
+        // Assert the size of the lists match
         assertEquals(expectedSessions.size(), generatedSessions.size());
+        //Checking expected and generated data
         for (int i = 0; i < expectedSessions.size(); i++) {
             assertEquals(expectedSessions.get(i).getSessionDate(), generatedSessions.get(i).getSessionDate());
             assertEquals(expectedSessions.get(i).getStartTime(), generatedSessions.get(i).getStartTime());

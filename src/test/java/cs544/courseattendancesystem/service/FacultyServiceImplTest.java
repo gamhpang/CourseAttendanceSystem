@@ -19,7 +19,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
-public class FacultyServiceImplTest {
+class FacultyServiceImplTest {
 
     @Configuration
     static class FacultyServiceImplTestContextConfiguration {
@@ -44,7 +44,7 @@ public class FacultyServiceImplTest {
     }
 
     @Test
-    public void testGetFaculty_Success() {
+    void testGetFaculty_Success() {
         when(facultyRepository.findById(1L)).thenReturn(Optional.of(faculty));
 
         Faculty foundFaculty = facultyService.getFaculty(1L);
@@ -56,7 +56,7 @@ public class FacultyServiceImplTest {
     }
 
     @Test
-    public void testGetFaculty_NotFound() {
+    void testGetFaculty_NotFound() {
         when(facultyRepository.findById(1L)).thenReturn(Optional.empty());
 
         Faculty foundFaculty = facultyService.getFaculty(1L);
@@ -66,7 +66,7 @@ public class FacultyServiceImplTest {
     }
 
     @Test
-    public void testCreateFaculty_Success() {
+    void testCreateFaculty_Success() {
         when(facultyRepository.save(any(Faculty.class))).thenReturn(faculty);
 
         Faculty createdFaculty = facultyService.createFaculty(

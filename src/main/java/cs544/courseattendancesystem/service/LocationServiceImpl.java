@@ -53,6 +53,11 @@ public class LocationServiceImpl implements LocationService {
     }
 
     @Override
+    public Location getLocationById(long locationId) {
+        return findLocationById(locationId);
+    }
+
+    @Override
     public List<LocationDTO> getAllLocations() {
         List<Location> locations = locationRepository.findAll();
         return LocationAdapter.getLocationDTOsFromLocations(locations);

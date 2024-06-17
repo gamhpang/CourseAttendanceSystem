@@ -49,7 +49,6 @@ public class CourseServiceImpl implements CourseService{
     @Override
     public CourseDTO updateCourse(long courseId,CourseDTO courseDTO) {
         Course course = courseRepository.findById(courseId).orElse(null);
-        System.out.println(course);
         if(course != null){
             course.setCredits(courseDTO.getCredits());
             course.setDescription(courseDTO.getDescription());
@@ -65,7 +64,6 @@ public class CourseServiceImpl implements CourseService{
             });
             course.setPrerequisites(preCourses);
            courseRepository.save(course);
-           System.out.println("------------------------------21");
             return courseAdapter.getCourseDTOFromCourse(course);
         }
         return null;

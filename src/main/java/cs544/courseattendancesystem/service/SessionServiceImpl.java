@@ -1,7 +1,6 @@
 package cs544.courseattendancesystem.service;
 
 import cs544.courseattendancesystem.domain.Session;
-import cs544.courseattendancesystem.repository.CourseOfferingRepository;
 import cs544.courseattendancesystem.repository.SessionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

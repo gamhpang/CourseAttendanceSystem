@@ -29,8 +29,8 @@ public class CourseAttendanceSystemApplication implements CommandLineRunner {
         List<String> hobbies = new ArrayList<>();
         hobbies.add("Listening");
         hobbies.add("Teaching");
-        facultyService.createFaculty(LocalDate.of(1999, 10, 31),"john@miu.edu.tt","John","Doe","john","123","tt",hobbies);
-        facultyService.createFaculty(LocalDate.of(2000, 12, 11),"eddy@miu.edu.tt","Eddy","Doe","eddy","123","bb",hobbies);
+        facultyService.createFaculty(LocalDate.of(1999, 10, 31),"john@miu.edu.tt","John","Doe","john","123","Mr.",hobbies);
+        facultyService.createFaculty(LocalDate.of(2000, 12, 11),"eddy@miu.edu.tt","Eddy","Doe","eddy","123","Mr.",hobbies);
     }
 
 }

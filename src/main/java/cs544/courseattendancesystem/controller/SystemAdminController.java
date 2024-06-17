@@ -20,29 +20,36 @@ public class SystemAdminController {
 
     @PostMapping("/locations/create")
     public ResponseEntity<?> createLocation(@RequestParam(value = "locationName") String locationName,
-                                            @RequestParam(value = "capacity") int capacity) {
+                                            @RequestParam(value = "capacity") int capacity,
+                                            @RequestParam(value = "locationTypeId") long typeId) {
+        try {
 
-        LocationDTO locationDTO = locationService.createLocation(locationName, capacity);
-        return new ResponseEntity<LocationDTO>(locationDTO, HttpStatus.OK);
+            LocationDTO locationDTO = locationService.createLocation(locationName, capacity, typeId);
+            return new ResponseEntity<>(locationDTO, HttpStatus.OK);
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @GetMapping("/locations/{locationId}")
     public ResponseEntity<?> getLocation(@PathVariable("locationId") long locationId) {
         LocationDTO location = locationService.getLocation(locationId);
-        return new ResponseEntity<LocationDTO>(location, HttpStatus.OK);
+        return new ResponseEntity<>(location, HttpStatus.OK);
     }
 
 
     @GetMapping("/locations")
-    public ResponseEntity<?> getCourses() {
+    public ResponseEntity<?> getLocations() {
         Collection<LocationDTO> locations = locationService.getAllLocations();
-        return new ResponseEntity<Collection<LocationDTO>>(locations, HttpStatus.OK);
+        return new ResponseEntity<>(locations, HttpStatus.OK);
     }
 
     @PutMapping("/locations")
     public ResponseEntity<?> updateLocation(@RequestBody LocationDTO locationDTO) {
         LocationDTO location = locationService.updateLocation(locationDTO);
-        return new ResponseEntity<LocationDTO>(location, HttpStatus.OK);
+        return new ResponseEntity<>(location, HttpStatus.OK);
     }
 
 

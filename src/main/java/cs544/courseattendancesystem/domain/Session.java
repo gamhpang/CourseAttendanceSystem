@@ -19,7 +19,7 @@ public class Session {
     private LocalTime startTime;
     private LocalTime endTime;
 
-    protected Session(){}
+    public Session(){}
     public Session(LocalDate sessionDate, LocalTime startTime, LocalTime endTime) {
         this.sessionDate = sessionDate;
         this.startTime = startTime;

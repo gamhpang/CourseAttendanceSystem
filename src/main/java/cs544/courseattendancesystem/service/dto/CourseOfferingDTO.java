@@ -17,24 +17,22 @@ public class CourseOfferingDTO {
     private LocalDate endDate;
     private int capacity;
     private CourseOfferingType courseOfferingType;
-    private CourseDTO course;
-    private FacultyDTO faculty;
-    private List<SessionDTO> sessionList;
+    private long courseId;
+    private long facultyId;
+    private List<Long> sessionList = new ArrayList<>();
 
-    public CourseOfferingDTO(long id,double credits, String room, LocalDate startDate, LocalDate endDate, int capacity, CourseOfferingType courseOfferingType, CourseDTO course, FacultyDTO faculty) {
+    public CourseOfferingDTO(long id,double credits, String room, LocalDate startDate, LocalDate endDate, int capacity, CourseOfferingType courseOfferingType,long courseId,long facultyId,List<Long> sessionList) {
+        this.id = id;
         this.credits = credits;
         this.room = room;
         this.startDate = startDate;
         this.endDate = endDate;
         this.capacity = capacity;
         this.courseOfferingType = courseOfferingType;
-        this.course = course;
-        this.faculty = faculty;
-        this.sessionList = new ArrayList<>();
+        this.courseId = courseId;
+        this.facultyId = facultyId;
+        this.sessionList = sessionList;
     }
 
-    public void addSession(SessionDTO session){
-        sessionList.add(session);
-    }
 
 }

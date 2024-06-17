@@ -1,8 +1,6 @@
 package cs544.courseattendancesystem.service;
 
 import cs544.courseattendancesystem.domain.Session;
-import org.springframework.stereotype.Service;
-
 import java.time.LocalDate;
 import java.util.List;
 

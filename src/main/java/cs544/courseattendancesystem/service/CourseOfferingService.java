@@ -1,9 +1,7 @@
 package cs544.courseattendancesystem.service;
 
-import cs544.courseattendancesystem.domain.CourseOfferingType;
-import cs544.courseattendancesystem.service.dto.CourseOfferingDTO;
 
-import java.time.LocalDate;
+import cs544.courseattendancesystem.service.dto.CourseOfferingDTO;
 import java.util.Collection;
 
 public interface CourseOfferingService {

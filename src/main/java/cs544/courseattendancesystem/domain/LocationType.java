@@ -14,10 +14,11 @@ public class LocationType {
     private long id;
 
     private String type;
+
     @Embedded
     private AuditData auditData;
 
-    protected LocationType(){}
+    public LocationType(){}
     public LocationType(String type) {
         this.type = type;
     }

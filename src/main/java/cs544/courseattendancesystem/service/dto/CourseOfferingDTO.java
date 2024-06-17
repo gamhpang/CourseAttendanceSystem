@@ -19,7 +19,7 @@ public class CourseOfferingDTO {
     private CourseOfferingType courseOfferingType;
     private long courseId;
     private long facultyId;
-    private List<Long> sessionList;
+    private List<Long> sessionList = new ArrayList<>();
 
     public CourseOfferingDTO(long id,double credits, String room, LocalDate startDate, LocalDate endDate, int capacity, CourseOfferingType courseOfferingType,long courseId,long facultyId,List<Long> sessionList) {
         this.id = id;

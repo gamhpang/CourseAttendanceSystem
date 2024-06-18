@@ -4,10 +4,7 @@ import cs544.courseattendancesystem.exception.ResourceNotFoundException;
 import cs544.courseattendancesystem.service.AttendanceRecordService;
 import cs544.courseattendancesystem.service.CourseOfferingService;
 import cs544.courseattendancesystem.service.CourseRegistrationService;
-import cs544.courseattendancesystem.service.dto.AttendanceRecordDTO;
-import cs544.courseattendancesystem.service.dto.CourseOfferingDTO;
-import cs544.courseattendancesystem.service.dto.CourseOfferingWithDetailsDTO;
-import cs544.courseattendancesystem.service.dto.CustomerErrorType;
+import cs544.courseattendancesystem.service.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -59,5 +56,14 @@ public class AdminController {
         }
 
         return new ResponseEntity<>(resultDTO,HttpStatus.OK);
+    }
+
+    @GetMapping("/students/{studentId}")
+    public ResponseEntity<?> getCourseOfferingByStudent(@PathVariable long studentId){
+        StudentWithRegisterCourseDTO studentWithRegisterCourseDTO = courseRegistrationService.getCourseOfferingByStudent(studentId);
+        if(studentWithRegisterCourseDTO == null){
+            return new ResponseEntity<CustomerErrorType>(new CustomerErrorType("CourseOffering with Student id= "+studentId+" is not available"),HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(studentWithRegisterCourseDTO,HttpStatus.OK);
     }
 }

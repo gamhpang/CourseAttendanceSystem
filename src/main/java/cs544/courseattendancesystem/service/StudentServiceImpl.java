@@ -1,19 +1,20 @@
 package cs544.courseattendancesystem.service;
 
+
 import cs544.courseattendancesystem.domain.Faculty;
 import cs544.courseattendancesystem.domain.Student;
 import cs544.courseattendancesystem.exception.ResourceNotFoundException;
+import cs544.courseattendancesystem.repository.CourseRegistrationRepository;
 import cs544.courseattendancesystem.repository.FacultyRepository;
 import cs544.courseattendancesystem.repository.StudentRepository;
 import cs544.courseattendancesystem.service.adapter.StudentAdapter;
 import cs544.courseattendancesystem.service.dto.StudentDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+
 
 @Service
 public class StudentServiceImpl implements StudentService{
@@ -22,6 +23,9 @@ public class StudentServiceImpl implements StudentService{
 
     @Autowired
     private FacultyRepository facultyRepository;
+
+    @Autowired
+    private CourseRegistrationRepository courseRegistrationRepository;
 
     @Override
     public StudentDTO createStudentByDTO(StudentDTO studentDTO) {
@@ -96,4 +100,5 @@ public class StudentServiceImpl implements StudentService{
         List<Student> studentList = studentRepository.findAll();
         return StudentAdapter.getStudentListFromStudentDTO(studentList);
     }
+
 }

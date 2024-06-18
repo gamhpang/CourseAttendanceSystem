@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 @Service
@@ -53,5 +54,12 @@ public class AttendanceRecordServiceImpl implements AttendanceRecordService{
     @Override
     public List<AttendanceRecordDTO> getAllAttendanceRecordDTO(){
         return attendanceRecordRepository.findAll().stream().map(attendanceRecordAdapter::getAttendanceRecordDTOFromAttendanceRecord).toList();
+    }
+
+    @Override
+    public Collection<AttendanceRecordDTO> getAttendanceRecordByStudentId(long studentId) {
+        System.out.println("At the service........." + studentId);
+
+        return attendanceRecordAdapter.getAllAttendanceRecord(attendanceRecordRepository.findByStudentId(studentId));
     }
 }

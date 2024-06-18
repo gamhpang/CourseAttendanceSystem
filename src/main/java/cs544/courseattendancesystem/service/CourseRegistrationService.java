@@ -3,6 +3,7 @@ package cs544.courseattendancesystem.service;
 import cs544.courseattendancesystem.service.dto.CourseOfferingWithDetailsDTO;
 import cs544.courseattendancesystem.service.dto.CourseWithGradeDTO;
 import cs544.courseattendancesystem.service.dto.CourseRegistrationDTO;
+import cs544.courseattendancesystem.service.dto.StudentWithRegisterCourseDTO;
 
 import java.util.Collection;
 import java.util.List;
@@ -16,4 +17,6 @@ public interface CourseRegistrationService {
     CourseOfferingWithDetailsDTO getCourseOfferingDetailsWithId(long offeringId);
 
     Collection<CourseOfferingWithDetailsDTO> getCourseOfferingDetails();
+
+    StudentWithRegisterCourseDTO getCourseOfferingByStudent(long studentId);
 }

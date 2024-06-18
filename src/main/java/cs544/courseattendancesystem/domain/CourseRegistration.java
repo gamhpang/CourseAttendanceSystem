@@ -20,7 +20,7 @@ public class CourseRegistration {
     @JoinColumn(name = "courseOfferingId")
     private CourseOffering courseOffering;
 
-    protected CourseRegistration(){}
+    public CourseRegistration(){}
 
     public CourseRegistration(String grade) {
         this.grade = grade;

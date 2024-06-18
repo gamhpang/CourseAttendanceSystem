@@ -16,6 +16,9 @@ public class StudentAdapter {
         StudentDTO studentDTO = new StudentDTO();
         studentDTO.setId(student.getId());
         studentDTO.setEntry(student.getEntry());
+        studentDTO.setFirstName(student.getFirstName());
+        studentDTO.setLastName(student.getLastName());
+        studentDTO.setUserName(student.getUserName());
         studentDTO.setAlternateId(student.getAlternateId());
         studentDTO.setBarCode(student.getBarCode());
         studentDTO.setStudentId(student.getStudentId());
@@ -25,16 +28,15 @@ public class StudentAdapter {
         studentDTO.setBirthDate(student.getBirthDate());
         studentDTO.setEmailAddress(student.getEmailAddress());
         studentDTO.setGenderType(student.getGenderType());
-        studentDTO.setFirstName(student.getFirstName());
-        studentDTO.setLastName(student.getLastName());
-        studentDTO.setPassword(student.getPassword());
-        studentDTO.setUserName(student.getUserName());
         return studentDTO;
     }
 
     public static Student getStudentFromStudentDTO(StudentDTO studentDTO){
         Student student = new Student();
         student.setEntry(studentDTO.getEntry());
+        student.setFirstName(studentDTO.getFirstName());
+        student.setLastName(studentDTO.getLastName());
+        student.setUserName(studentDTO.getUserName());
         student.setAlternateId(studentDTO.getAlternateId());
         student.setBarCode(studentDTO.getBarCode());
         student.setStudentId(studentDTO.getStudentId());
@@ -42,10 +44,6 @@ public class StudentAdapter {
         student.setBirthDate(studentDTO.getBirthDate());
         student.setEmailAddress(studentDTO.getEmailAddress());
         student.setGenderType(studentDTO.getGenderType());
-        student.setFirstName(studentDTO.getFirstName());
-        student.setLastName(studentDTO.getLastName());
-        student.setPassword(studentDTO.getPassword());
-        student.setUserName(studentDTO.getUserName());
         return student;
     }
 

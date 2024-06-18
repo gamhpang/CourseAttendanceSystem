@@ -11,7 +11,7 @@ public interface AttendanceRecordService {
     public AttendanceRecordDTO createAttendance(AttendanceRecordDTO attendanceRecord);
     public Optional<AttendanceRecord> getAttendanceRecord(long recordId);
     public AttendanceRecordDTO getAttendanceRecordDTO(long recordId);
-
+    public List<AttendanceRecordDTO> getAttendanceRecordDTOBySessionId(long sessionId);
     public List<AttendanceRecordDTO> getAllAttendanceRecordDTO();
     public Collection<AttendanceRecordDTO> getAttendanceRecordByStudentId(long studentId);
 }

@@ -33,6 +33,5 @@ public class AttendanceRecordServiceImpl implements AttendanceRecordService{
         System.out.println("At the service........." + studentId);
 
         return attendanceRecordAdapter.getAllAttendanceRecord(attendanceRecordRepository.findByStudentId(studentId));
-//        return attendanceRecordAdapter.getAllAttendanceRecord(attendanceRecordRepository.getAttendanceRecordByStudentId(studentId));
     }
 }

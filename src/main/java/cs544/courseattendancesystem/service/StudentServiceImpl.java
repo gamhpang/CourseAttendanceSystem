@@ -82,7 +82,6 @@ public class StudentServiceImpl implements StudentService{
         student.setGenderType(studentDTO.getGenderType());
         student.setFirstName(studentDTO.getFirstName());
         student.setLastName(studentDTO.getLastName());
-        student.setPassword(studentDTO.getPassword());
         student.setUserName(studentDTO.getUserName());
         studentRepository.save(student);
         System.out.println("Save Successfully.....");

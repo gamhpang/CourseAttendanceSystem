@@ -15,7 +15,7 @@ public class LocationAdapter {
         locationDTO.setName(location.getName());
         locationDTO.setCapacity(location.getCapacity());
         locationDTO.setTypeId(location.getLocationType().getId());
-        locationDTO.setType(location.getLocationType().getType());
+        locationDTO.setLocationType(LocationTypeAdapter.getLocationDTOFromLocation(location.getLocationType()));
         return locationDTO;
     }
 

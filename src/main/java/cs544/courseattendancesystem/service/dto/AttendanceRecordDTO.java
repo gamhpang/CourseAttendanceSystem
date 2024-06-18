@@ -9,9 +9,9 @@ import java.time.LocalDateTime;
 public class AttendanceRecordDTO {
     private long id;
     private LocalDateTime scanDateTime;
-    private Long studentId;
-    private Long locationId;
-    private Long sessionId;
+    private long studentId;
+    private long locationId;
+    private long sessionId;
 
     public AttendanceRecordDTO(){}
 }

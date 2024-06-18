@@ -6,6 +6,7 @@ import cs544.courseattendancesystem.service.adapter.CourseAdapter;
 import cs544.courseattendancesystem.service.dto.CourseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -14,6 +15,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class CourseServiceImpl implements CourseService{
     @Autowired
     private CourseRepository courseRepository;

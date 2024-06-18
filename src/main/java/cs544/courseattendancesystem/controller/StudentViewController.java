@@ -1,11 +1,14 @@
 package cs544.courseattendancesystem.controller;
 
 import cs544.courseattendancesystem.exception.ResourceNotFoundException;
+import cs544.courseattendancesystem.service.AttendanceAndSessionFromOfferingService;
 import cs544.courseattendancesystem.service.CourseOfferingService;
 import cs544.courseattendancesystem.service.StudentService;
+import cs544.courseattendancesystem.service.dto.AttendanceAndSessionFromOfferingDTO;
 import cs544.courseattendancesystem.service.dto.CourseOfferingDTO;
 import cs544.courseattendancesystem.service.dto.StudentDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import cs544.courseattendancesystem.service.CourseRegistrationService;
@@ -22,6 +25,10 @@ public class StudentViewController {
     private CourseOfferingService courseOfferingService;
     @Autowired
     private StudentService studentService;
+
+    @Autowired
+    AttendanceAndSessionFromOfferingService attendanceAndSessionFromOfferingService;
+
     @GetMapping("/course-offerings/{offeringId}/attendance")
     public ResponseEntity<?> getAttendanceFromCourseOfferings(@RequestHeader long studentId, @PathVariable long offeringId){
 
@@ -35,7 +42,10 @@ public class StudentViewController {
             throw new ResourceNotFoundException("Course offering not found with Id: "+offeringId);
         }
 
-        return null;
+        AttendanceAndSessionFromOfferingDTO resultDTO= attendanceAndSessionFromOfferingService.getAttendanceAndSession(courseOfferingDTO.getSessionList(),studentId);
+
+
+        return new ResponseEntity<>(resultDTO, HttpStatus.OK);
 
     }
 

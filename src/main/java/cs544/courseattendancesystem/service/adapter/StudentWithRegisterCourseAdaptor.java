@@ -13,17 +13,6 @@ public class StudentWithRegisterCourseAdaptor {
         StudentWithRegisterCourseDTO stuWithRegCourseDTO = new StudentWithRegisterCourseDTO();
         stuWithRegCourseDTO.setStudent(StudentAdapter.getStudentDTOFromStudent(stu));
 
-//        if (!courseRegistrationDTOCollection.isEmpty()) {
-//            Collection<CourseRegistrationDTO> courseRegistrationDTOCollection1 = new ArrayList<>();
-//            Iterator<CourseRegistration> iterator = courseRegistrationDTOCollection.iterator();
-//
-//            while (iterator.hasNext()){
-//                stuWithRegCourseDTO.get
-//                courseRegistrationDTOCollection1.add(iterator.next().getCourseOffering());
-//            }
-//        } else {
-//            System.out.println("Collection is empty");
-//        }
         return stuWithRegCourseDTO;
     }
 }

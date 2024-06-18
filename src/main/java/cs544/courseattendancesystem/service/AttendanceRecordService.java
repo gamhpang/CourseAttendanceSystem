@@ -2,6 +2,7 @@ package cs544.courseattendancesystem.service;
 
 import cs544.courseattendancesystem.domain.AttendanceRecord;
 import cs544.courseattendancesystem.service.dto.AttendanceRecordDTO;
+import cs544.courseattendancesystem.service.dto.AttendanceRecordFullDataDTO;
 
 import java.util.Collection;
 import java.util.List;
@@ -13,5 +14,5 @@ public interface AttendanceRecordService {
     public AttendanceRecordDTO getAttendanceRecordDTO(long recordId);
 
     public List<AttendanceRecordDTO> getAllAttendanceRecordDTO();
-    public Collection<AttendanceRecordDTO> getAttendanceRecordByStudentId(long studentId);
+    public Collection<AttendanceRecordFullDataDTO> getAttendanceRecordByStudentId(long studentId);
 }

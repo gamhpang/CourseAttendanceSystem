@@ -5,6 +5,7 @@ import cs544.courseattendancesystem.domain.Student;
 import cs544.courseattendancesystem.repository.AttendanceRecordRepository;
 import cs544.courseattendancesystem.service.adapter.AttendanceRecordAdapter;
 import cs544.courseattendancesystem.service.dto.AttendanceRecordDTO;
+import cs544.courseattendancesystem.service.dto.AttendanceRecordFullDataDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -57,7 +58,7 @@ public class AttendanceRecordServiceImpl implements AttendanceRecordService{
     }
 
     @Override
-    public Collection<AttendanceRecordDTO> getAttendanceRecordByStudentId(long studentId) {
+    public Collection<AttendanceRecordFullDataDTO> getAttendanceRecordByStudentId(long studentId) {
         System.out.println("At the service........." + studentId);
 
         return attendanceRecordAdapter.getAllAttendanceRecord(attendanceRecordRepository.findByStudentId(studentId));

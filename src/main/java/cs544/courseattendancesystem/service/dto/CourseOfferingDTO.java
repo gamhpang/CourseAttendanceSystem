@@ -34,5 +34,7 @@ public class CourseOfferingDTO {
         this.sessionList = sessionList;
     }
 
+    public CourseOfferingDTO(){}
+
 
 }

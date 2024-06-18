@@ -1,5 +1,6 @@
 package cs544.courseattendancesystem.service.dto;
 
+import cs544.courseattendancesystem.domain.Location;
 import cs544.courseattendancesystem.domain.Student;
 import lombok.Data;
 
@@ -11,7 +12,9 @@ public class AttendanceRecordDTO {
     private LocalDateTime scanDateTime;
     private Long studentId;
     private Long locationId;
+    private LocationDTO location;
     private Long sessionId;
+    private SessionDTO session;
 
     public AttendanceRecordDTO(){}
 }

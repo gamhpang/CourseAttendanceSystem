@@ -16,7 +16,7 @@ public class StudentController {
     @Autowired
     StudentService studentService;
 
-    @PostMapping("/students/create")
+    @PostMapping("/students")
     public ResponseEntity<?> create(@RequestBody StudentDTO studentDTO){
         try{
             StudentDTO stuDTO = studentService.createStudentByDTO(studentDTO);

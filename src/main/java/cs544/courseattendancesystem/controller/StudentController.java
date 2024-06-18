@@ -23,6 +23,7 @@ public class StudentController {
             return new ResponseEntity<StudentDTO>(stuDTO, HttpStatus.OK);
         }
         catch (ResourceNotFoundException e){
+            System.out.println(e.toString());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

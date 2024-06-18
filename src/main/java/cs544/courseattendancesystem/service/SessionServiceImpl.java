@@ -4,6 +4,7 @@ import cs544.courseattendancesystem.domain.Session;
 import cs544.courseattendancesystem.repository.SessionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Transactional
 public class SessionServiceImpl implements SessionService{
     @Autowired
     private SessionRepository sessionRepository;

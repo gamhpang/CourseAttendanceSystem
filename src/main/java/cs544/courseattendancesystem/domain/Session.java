@@ -2,6 +2,7 @@ package cs544.courseattendancesystem.domain;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Data;
 
@@ -12,7 +13,7 @@ import java.time.LocalTime;
 @Data
 public class Session {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     private LocalDate sessionDate;

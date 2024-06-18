@@ -9,7 +9,7 @@ import java.util.List;
 @Data
 public class CourseRegistration {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String grade;
     @ManyToOne

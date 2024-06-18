@@ -33,7 +33,6 @@ public class CourseAdapter {
         if(course == null){
             return null;
         }
-        System.out.println(course.getId()+"======================");
         CourseDTO courseDTO = new CourseDTO(course.getId(),course.getCredits(),course.getDescription(),course.getCode(),course.getName(),course.getDepartment());
         List<Long> courseDTOS = new ArrayList<>();
         for (Course c : course.getPrerequisites()) {

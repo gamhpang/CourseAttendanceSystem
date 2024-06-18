@@ -25,5 +25,21 @@ public class CourseWithGradeDTO {
 
     public CourseWithGradeDTO(){}
 
+    public CourseWithGradeDTO(long courseId, String courseName, String courseCode, String courseDepartment, long facultyId, String facultyName, String grade, int capacity, long courseOfferingId, double credits, String room, CourseOfferingType courseOfferingType, LocalDate startDate, LocalDate endDate) {
+        this.courseId = courseId;
+        this.courseName = courseName;
+        this.courseCode = courseCode;
+        this.courseDepartment = courseDepartment;
+        this.facultyId = facultyId;
+        this.facultyName = facultyName;
+        this.grade = grade;
+        this.capacity = capacity;
+        this.courseOfferingId = courseOfferingId;
+        this.credits = credits;
+        this.room = room;
+        this.courseOfferingType = courseOfferingType;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
 }
 

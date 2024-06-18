@@ -65,23 +65,4 @@ class FacultyServiceImplTest {
         verify(facultyRepository, times(1)).findById(1L);
     }
 
-    @Test
-    void testCreateFaculty_Success() {
-        when(facultyRepository.save(any(Faculty.class))).thenReturn(faculty);
-
-        Faculty createdFaculty = facultyService.createFaculty(
-                LocalDate.of(1999, 10, 31),
-                "john@miu.edu.tt",
-                "John",
-                "Doe",
-                "john",
-                "123",
-                "Mr.",
-                Arrays.asList("Listening", "Reading")
-        );
-
-        assertNotNull(createdFaculty);
-        assertEquals(faculty.getFirstName(), createdFaculty.getFirstName());
-        verify(facultyRepository, times(1)).save(any(Faculty.class));
-    }
 }

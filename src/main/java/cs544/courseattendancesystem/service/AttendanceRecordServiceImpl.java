@@ -52,6 +52,12 @@ public class AttendanceRecordServiceImpl implements AttendanceRecordService{
     }
 
     @Override
+    public List<AttendanceRecordDTO> getAttendanceRecordDTOBySessionId(long sessionId){
+        List<AttendanceRecord> attendanceRecord = attendanceRecordRepository.getAttendanceRecordBySessionId(sessionId);
+        return attendanceRecord.stream().map(attendanceRecordAdapter::getAttendanceRecordDTOFromAttendanceRecord).toList();
+    }
+
+    @Override
     public List<AttendanceRecordDTO> getAllAttendanceRecordDTO(){
         return attendanceRecordRepository.findAll().stream().map(attendanceRecordAdapter::getAttendanceRecordDTOFromAttendanceRecord).toList();
     }

@@ -51,6 +51,15 @@ public class StudentServiceImpl implements StudentService{
     }
 
     @Override
+    public Student getStudentById(long id){
+        Optional<Student> student = studentRepository.findById(id);
+        if(student.isEmpty()){
+            throw new ResourceNotFoundException("There is no Student.");
+        }
+        return student.get();
+    }
+
+    @Override
     public StudentDTO updateStudent(long studentId, StudentDTO studentDTO){
         Optional<Student> optionalStudent = studentRepository.findById(studentId);
         Optional<Faculty> faculty = facultyRepository.findById(studentDTO.getFacultyId());

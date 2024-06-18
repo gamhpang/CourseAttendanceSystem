@@ -28,7 +28,6 @@ public class AttendanceRecordAdapter {
         dto.setStudentId(attendanceRecord.getStudent() != null ? attendanceRecord.getStudent().getId() : null);
         dto.setLocationId(attendanceRecord.getLocation() != null ? attendanceRecord.getLocation().getId() : null);
         dto.setSessionId(attendanceRecord.getSession() != null ? attendanceRecord.getSession().getId() : null);
-
         return dto;
     }
 
@@ -42,13 +41,13 @@ public class AttendanceRecordAdapter {
         attendanceRecord.setScanDateTime(dto.getScanDateTime());
 
         // For setting entity references, handle null checks
-        if (dto.getStudentId() != null) {
+        if (dto.getStudentId() != 0) {
             attendanceRecord.setStudent(studentService.getStudentById(dto.getStudentId()));
         }
-        if (dto.getLocationId() != null) {
+        if (dto.getLocationId() != 0) {
             attendanceRecord.setLocation(locationService.getLocationById(dto.getLocationId()));
         }
-        if (dto.getSessionId() != null) {
+        if (dto.getSessionId() != 0) {
              attendanceRecord.setSession(sessionService.getSession(dto.getSessionId()));
         }
 

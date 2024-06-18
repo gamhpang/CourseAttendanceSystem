@@ -10,7 +10,7 @@ import java.util.List;
 @Data
 public class Course {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private double credits;
     private String description;

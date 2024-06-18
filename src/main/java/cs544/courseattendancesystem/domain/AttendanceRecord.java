@@ -9,18 +9,18 @@ import java.time.LocalDateTime;
 @Data
 public class AttendanceRecord {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private LocalDateTime scanDateTime;
     @ManyToOne
-    @JoinColumn(name = "studentId")
+    @JoinColumn(name = "student_id")
     private Student student;
     @ManyToOne
-    @JoinColumn(name = "locationId")
+    @JoinColumn(name = "location_id")
     private Location location;
 
     @ManyToOne
-    @JoinColumn(name = "sessionId")
+    @JoinColumn(name = "session_id")
     private Session session;
 
     public AttendanceRecord(){}

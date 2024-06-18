@@ -1,6 +1,5 @@
 package cs544.courseattendancesystem.service.dto;
 
-import cs544.courseattendancesystem.domain.Location;
 import cs544.courseattendancesystem.domain.Student;
 import lombok.Data;
 
@@ -10,11 +9,9 @@ import java.time.LocalDateTime;
 public class AttendanceRecordDTO {
     private long id;
     private LocalDateTime scanDateTime;
-    private Long studentId;
-    private Long locationId;
-    private LocationDTO location;
-    private Long sessionId;
-    private SessionDTO session;
+    private long studentId;
+    private long locationId;
+    private long sessionId;
 
     public AttendanceRecordDTO(){}
 }

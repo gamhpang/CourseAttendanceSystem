@@ -9,7 +9,7 @@ import java.util.List;
 @Data
 public class CourseRegistration {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String grade;
     @ManyToOne
@@ -20,7 +20,7 @@ public class CourseRegistration {
     @JoinColumn(name = "courseOfferingId")
     private CourseOffering courseOffering;
 
-    protected CourseRegistration(){}
+    public CourseRegistration(){}
 
     public CourseRegistration(String grade) {
         this.grade = grade;

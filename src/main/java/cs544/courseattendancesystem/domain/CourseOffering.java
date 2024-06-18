@@ -11,7 +11,7 @@ import java.util.List;
 @Data
 public class CourseOffering {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private double credits;
     private String room;
@@ -33,7 +33,7 @@ public class CourseOffering {
 
     @Embedded
     private AuditData auditData;
-    protected CourseOffering(){}
+    public CourseOffering(){}
 
     public CourseOffering(double credits, String room,  LocalDate startDate, LocalDate endDate, int capacity, CourseOfferingType courseOfferingType) {
         this.credits = credits;

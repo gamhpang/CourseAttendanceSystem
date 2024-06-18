@@ -13,7 +13,7 @@ import java.time.LocalDate;
 public abstract class Person implements IRole {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private LocalDate birthDate;
     private String emailAddress;

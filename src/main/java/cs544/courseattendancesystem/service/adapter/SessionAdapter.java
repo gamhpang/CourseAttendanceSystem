@@ -2,6 +2,7 @@ package cs544.courseattendancesystem.service.adapter;
 
 import cs544.courseattendancesystem.domain.Session;
 import cs544.courseattendancesystem.service.dto.SessionDTO;
+import org.springframework.stereotype.Service;
 
 public class SessionAdapter {
 

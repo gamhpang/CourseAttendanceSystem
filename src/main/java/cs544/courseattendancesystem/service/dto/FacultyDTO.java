@@ -14,6 +14,7 @@ public class FacultyDTO extends PersonDTO {
         super(birthDate, emailAddress, firstName, lastName, userName, password);
         this.salutation = salutation;
         this.id = id;
+        this.hobbies = hobbies;
     }
 
 }

@@ -10,7 +10,7 @@ import java.util.List;
 @Data
 public class Faculty extends Person{
     private String salutation;
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "FacultyHobby")
     private List<String> hobbies;
     @Override

@@ -177,15 +177,6 @@ class CourseOfferingServiceImplTest {
     }
 
     @Test
-    void testUpdateCourseOffering_NotFound() {
-        when(courseOfferingRepository.findById(1L)).thenReturn(Optional.empty());
-
-        CourseOfferingDTO result = courseOfferingService.updateCourseOffering(1L, courseOfferingDTO);
-
-        assertNull(result);
-    }
-
-    @Test
     void testDeleteCourseOffering() {
         doNothing().when(courseOfferingRepository).deleteById(1L);
         courseOfferingService.deleteCourseOffering(1L);

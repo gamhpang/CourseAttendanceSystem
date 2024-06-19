@@ -71,8 +71,6 @@ public class AttendanceRecordServiceImpl implements AttendanceRecordService {
 
     @Override
     public Collection<AttendanceRecordFullDataDTO> getAttendanceRecordByStudentId(long studentId) {
-        System.out.println("At the service........." + studentId);
-
         return attendanceRecordAdapter.getAllAttendanceRecord(attendanceRecordRepository.findByStudentId(studentId));
     }
 }

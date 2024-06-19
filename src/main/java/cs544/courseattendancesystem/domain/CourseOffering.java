@@ -27,7 +27,7 @@ public class CourseOffering {
     @JoinColumn(name = "facultyId")
     private Faculty faculty;
 
-    @OneToMany(cascade = CascadeType.PERSIST)
+    @OneToMany(cascade = CascadeType.PERSIST,fetch = FetchType.EAGER)
     @JoinColumn(name = "sessionId")
     private List<Session> sessionList;
 

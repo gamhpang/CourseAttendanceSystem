@@ -6,7 +6,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
     show-sql: true
     properties:
       hibernate:
@@ -17,11 +17,11 @@ spring:
 #    user: admin
 #    password: admin
 
-#logging:
-#  level:
-#    root: ERROR
-#    org:
-#      springframework: ERROR
+logging:
+  level:
+    root: info
+    org:
+      springframework: ERROR
 
 #management:
 #  endpoint:

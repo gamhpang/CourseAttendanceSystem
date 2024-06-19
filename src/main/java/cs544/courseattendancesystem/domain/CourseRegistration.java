@@ -3,6 +3,8 @@ package cs544.courseattendancesystem.domain;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -12,6 +14,8 @@ public class CourseRegistration {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String grade;
+    @Column(name = "registration_end_date")
+    private LocalDateTime registrationEndDate;
     @ManyToOne
     @JoinColumn(name = "studentId")
     private Student student;

@@ -28,7 +28,7 @@ public abstract class Person implements IRole {
     @Enumerated(EnumType.STRING)
     private GenderType genderType;
     public abstract String getRole();
-    protected Person(){}
+    public Person(){}
 
     public Person(LocalDate birthDate, String emailAddress, String firstName, String lastName, String userName, String password) {
         this.birthDate = birthDate;

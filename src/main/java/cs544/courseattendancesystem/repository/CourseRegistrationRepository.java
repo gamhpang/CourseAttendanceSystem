@@ -1,5 +1,6 @@
 package cs544.courseattendancesystem.repository;
 
+import cs544.courseattendancesystem.domain.CourseOffering;
 import cs544.courseattendancesystem.domain.CourseRegistration;
 import cs544.courseattendancesystem.service.dto.CourseOfferingDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -7,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -17,4 +19,5 @@ public interface CourseRegistrationRepository extends JpaRepository<CourseRegist
 
     @Query("select cr from CourseRegistration cr where cr.courseOffering.id = :courseOfferingId")
     List<CourseRegistration> findByCourseOfferingId(@Param("courseOfferingId") long courseOfferingId);
+
 }

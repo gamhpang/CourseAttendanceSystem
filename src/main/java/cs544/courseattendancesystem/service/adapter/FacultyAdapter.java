@@ -16,6 +16,8 @@ public class FacultyAdapter {
         faculty.setLastName(facultyDTO.getLastName());
         faculty.setEmailAddress(facultyDTO.getEmailAddress());
         faculty.setHobbies(facultyDTO.getHobbies());
+        faculty.setGenderType(facultyDTO.getGenderType());
+        faculty.setUserName(facultyDTO.getUserName());
 //        facultyDTO.getBirthDate(),facultyDTO.getEmailAddress(), facultyDTO.getFirstName(),facultyDTO.getLastName(),facultyDTO.getUserName(),facultyDTO.getSalutation(),facultyDTO.getHobbies());
 
         return faculty;
@@ -30,6 +32,8 @@ public class FacultyAdapter {
         facultyDTO.setLastName(faculty.getLastName());
         facultyDTO.setEmailAddress(faculty.getEmailAddress());
         facultyDTO.setHobbies(faculty.getHobbies());
+        facultyDTO.setUserName(faculty.getUserName());
+        facultyDTO.setGenderType(faculty.getGenderType());
 
 //        facultyDTO.setGenderType(faculty.getGenderType());
 //        FacultyDTO facultyDTO = new FacultyDTO(faculty.getId(),

@@ -2,16 +2,23 @@ package cs544.courseattendancesystem.service;
 
 
 import cs544.courseattendancesystem.service.dto.CourseOfferingDTO;
+import cs544.courseattendancesystem.service.dto.CourseOfferingWithDetailsDTO;
+
+import java.time.LocalDate;
 import java.util.Collection;
 
 public interface CourseOfferingService {
-    public CourseOfferingDTO createCourseOffering(CourseOfferingDTO courseOfferingDTO);
+    CourseOfferingDTO createCourseOffering(CourseOfferingDTO courseOfferingDTO);
 
-    public CourseOfferingDTO getCourseOffering(long courseOfferingId);
+    CourseOfferingDTO getCourseOffering(long courseOfferingId);
 
-    public Collection<CourseOfferingDTO> getAllCourseOfferings();
+//    CourseOfferingWithDetailsDTO getCourseOfferingWithDetails(long courseOfferingId);
 
-    public CourseOfferingDTO updateCourseOffering(long courseOfferingId,CourseOfferingDTO courseOfferingDTO);
+    Collection<CourseOfferingDTO> getAllCourseOfferings();
 
-    public void deleteCourseOffering(long courseOfferingId);
+    Collection<CourseOfferingDTO> getAllCourseOfferingsByDate(LocalDate reqDate);
+
+    CourseOfferingDTO updateCourseOffering(long courseOfferingId, CourseOfferingDTO courseOfferingDTO);
+
+    void deleteCourseOffering(long courseOfferingId);
 }

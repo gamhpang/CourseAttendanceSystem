@@ -3,6 +3,9 @@ package cs544.courseattendancesystem.controller;
 import cs544.courseattendancesystem.domain.CourseOfferingType;
 import cs544.courseattendancesystem.service.CourseRegistrationService;
 import cs544.courseattendancesystem.service.dto.CourseOfferingWithDetailsDTO;
+import cs544.courseattendancesystem.service.dto.CourseWithGradeDTO;
+import cs544.courseattendancesystem.service.dto.StudentDTO;
+import cs544.courseattendancesystem.service.dto.StudentWithRegisterCourseDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -103,5 +106,40 @@ class AdminViewControllerTest {
         mockMvc.perform(get("/admin-view/course-offerings/1"))
                 .andExpect(status().isNotFound())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.errorMessage").value("CourseOffering with id= 1 is not available"));
+    }
+
+    @Test
+    void testGetCourseOfferingByStudent() throws Exception {
+        CourseWithGradeDTO courseWithGradeDTO = new CourseWithGradeDTO();
+        courseWithGradeDTO.setCourseName("Enterprise Architecture");
+        courseWithGradeDTO.setGrade("A");
+
+        StudentDTO studentDTO = new StudentDTO();
+        studentDTO.setId(1L);
+        studentDTO.setFirstName("John");
+        studentDTO.setLastName("Doe");
+
+        StudentWithRegisterCourseDTO studentWithRegisterCourseDTO = new StudentWithRegisterCourseDTO();
+        studentWithRegisterCourseDTO.setStudent(studentDTO);
+        studentWithRegisterCourseDTO.setCourseWithGradeDTOCollection(Arrays.asList(courseWithGradeDTO));
+
+        when(courseRegistrationService.getCourseOfferingByStudent(1L)).thenReturn(studentWithRegisterCourseDTO);
+
+        mockMvc.perform(get("/admin-view/students/1"))
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.student.id").value(1L))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.student.firstName").value("John"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.student.lastName").value("Doe"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.courseWithGradeDTOCollection[0].courseName").value("Enterprise Architecture"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.courseWithGradeDTOCollection[0].grade").value("A"));
+    }
+
+    @Test
+    void testGetCourseOfferingByStudent_NotFound() throws Exception {
+        when(courseRegistrationService.getCourseOfferingByStudent(1L)).thenReturn(null);
+
+        mockMvc.perform(get("/admin-view/students/1"))
+                .andExpect(status().isNotFound())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.errorMessage").value("CourseOffering with Student id= 1 is not available"));
     }
 }

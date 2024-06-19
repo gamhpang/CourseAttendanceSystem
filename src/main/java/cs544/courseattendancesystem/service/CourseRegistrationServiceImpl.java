@@ -19,8 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.awt.*;
-import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -80,7 +78,6 @@ public class CourseRegistrationServiceImpl implements CourseRegistrationService{
         CourseRegistration courseRegistration = new CourseRegistration(dto.getGrade());
         courseRegistration.setStudent(student);
         courseRegistration.setCourseOffering(courseOffering);
-        courseRegistration.setRegistrationEndDate(dto.getRegistrationEndDate());
         courseRegistrationRepository.save(courseRegistration);
         return CourseRegistrationAdapter.toDTO(courseRegistration);
     }

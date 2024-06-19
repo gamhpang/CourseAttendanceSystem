@@ -17,7 +17,6 @@ public class CourseRegistrationAdapter {
         dto.setStudentName(courseRegistration.getStudent().getFirstName() + " " + courseRegistration.getStudent().getFirstName()); // Assuming Student has a getName() method
         dto.setCourseOfferingId(courseRegistration.getCourseOffering().getId());
         dto.setGrade(courseRegistration.getGrade());
-        dto.setRegistrationEndDate(courseRegistration.getRegistrationEndDate());
         return dto;
     }
 }

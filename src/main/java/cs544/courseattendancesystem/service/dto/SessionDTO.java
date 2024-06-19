@@ -11,6 +11,7 @@ public class SessionDTO {
     private LocalDate sessionDate;
     private LocalTime startTime;
     private LocalTime endTime;
+    public SessionDTO(){}
     public SessionDTO(long id,LocalDate sessionDate, LocalTime startTime, LocalTime endTime) {
         this.sessionDate = sessionDate;
         this.startTime = startTime;

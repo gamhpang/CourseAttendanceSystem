@@ -9,10 +9,10 @@ import java.util.List;
 import java.util.Optional;
 
 public interface AttendanceRecordService {
-    public AttendanceRecordDTO createAttendance(AttendanceRecordDTO attendanceRecord);
-    public Optional<AttendanceRecord> getAttendanceRecord(long recordId);
-    public AttendanceRecordDTO getAttendanceRecordDTO(long recordId);
-    public List<AttendanceRecordDTO> getAttendanceRecordDTOBySessionId(long sessionId);
-    public List<AttendanceRecordDTO> getAllAttendanceRecordDTO();
-    public Collection<AttendanceRecordFullDataDTO> getAttendanceRecordByStudentId(long studentId);
+     AttendanceRecordDTO createAttendance(AttendanceRecordDTO attendanceRecord);
+     Optional<AttendanceRecord> getAttendanceRecord(long recordId);
+     AttendanceRecordDTO getAttendanceRecordDTO(long recordId);
+     List<AttendanceRecordDTO> getAttendanceRecordDTOBySessionId(long sessionId);
+     List<AttendanceRecordDTO> getAllAttendanceRecordDTO();
+     Collection<AttendanceRecordFullDataDTO> getAttendanceRecordByStudentId(long studentId);
 }

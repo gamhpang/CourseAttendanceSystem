@@ -56,7 +56,6 @@ class StudentServiceTest {
         studentDTO.setFirstName("John");
         studentDTO.setLastName("Doe");
         studentDTO.setUserName("John Doe");
-        studentDTO.setPassword("123JD456");
         studentDTO.setAlternateId(123456);
         studentDTO.setApplicantId(123456);
         studentDTO.setStudentId(123456);
@@ -181,7 +180,6 @@ class StudentServiceTest {
         studentDTO.setBirthDate(LocalDate.of(2000, 1, 1));
         studentDTO.setEmailAddress("john.doe@example.com");
         studentDTO.setGenderType(GenderType.MALE);
-        studentDTO.setPassword("password");
         studentDTO.setUserName("johndoe");
 
         // Create and set up Student object
@@ -220,7 +218,6 @@ class StudentServiceTest {
         assertEquals(LocalDate.of(2000, 1, 1), result.getBirthDate());
         assertEquals("john.doe@example.com", result.getEmailAddress());
         assertEquals(GenderType.MALE, result.getGenderType());
-        assertEquals("password", result.getPassword());
         assertEquals("johndoe", result.getUserName());
         assertEquals(1L, result.getFacultyId());
 

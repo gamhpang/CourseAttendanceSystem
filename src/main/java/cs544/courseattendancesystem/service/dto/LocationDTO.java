@@ -9,6 +9,5 @@ public class LocationDTO {
     private String name;
     private int capacity;
     private long typeId;
-
-
+    private LocationTypeDTO locationType;
 }

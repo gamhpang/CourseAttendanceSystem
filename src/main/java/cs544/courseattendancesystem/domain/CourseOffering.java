@@ -21,10 +21,10 @@ public class CourseOffering {
     private CourseOfferingType courseOfferingType;
     private int capacity;
     @ManyToOne
-    @JoinColumn(name="courseId")
+    @JoinColumn(name = "courseId")
     private Course course;
     @ManyToOne
-    @JoinColumn(name="facultyId")
+    @JoinColumn(name = "facultyId")
     private Faculty faculty;
 
     @OneToMany(cascade = CascadeType.PERSIST,fetch = FetchType.EAGER)
@@ -33,9 +33,11 @@ public class CourseOffering {
 
     @Embedded
     private AuditData auditData;
-    public CourseOffering(){}
 
-    public CourseOffering(double credits, String room,  LocalDate startDate, LocalDate endDate, int capacity, CourseOfferingType courseOfferingType) {
+    protected CourseOffering() {
+    }
+
+    public CourseOffering(double credits, String room, LocalDate startDate, LocalDate endDate, int capacity, CourseOfferingType courseOfferingType) {
         this.credits = credits;
         this.room = room;
         this.startDate = startDate;
@@ -45,7 +47,7 @@ public class CourseOffering {
         this.sessionList = new ArrayList<>();
     }
 
-    public void addSession(Session session){
+    public void addSession(Session session) {
         sessionList.add(session);
     }
 }

@@ -18,19 +18,10 @@ public class SystemAdminController {
     @Autowired
     LocationService locationService;
 
-    @PostMapping("/locations/create")
-    public ResponseEntity<?> createLocation(@RequestParam(value = "locationName") String locationName,
-                                            @RequestParam(value = "capacity") int capacity,
-                                            @RequestParam(value = "locationTypeId") long typeId) {
-        try {
-
-            LocationDTO locationDTO = locationService.createLocation(locationName, capacity, typeId);
-            return new ResponseEntity<>(locationDTO, HttpStatus.OK);
-        } catch (ResourceNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+    @PostMapping("/locations")
+    public ResponseEntity<?> createLocation(@RequestBody LocationDTO locationDTO) {
+        LocationDTO respLocationDTO = locationService.createLocation(locationDTO.getName(), locationDTO.getCapacity(), locationDTO.getTypeId());
+        return new ResponseEntity<>(respLocationDTO, HttpStatus.OK);
     }
 
     @GetMapping("/locations/{locationId}")
@@ -55,15 +46,8 @@ public class SystemAdminController {
 
     @DeleteMapping("/locations/{locationId}")
     public ResponseEntity<?> deleteLocation(@PathVariable("locationId") long locationId) {
-        try {
-            locationService.deleteLocation(locationId);
-            return ResponseEntity.status(HttpStatus.OK).build();
-        } catch (ResourceNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-
+        locationService.deleteLocation(locationId);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
 }

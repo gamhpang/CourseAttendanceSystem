@@ -6,10 +6,15 @@ import cs544.courseattendancesystem.domain.Student;
 import cs544.courseattendancesystem.repository.CourseOfferingRepository;
 import cs544.courseattendancesystem.repository.CourseRegistrationRepository;
 import cs544.courseattendancesystem.repository.StudentRepository;
+
+import cs544.courseattendancesystem.service.adapter.StudentAdapter;
+
 import cs544.courseattendancesystem.service.adapter.CourseRegistrationAdapter;
+
 import cs544.courseattendancesystem.service.dto.CourseOfferingWithDetailsDTO;
 import cs544.courseattendancesystem.service.dto.CourseWithGradeDTO;
 import cs544.courseattendancesystem.service.dto.CourseRegistrationDTO;
+import cs544.courseattendancesystem.service.dto.StudentWithRegisterCourseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +23,7 @@ import java.awt.*;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -34,6 +40,10 @@ public class CourseRegistrationServiceImpl implements CourseRegistrationService{
     @Override
     public List<CourseWithGradeDTO> getCourseOfferingWithGradeDTO(long studentId) {
         List<CourseRegistration> courseRegistrations = courseRegistrationRepository.findByStudentId(studentId);
+
+        if(courseRegistrations.isEmpty()){
+            throw new RuntimeException("CourseOffering not found of Student Id: " + studentId);
+        }
 
         return courseRegistrations.stream().map(courseRegistration -> {
             CourseWithGradeDTO courseWithGradeDTO = new CourseWithGradeDTO();
@@ -122,6 +132,10 @@ public class CourseRegistrationServiceImpl implements CourseRegistrationService{
     public Collection<CourseOfferingWithDetailsDTO> getCourseOfferingDetails() {
         List<CourseOffering> courseOfferings = courseOfferingRepository.findAll();
 
+        if(courseOfferings.isEmpty()){
+            throw new RuntimeException("CourseOffering not found.");
+        }
+
         return courseOfferings.stream().map(courseOffering -> {
             List<CourseRegistrationDTO> registrations = courseRegistrationRepository.findByCourseOfferingId(courseOffering.getId()).stream()
                     .map(registration -> {
@@ -160,5 +174,13 @@ public class CourseRegistrationServiceImpl implements CourseRegistrationService{
             courseOfferingWithDetailsDTO.setRegistrations(registrations);
             return courseOfferingWithDetailsDTO;
         }).collect(Collectors.toList());
+    }
+
+    public StudentWithRegisterCourseDTO getCourseOfferingByStudent(long studentId) {
+        StudentWithRegisterCourseDTO studentWithRegisterCourseDTO = new StudentWithRegisterCourseDTO();
+        studentWithRegisterCourseDTO.setCourseWithGradeDTOCollection(getCourseOfferingWithGradeDTO(studentId));
+        Optional<Student> optionalStudent = studentRepository.findById(studentId);
+        studentWithRegisterCourseDTO.setStudent(StudentAdapter.getStudentDTOFromStudent(optionalStudent.get()));
+        return studentWithRegisterCourseDTO;
     }
 }

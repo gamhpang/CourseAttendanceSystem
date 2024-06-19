@@ -1,8 +1,11 @@
 package cs544.courseattendancesystem.service;
 
+import cs544.courseattendancesystem.domain.AttendanceRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class EmailService {
@@ -14,9 +17,11 @@ public class EmailService {
         logger.info("Email To: {}, Subject: {}, Body: {}",to,subject,body);
     }
 
-    public void sendReminderEmail(String to){
-        //Log the reminder details
-        logger.info("Sending reminder email to: {}", to);
+    public void sendAttendance(List<AttendanceRecord> attendanceRecordList){
+        logger.info("Attendance Record Lists->");
+        for(AttendanceRecord attendanceRecord:attendanceRecordList){
+            logger.info(attendanceRecord.toString());
+        }
     }
 
 }

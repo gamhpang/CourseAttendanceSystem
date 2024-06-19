@@ -3,6 +3,7 @@ package cs544.courseattendancesystem.service;
 import cs544.courseattendancesystem.domain.CourseOffering;
 import cs544.courseattendancesystem.domain.CourseRegistration;
 import cs544.courseattendancesystem.domain.Student;
+import cs544.courseattendancesystem.exception.ResourceNotFoundException;
 import cs544.courseattendancesystem.repository.CourseOfferingRepository;
 import cs544.courseattendancesystem.repository.CourseRegistrationRepository;
 import cs544.courseattendancesystem.repository.StudentRepository;
@@ -40,7 +41,7 @@ public class CourseRegistrationServiceImpl implements CourseRegistrationService{
         List<CourseRegistration> courseRegistrations = courseRegistrationRepository.findByStudentId(studentId);
 
         if(courseRegistrations.isEmpty()){
-            throw new RuntimeException("CourseOffering not found of Student Id: " + studentId);
+            throw new ResourceNotFoundException("CourseOffering not found of Student Id: " + studentId);
         }
 
         return courseRegistrations.stream().map(courseRegistration -> {
@@ -71,9 +72,9 @@ public class CourseRegistrationServiceImpl implements CourseRegistrationService{
     @Override
     public CourseRegistrationDTO createCourseRegistration(CourseRegistrationDTO dto) {
         Student student = studentRepository.findById(dto.getStudentId())
-                .orElseThrow(() -> new RuntimeException("Student not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Student not found"));
         CourseOffering courseOffering = courseOfferingRepository.findById(dto.getCourseOfferingId())
-                .orElseThrow(() -> new RuntimeException("Course offering not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Course offering not found"));
 
         CourseRegistration courseRegistration = new CourseRegistration(dto.getGrade());
         courseRegistration.setStudent(student);
@@ -85,12 +86,12 @@ public class CourseRegistrationServiceImpl implements CourseRegistrationService{
     @Override
     public CourseOfferingWithDetailsDTO getCourseOfferingDetailsWithId(long offeringId) {
         CourseOffering courseOffering = courseOfferingRepository.findById(offeringId)
-                .orElseThrow(() -> new RuntimeException("Course offering not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Course offering not found"));
 
         List<CourseRegistrationDTO> registrations = courseRegistrationRepository.findByCourseOfferingId(offeringId).stream()
                 .map(registration -> {
                     Student student = studentRepository.findById(registration.getStudent().getId())
-                            .orElseThrow(() -> new RuntimeException("Student not found"));
+                            .orElseThrow(() -> new ResourceNotFoundException("Student not found"));
                     CourseRegistrationDTO dto = new CourseRegistrationDTO();
                     dto.setId(registration.getId());
                     dto.setStudentId(student.getId());
@@ -130,14 +131,14 @@ public class CourseRegistrationServiceImpl implements CourseRegistrationService{
         List<CourseOffering> courseOfferings = courseOfferingRepository.findAll();
 
         if(courseOfferings.isEmpty()){
-            throw new RuntimeException("CourseOffering not found.");
+            throw new ResourceNotFoundException("CourseOffering not found.");
         }
 
         return courseOfferings.stream().map(courseOffering -> {
             List<CourseRegistrationDTO> registrations = courseRegistrationRepository.findByCourseOfferingId(courseOffering.getId()).stream()
                     .map(registration -> {
                         Student student = studentRepository.findById(registration.getStudent().getId())
-                                .orElseThrow(() -> new RuntimeException("Student not found"));
+                                .orElseThrow(() -> new ResourceNotFoundException("Student not found"));
                         CourseRegistrationDTO dto = new CourseRegistrationDTO();
                         dto.setId(registration.getId());
                         dto.setStudentId(student.getId());

@@ -26,8 +26,13 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<CustomerErrorType> handleGeneralException(Exception ex) {
-        CustomerErrorType error = new CustomerErrorType("An unexpected error occurred");
         logger.error(ex.getMessage());
+        if(ex.getMessage().contains("is not supported")){
+            return new ResponseEntity<>(new CustomerErrorType(ex.getMessage()),HttpStatus.METHOD_NOT_ALLOWED);
+        }else if(ex.getMessage().contains("No static resource")){
+            return new ResponseEntity<>(new CustomerErrorType("Not found"),HttpStatus.NOT_FOUND);
+        }
+        CustomerErrorType error = new CustomerErrorType("An unexpected error occurred");
         return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

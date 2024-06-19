@@ -22,6 +22,7 @@ public class AttendanceRecordAdapter {
     private LocationService locationService;
     @Autowired
     private SessionService sessionService;
+
     public AttendanceRecordDTO getAttendanceRecordDTOFromAttendanceRecord(AttendanceRecord attendanceRecord) {
         if (attendanceRecord == null) {
             return null;
@@ -33,6 +34,7 @@ public class AttendanceRecordAdapter {
         dto.setStudentId(attendanceRecord.getStudent() != null ? attendanceRecord.getStudent().getId() : null);
         dto.setLocationId(attendanceRecord.getLocation() != null ? attendanceRecord.getLocation().getId() : null);
         dto.setSessionId(attendanceRecord.getSession() != null ? attendanceRecord.getSession().getId() : null);
+        dto.setLocationName(attendanceRecord.getLocation() != null ? attendanceRecord.getLocation().getName() : null);
         return dto;
     }
 
@@ -53,7 +55,7 @@ public class AttendanceRecordAdapter {
             attendanceRecord.setLocation(locationService.getLocationById(dto.getLocationId()));
         }
         if (dto.getSessionId() != 0) {
-             attendanceRecord.setSession(sessionService.getSession(dto.getSessionId()));
+            attendanceRecord.setSession(sessionService.getSession(dto.getSessionId()));
         }
 
         return attendanceRecord;
@@ -75,12 +77,12 @@ public class AttendanceRecordAdapter {
         return dto;
     }
 
-    public Collection<AttendanceRecordFullDataDTO> getAllAttendanceRecord(Collection<AttendanceRecord> attendanceRecords){
-        if(attendanceRecords.isEmpty()){
+    public Collection<AttendanceRecordFullDataDTO> getAllAttendanceRecord(Collection<AttendanceRecord> attendanceRecords) {
+        if (attendanceRecords.isEmpty()) {
             return null;
         }
         Collection<AttendanceRecordFullDataDTO> attendanceRecordDTOS = new ArrayList<>();
-        for(AttendanceRecord att : attendanceRecords){
+        for (AttendanceRecord att : attendanceRecords) {
             System.out.println("Each att......" + att);
             attendanceRecordDTOS.add(getAttendanceRecordDTOIncludeAllRecordFromAttendanceRecord(att));
         }

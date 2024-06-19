@@ -15,6 +15,7 @@ public class AttendanceRecord {
     @ManyToOne
     @JoinColumn(name = "student_id")
     private Student student;
+
     @ManyToOne
     @JoinColumn(name = "location_id")
     private Location location;
@@ -23,7 +24,8 @@ public class AttendanceRecord {
     @JoinColumn(name = "session_id")
     private Session session;
 
-    public AttendanceRecord(){}
+    public AttendanceRecord() {}
+
     public AttendanceRecord(Student student, Location location) {
         this.scanDateTime = LocalDateTime.now();
         this.student = student;

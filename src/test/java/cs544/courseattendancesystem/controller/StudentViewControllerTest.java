@@ -44,7 +44,7 @@ public class StudentViewControllerTest {
     private CourseRegistrationService courseRegistrationService;
 
     @Test
-    void testGetCourseOfferingsWithGrade() throws Exception {
+    void testGetCourseWithGrade() throws Exception {
         // Prepare test data
         List<CourseWithGradeDTO> courseWithGrades = Arrays.asList(
                 new CourseWithGradeDTO(1L, "Course 1", "CSE101", "Department 1", 1L, "Faculty 1", "A", 30, 1L, 3.0, "Room 101", CourseOfferingType.ON_CAMPUS, LocalDate.of(2023, 6, 1), LocalDate.of(2023, 12, 1)),

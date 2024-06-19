@@ -14,8 +14,6 @@ public class CourseRegistration {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String grade;
-    @Column(name = "registration_end_date")
-    private LocalDateTime registrationEndDate;
     @ManyToOne
     @JoinColumn(name = "studentId")
     private Student student;

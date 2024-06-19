@@ -14,7 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import cs544.courseattendancesystem.service.CourseRegistrationService;
-import org.springframework.http.HttpStatus;
 
 import java.util.Collection;
 import java.util.List;
@@ -56,7 +55,7 @@ public class StudentViewController {
     @Autowired
     private CourseRegistrationService courseRegistrationService;
     @GetMapping("/course-offerings")
-    public ResponseEntity<List<CourseWithGradeDTO>> getCourseOfferingsWithGrade(@RequestHeader long studentId){
+    public ResponseEntity<List<CourseWithGradeDTO>> getCoursesWithGrade(@RequestHeader long studentId){
         List<CourseWithGradeDTO> courseWithGradeDTOS = courseRegistrationService.getCourseOfferingWithGradeDTO(studentId);
         return  new ResponseEntity<>(courseWithGradeDTOS, HttpStatus.OK);
     }

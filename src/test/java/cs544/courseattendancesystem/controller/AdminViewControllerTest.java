@@ -30,7 +30,7 @@ class AdminViewControllerTest {
     private CourseRegistrationService courseRegistrationService;
 
     @Test
-    void testGetAllCourseOfferings() throws Exception {
+    void testGetAllCourseOfferingsWithDetails() throws Exception {
         // Prepare test data
         Collection<CourseOfferingWithDetailsDTO> courseOfferings = Arrays.asList(
                 new CourseOfferingWithDetailsDTO(1L, 3.0, "Room 101", LocalDate.of(2023, 6, 1), LocalDate.of(2023, 12, 1), 30, CourseOfferingType.ON_CAMPUS, 1L, "Course 1", "CSE101", "CS", 1L, "Faculty 1", null),
@@ -72,7 +72,7 @@ class AdminViewControllerTest {
     }
 
     @Test
-    void testGetCourseOfferingById() throws Exception {
+    void testGetCourseOfferingWithDetailsById() throws Exception {
         // Prepare test data
         CourseOfferingWithDetailsDTO courseOffering = new CourseOfferingWithDetailsDTO(1L, 3.0, "Room 101", LocalDate.of(2023, 6, 1), LocalDate.of(2023, 12, 1), 30, CourseOfferingType.ON_CAMPUS, 1L, "Course 1", "CSE101", "CS", 1L, "Faculty 1", null);
         when(courseRegistrationService.getCourseOfferingDetailsWithId(1L)).thenReturn(courseOffering);
@@ -96,7 +96,7 @@ class AdminViewControllerTest {
     }
 
     @Test
-    void testGetCourseOfferingById_NotFound() throws Exception {
+    void testGetCourseOfferingWithDetailsById_NotFound() throws Exception {
         // Mock the service method to return null
         when(courseRegistrationService.getCourseOfferingDetailsWithId(1L)).thenReturn(null);
 

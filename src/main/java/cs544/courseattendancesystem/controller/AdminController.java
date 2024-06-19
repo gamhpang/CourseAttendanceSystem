@@ -42,13 +42,13 @@ public class AdminController {
 
 
     @GetMapping("/course-offerings")
-    private ResponseEntity<?> getAllCourseOfferings() {
+    private ResponseEntity<?> getAllCourseOfferingsWithDetails() {
         Collection<CourseOfferingWithDetailsDTO> courseOfferingWithDetailsDTO = courseRegistrationService.getCourseOfferingDetails();
         return new ResponseEntity<Collection<CourseOfferingWithDetailsDTO>>(courseOfferingWithDetailsDTO, HttpStatus.OK);
     }
 
     @GetMapping("/course-offerings/{courseOfferingId}")
-    private ResponseEntity<?> getCourseOfferingById(@PathVariable long courseOfferingId) {
+    private ResponseEntity<?> getCourseOfferingWithDetailsById(@PathVariable long courseOfferingId) {
         CourseOfferingWithDetailsDTO courseOfferingWithDetailsDTO = courseRegistrationService.getCourseOfferingDetailsWithId(courseOfferingId);
         if (courseOfferingWithDetailsDTO == null) {
             return new ResponseEntity<CustomerErrorType>(new CustomerErrorType("CourseOffering with id= " + courseOfferingId + " is not available"), HttpStatus.NOT_FOUND);

@@ -19,7 +19,7 @@ public class Course {
     private String department;
     @Embedded
     private AuditData auditData;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name ="CoursePrerequisite",
         joinColumns = @JoinColumn(name="courseId"),
             inverseJoinColumns = @JoinColumn(name="prerequisiteId")

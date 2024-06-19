@@ -2,6 +2,9 @@ package cs544.courseattendancesystem.service.dto;
 
 import lombok.Data;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 @Data
 public class CourseRegistrationDTO {
     private long id;
@@ -9,6 +12,7 @@ public class CourseRegistrationDTO {
     private String studentName;
     private long courseOfferingId;
     private String grade;
+    private LocalDateTime registrationEndDate;
     public CourseRegistrationDTO(){}
 
     public CourseRegistrationDTO(long id, long studentId, String studentName, long courseOfferingId, String grade) {

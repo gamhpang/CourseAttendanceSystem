@@ -50,5 +50,4 @@ public class SystemAdminController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-
 }

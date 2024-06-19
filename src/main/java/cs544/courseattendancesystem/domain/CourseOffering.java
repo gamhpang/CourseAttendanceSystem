@@ -27,14 +27,14 @@ public class CourseOffering {
     @JoinColumn(name = "facultyId")
     private Faculty faculty;
 
-    @OneToMany(cascade = CascadeType.PERSIST)
+    @OneToMany(cascade = CascadeType.PERSIST,fetch = FetchType.EAGER)
     @JoinColumn(name = "sessionId")
     private List<Session> sessionList;
 
     @Embedded
     private AuditData auditData;
 
-    protected CourseOffering() {
+    public CourseOffering() {
     }
 
     public CourseOffering(double credits, String room, LocalDate startDate, LocalDate endDate, int capacity, CourseOfferingType courseOfferingType) {

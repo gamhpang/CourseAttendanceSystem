@@ -5,6 +5,7 @@ import cs544.courseattendancesystem.domain.Student;
 import cs544.courseattendancesystem.repository.AttendanceRecordRepository;
 import cs544.courseattendancesystem.service.adapter.AttendanceRecordAdapter;
 import cs544.courseattendancesystem.service.dto.AttendanceRecordDTO;
+import cs544.courseattendancesystem.service.dto.AttendanceRecordFullDataDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -56,6 +57,8 @@ public class AttendanceRecordServiceTest {
 
     private AttendanceRecord attendanceRecord;
     private AttendanceRecordDTO attendanceRecordDTO;
+
+    private AttendanceRecordFullDataDTO attendanceRecordFullDataDTO;
     private Student student;
 
     @BeforeEach
@@ -72,6 +75,11 @@ public class AttendanceRecordServiceTest {
         attendanceRecordDTO.setId(1L);
         attendanceRecordDTO.setScanDateTime(LocalDateTime.now());
         attendanceRecordDTO.setStudentId(1L);
+
+        attendanceRecordFullDataDTO = new AttendanceRecordFullDataDTO();
+        attendanceRecordFullDataDTO.setId(1L);
+        attendanceRecordFullDataDTO.setScanDateTime(LocalDateTime.now());
+        attendanceRecordFullDataDTO.setStudentId(1L);
 
         Mockito.when(attendanceRecordRepository.findById(attendanceRecord.getId()))
                 .thenReturn(Optional.of(attendanceRecord));
@@ -129,12 +137,12 @@ public class AttendanceRecordServiceTest {
     @Test
     public void whenGetAttendanceRecordByStudentId_thenAttendanceRecordDTOsShouldBeReturned() {
         List<AttendanceRecord> records = Arrays.asList(attendanceRecord);
-        List<AttendanceRecordDTO> dtos = Arrays.asList(attendanceRecordDTO);
+        List<AttendanceRecordFullDataDTO> dtos = Arrays.asList(attendanceRecordFullDataDTO);
 
         Mockito.when(attendanceRecordRepository.findByStudentId(1L)).thenReturn(records);
         Mockito.when(attendanceRecordAdapter.getAllAttendanceRecord(records)).thenReturn(dtos);
 
-        Collection<AttendanceRecordDTO> found = attendanceRecordService.getAttendanceRecordByStudentId(1L);
+        Collection<AttendanceRecordFullDataDTO> found = attendanceRecordService.getAttendanceRecordByStudentId(1L);
 
         assertThat(found).isNotEmpty();
         assertThat(found.size()).isEqualTo(1);

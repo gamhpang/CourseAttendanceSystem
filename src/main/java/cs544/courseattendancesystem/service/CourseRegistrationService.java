@@ -12,7 +12,7 @@ public interface CourseRegistrationService {
 
     List<CourseWithGradeDTO> getCourseOfferingWithGradeDTO(long studentId);
 
-    void createCourseRegistration(CourseRegistrationDTO dto);
+    CourseRegistrationDTO createCourseRegistration(CourseRegistrationDTO dto);
 
     CourseOfferingWithDetailsDTO getCourseOfferingDetailsWithId(long offeringId);
 

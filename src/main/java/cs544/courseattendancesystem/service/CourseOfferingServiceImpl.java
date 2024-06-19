@@ -151,7 +151,7 @@ public class CourseOfferingServiceImpl implements CourseOfferingService {
             courseOfferingRepository.save(courseOffering);
             return courseOfferingAdapter.getCourseOfferingDTOFromCourseOffering(courseOffering);
         }
-        return null;
+        throw new ResourceNotFoundException("Course offering with Id:"+courseOfferingId+" not found!");
     }
 
     @Override

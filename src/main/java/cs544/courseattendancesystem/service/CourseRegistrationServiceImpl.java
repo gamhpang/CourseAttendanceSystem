@@ -6,7 +6,11 @@ import cs544.courseattendancesystem.domain.Student;
 import cs544.courseattendancesystem.repository.CourseOfferingRepository;
 import cs544.courseattendancesystem.repository.CourseRegistrationRepository;
 import cs544.courseattendancesystem.repository.StudentRepository;
+
 import cs544.courseattendancesystem.service.adapter.StudentAdapter;
+
+import cs544.courseattendancesystem.service.adapter.CourseRegistrationAdapter;
+
 import cs544.courseattendancesystem.service.dto.CourseOfferingWithDetailsDTO;
 import cs544.courseattendancesystem.service.dto.CourseWithGradeDTO;
 import cs544.courseattendancesystem.service.dto.CourseRegistrationDTO;
@@ -65,7 +69,7 @@ public class CourseRegistrationServiceImpl implements CourseRegistrationService{
     }
 
     @Override
-    public void createCourseRegistration(CourseRegistrationDTO dto) {
+    public CourseRegistrationDTO createCourseRegistration(CourseRegistrationDTO dto) {
         Student student = studentRepository.findById(dto.getStudentId())
                 .orElseThrow(() -> new RuntimeException("Student not found"));
         CourseOffering courseOffering = courseOfferingRepository.findById(dto.getCourseOfferingId())
@@ -74,8 +78,8 @@ public class CourseRegistrationServiceImpl implements CourseRegistrationService{
         CourseRegistration courseRegistration = new CourseRegistration(dto.getGrade());
         courseRegistration.setStudent(student);
         courseRegistration.setCourseOffering(courseOffering);
-
         courseRegistrationRepository.save(courseRegistration);
+        return CourseRegistrationAdapter.toDTO(courseRegistration);
     }
 
     @Override

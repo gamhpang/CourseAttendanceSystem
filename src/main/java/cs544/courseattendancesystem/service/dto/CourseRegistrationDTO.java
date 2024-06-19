@@ -2,6 +2,9 @@ package cs544.courseattendancesystem.service.dto;
 
 import lombok.Data;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 @Data
 public class CourseRegistrationDTO {
     private long id;

@@ -5,10 +5,7 @@ import cs544.courseattendancesystem.service.AttendanceRecordService;
 import cs544.courseattendancesystem.service.CourseOfferingService;
 import cs544.courseattendancesystem.service.CourseRegistrationService;
 import cs544.courseattendancesystem.service.ExcelService;
-import cs544.courseattendancesystem.service.dto.AttendanceRecordDTO;
-import cs544.courseattendancesystem.service.dto.CourseOfferingDTO;
-import cs544.courseattendancesystem.service.dto.CourseOfferingWithDetailsDTO;
-import cs544.courseattendancesystem.service.dto.CustomerErrorType;
+import cs544.courseattendancesystem.service.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -42,13 +39,13 @@ public class AdminController {
 
 
     @GetMapping("/course-offerings")
-    private ResponseEntity<?> getAllCourseOfferings() {
+    private ResponseEntity<?> getAllCourseOfferingsWithDetails() {
         Collection<CourseOfferingWithDetailsDTO> courseOfferingWithDetailsDTO = courseRegistrationService.getCourseOfferingDetails();
         return new ResponseEntity<Collection<CourseOfferingWithDetailsDTO>>(courseOfferingWithDetailsDTO, HttpStatus.OK);
     }
 
     @GetMapping("/course-offerings/{courseOfferingId}")
-    private ResponseEntity<?> getCourseOfferingById(@PathVariable long courseOfferingId) {
+    private ResponseEntity<?> getCourseOfferingWithDetailsById(@PathVariable long courseOfferingId) {
         CourseOfferingWithDetailsDTO courseOfferingWithDetailsDTO = courseRegistrationService.getCourseOfferingDetailsWithId(courseOfferingId);
         if (courseOfferingWithDetailsDTO == null) {
             return new ResponseEntity<CustomerErrorType>(new CustomerErrorType("CourseOffering with id= " + courseOfferingId + " is not available"), HttpStatus.NOT_FOUND);
@@ -84,5 +81,14 @@ public class AdminController {
 
         // Return response entity
         return new ResponseEntity<>(excelContent, headers, HttpStatus.OK);
+    }
+
+    @GetMapping("/students/{studentId}")
+    public ResponseEntity<?> getCourseOfferingByStudent(@PathVariable long studentId){
+        StudentWithRegisterCourseDTO studentWithRegisterCourseDTO = courseRegistrationService.getCourseOfferingByStudent(studentId);
+        if(studentWithRegisterCourseDTO == null){
+            return new ResponseEntity<CustomerErrorType>(new CustomerErrorType("CourseOffering with Student id= "+studentId+" is not available"),HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(studentWithRegisterCourseDTO,HttpStatus.OK);
     }
 }

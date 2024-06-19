@@ -26,7 +26,7 @@ public class Course {
     )
     private List<Course> prerequisites;
 
-    protected Course(){}
+    public Course(){}
 
     public Course(double credits, String description, String code, String name, String department) {
         this.credits = credits;

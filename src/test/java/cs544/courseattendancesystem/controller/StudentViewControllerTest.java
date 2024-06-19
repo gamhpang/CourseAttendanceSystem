@@ -2,11 +2,8 @@ package cs544.courseattendancesystem.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import cs544.courseattendancesystem.domain.CourseOfferingType;
-import cs544.courseattendancesystem.service.CourseOfferingService;
-import cs544.courseattendancesystem.service.CourseRegistrationService;
-import cs544.courseattendancesystem.service.StudentService;
-import cs544.courseattendancesystem.service.dto.CourseRegistrationDTO;
-import cs544.courseattendancesystem.service.dto.CourseWithGradeDTO;
+import cs544.courseattendancesystem.service.*;
+import cs544.courseattendancesystem.service.dto.*;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +16,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 import static org.mockito.Mockito.times;
@@ -42,6 +40,12 @@ public class StudentViewControllerTest {
 
     @MockBean
     private CourseRegistrationService courseRegistrationService;
+
+    @MockBean
+    private AttendanceAndSessionFromOfferingService attendanceAndSessionFromOfferingService;
+
+    @MockBean
+    private AttendanceRecordService attendanceRecordService;
 
     @Test
     void testGetCourseWithGrade() throws Exception {
@@ -105,6 +109,64 @@ public class StudentViewControllerTest {
         // Verify that the service method was called once
         verify(courseRegistrationService, times(1)).createCourseRegistration(courseRegistrationDTO);
     }
+
+    @Test
+    void testGetCourseOfferingByOfferingId() throws Exception {
+        // Prepare test data
+        long offeringId = 1L;
+        CourseOfferingWithDetailsDTO courseOfferingWithDetailsDTO = new CourseOfferingWithDetailsDTO();
+
+        // Mock the service method
+        Mockito.when(courseRegistrationService.getCourseOfferingDetailsWithId(offeringId)).thenReturn(courseOfferingWithDetailsDTO);
+
+        // Perform the GET request and check the response
+        mockMvc.perform(get("/student-view/course-offerings/{offeringId}", offeringId))
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.courseOfferingId").exists());
+    }
+
+    @Test
+    void testGetAllAttendanceRecord() throws Exception {
+        // Prepare test data
+        long studentId = 1L;
+        Collection<AttendanceRecordFullDataDTO> attendanceRecords = Arrays.asList(new AttendanceRecordFullDataDTO(), new AttendanceRecordFullDataDTO());
+
+        // Mock the service method
+        Mockito.when(attendanceRecordService.getAttendanceRecordByStudentId(studentId)).thenReturn(attendanceRecords);
+
+        // Perform the GET request and check the response
+        mockMvc.perform(get("/student-view/attendance-records")
+                        .header("studentId", studentId))
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.length()").value(attendanceRecords.size()));
+    }
+
+    @Test
+    void testGetAttendanceFromCourseOfferings_StudentNotFound() throws Exception {
+        long studentId = 1L;
+        long offeringId = 1L;
+
+        Mockito.when(studentService.getStudent(studentId)).thenReturn(null);
+
+        mockMvc.perform(get("/student-view/course-offerings/{offeringId}/attendance", offeringId)
+                        .header("studentId", studentId))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void testGetAttendanceFromCourseOfferings_CourseOfferingNotFound() throws Exception {
+        long studentId = 1L;
+        long offeringId = 1L;
+        StudentDTO studentDTO = new StudentDTO();
+
+        Mockito.when(studentService.getStudent(studentId)).thenReturn(studentDTO);
+        Mockito.when(courseOfferingService.getCourseOffering(offeringId)).thenReturn(null);
+
+        mockMvc.perform(get("/student-view/course-offerings/{offeringId}/attendance", offeringId)
+                        .header("studentId", studentId))
+                .andExpect(status().isNotFound());
+    }
+
 
     public static String asJsonString(final Object obj) {
         try {

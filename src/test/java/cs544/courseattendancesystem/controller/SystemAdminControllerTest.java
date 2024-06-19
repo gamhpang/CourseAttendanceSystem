@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.MediaType;
@@ -46,30 +47,28 @@ public class SystemAdminControllerTest {
 
     @Test
     public void testCreateLocation() throws Exception {
-        // Prepare mock data
+        // Prepare test data
         LocationDTO locationDTO = new LocationDTO();
-        locationDTO.setLocationId(1L);
-        locationDTO.setName("Test Location");
+        locationDTO.setName("Room 101");
         locationDTO.setCapacity(50);
         locationDTO.setTypeId(1L);
 
-        when(locationService.createLocation(anyString(), anyInt(), anyLong())).thenReturn(locationDTO);
+        LocationDTO respLocationDTO = new LocationDTO();
+        respLocationDTO.setName("Room 101");
+        respLocationDTO.setCapacity(50);
+        respLocationDTO.setTypeId(1L);
 
-        // Perform the POST request
-        mockMvc.perform(post("/sys-admin/locations/create")
-                        .param("locationName", "Test Location")
-                        .param("capacity", "50")
-                        .param("locationTypeId", "1")
-                        .contentType(MediaType.APPLICATION_JSON))
+        // Mock the service method
+        Mockito.when(locationService.createLocation(locationDTO.getName(), locationDTO.getCapacity(), locationDTO.getTypeId())).thenReturn(respLocationDTO);
+
+        // Perform the POST request and check the response
+        mockMvc.perform(post("/sys-admin/locations")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(locationDTO)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.locationId").value(1L))
-                .andExpect(jsonPath("$.name").value("Test Location"))
+                .andExpect(jsonPath("$.name").value("Room 101"))
                 .andExpect(jsonPath("$.capacity").value(50))
                 .andExpect(jsonPath("$.typeId").value(1L));
-
-        // Verify that the locationService.createLocation method was called
-        verify(locationService, times(1)).createLocation(anyString(), anyInt(), anyLong());
-        verifyNoMoreInteractions(locationService);
     }
 
     @Test

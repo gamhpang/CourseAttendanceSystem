@@ -31,7 +31,6 @@ public class FacultyServiceImpl implements FacultyService{
         faculty.setBirthDate(facultyDTO.getBirthDate());
         faculty.setEmailAddress(facultyDTO.getEmailAddress());
         faculty.setSalutation(facultyDTO.getSalutation());
-        faculty.setUserName(facultyDTO.getUserName());
         faculty.setHobbies(facultyDTO.getHobbies());
         faculty.setGenderType(facultyDTO.getGenderType());
         facultyRepository.save(faculty);

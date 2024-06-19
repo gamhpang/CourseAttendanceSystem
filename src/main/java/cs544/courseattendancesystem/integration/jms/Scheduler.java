@@ -4,9 +4,6 @@ import cs544.courseattendancesystem.domain.AttendanceRecord;
 import cs544.courseattendancesystem.domain.CourseOffering;
 import cs544.courseattendancesystem.repository.AttendanceRecordRepository;
 import cs544.courseattendancesystem.repository.CourseOfferingRepository;
-import cs544.courseattendancesystem.repository.CourseRegistrationRepository;
-import cs544.courseattendancesystem.repository.StudentRepository;
-import cs544.courseattendancesystem.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -16,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class ReminderScheduler {
+public class Scheduler {
 
     @Autowired
     private EmailSender emailSender;

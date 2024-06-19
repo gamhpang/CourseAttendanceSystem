@@ -7,13 +7,17 @@ import cs544.courseattendancesystem.service.adapter.CourseAdapter;
 import cs544.courseattendancesystem.service.adapter.CourseOfferingAdapter;
 import cs544.courseattendancesystem.service.dto.CourseDTO;
 import cs544.courseattendancesystem.service.dto.CourseOfferingDTO;
+import cs544.courseattendancesystem.service.dto.CourseOfferingWithDetailsDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 
 @Service
@@ -32,6 +36,8 @@ public class CourseOfferingServiceImpl implements CourseOfferingService {
     @Autowired
     private CourseOfferingAdapter courseOfferingAdapter;
 
+
+
     @Override
     public CourseOfferingDTO createCourseOffering(CourseOfferingDTO courseOfferingDTO) {
         CourseOffering courseOffering = new CourseOffering(
@@ -43,35 +49,32 @@ public class CourseOfferingServiceImpl implements CourseOfferingService {
                 courseOfferingDTO.getCourseOfferingType());
 
         //Checking course existence
-        if(courseOfferingDTO.getCourseId() > 0){
+        if (courseOfferingDTO.getCourseId() > 0) {
             CourseDTO courseDTO = courseService.getCourse(courseOfferingDTO.getCourseId()).orElse(null);
-            if(courseDTO == null){
-                throw new ResourceNotFoundException("Course not found with Id: "+courseOfferingDTO.getCourseId());
-            }
-            else{
-                Course course =courseAdapter.getCourseFromCourseDTO(courseService.getCourse(courseOfferingDTO.getCourseId()).orElse(null));
+            if (courseDTO == null) {
+                throw new ResourceNotFoundException("Course not found with Id: " + courseOfferingDTO.getCourseId());
+            } else {
+                Course course = courseAdapter.getCourseFromCourseDTO(courseService.getCourse(courseOfferingDTO.getCourseId()).orElse(null));
                 courseOffering.setCourse(course);
             }
-        }else{
+        } else {
             throw new ResourceNotFoundException("Course not found!");
         }
 
         //Checking Faculty existence, if not, just leave null
-        if(courseOfferingDTO.getFacultyId() > 0){
+        if (courseOfferingDTO.getFacultyId() > 0) {
             Faculty faculty = facultyService.getFaculty(courseOfferingDTO.getFacultyId());
-            if(faculty == null){
+            if (faculty == null) {
                 throw new ResourceNotFoundException("Faculty Not Found with Id: " + courseOfferingDTO.getFacultyId());
-            }
-            else{
+            } else {
                 courseOffering.setFaculty(faculty);
             }
-        }
-        else{
+        } else {
             courseOffering.setFaculty(null);
         }
 
         //Generate Sessions for the course Offering
-        List<Session> sessions = sessionService.generateSessions(courseOfferingDTO.getStartDate(),courseOfferingDTO.getEndDate());
+        List<Session> sessions = sessionService.generateSessions(courseOfferingDTO.getStartDate(), courseOfferingDTO.getEndDate());
         courseOffering.setSessionList(sessions);
 
         //Save Data to repository
@@ -85,6 +88,15 @@ public class CourseOfferingServiceImpl implements CourseOfferingService {
         return courseOffering.map(courseOfferingAdapter::getCourseOfferingDTOFromCourseOffering).orElse(null);
     }
 
+//    @Override
+//    public CourseOfferingWithDetailsDTO getCourseOfferingWithDetails(long courseOfferingId) {
+//
+//        Optional<CourseOffering> courseOffering = courseOfferingRepository.findById(courseOfferingId);
+//
+//        return courseOfferingAdapter.getCourseOfferingWithDetailsDTOFromCourseOffering(courseOffering.get());
+//
+//    }
+
     @Override
     public Collection<CourseOfferingDTO> getAllCourseOfferings() {
         return courseOfferingRepository.findAll()
@@ -94,9 +106,18 @@ public class CourseOfferingServiceImpl implements CourseOfferingService {
     }
 
     @Override
-    public CourseOfferingDTO updateCourseOffering(long courseOfferingId,CourseOfferingDTO courseOfferingDTO) {
+    public Collection<CourseOfferingDTO> getAllCourseOfferingsByDate(LocalDate reqDate) {
+
+        Collection<CourseOfferingDTO> courseOfferings = getAllCourseOfferings();
+        return courseOfferings.stream().filter(co -> !co.getStartDate().isAfter(reqDate)
+                && !co.getEndDate().isBefore(reqDate)).toList();
+
+    }
+
+    @Override
+    public CourseOfferingDTO updateCourseOffering(long courseOfferingId, CourseOfferingDTO courseOfferingDTO) {
         CourseOffering courseOffering = courseOfferingRepository.findById(courseOfferingId).orElse(null);
-        if(courseOffering != null){
+        if (courseOffering != null) {
             boolean datesChanged = !courseOffering.getStartDate().equals(courseOfferingDTO.getStartDate()) ||
                     !courseOffering.getEndDate().equals(courseOfferingDTO.getEndDate());
 
@@ -114,16 +135,15 @@ public class CourseOfferingServiceImpl implements CourseOfferingService {
             Faculty faculty = facultyService.getFaculty(courseOfferingDTO.getFacultyId());
             courseOffering.setFaculty(faculty);
 
-            if(datesChanged){
+            if (datesChanged) {
                 // Remove existing sessions and generate new ones if the dates have changed
                 courseOffering.getSessionList().clear();
                 List<Session> sessions = sessionService.generateSessions(courseOfferingDTO.getStartDate(), courseOfferingDTO.getEndDate());
                 courseOffering.setSessionList(sessions);
-            }
-            else{
+            } else {
                 //Update the session List based on the provided DTO
                 List<Session> sessionList = new ArrayList<>();
-                courseOfferingDTO.getSessionList().forEach(session->{
+                courseOfferingDTO.getSessionList().forEach(session -> {
                     sessionList.add(sessionService.getSession(session));
                 });
                 courseOffering.setSessionList(sessionList);

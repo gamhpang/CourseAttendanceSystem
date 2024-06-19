@@ -71,8 +71,8 @@ public class StudentViewController {
     public ResponseEntity<?> getAllAttendanceRecord(@RequestHeader long studentId){
         try{
             System.out.println("Student ID: " + studentId);
-            Collection<AttendanceRecordDTO> attendanceRecordDTOS = attendanceRecordService.getAttendanceRecordByStudentId(studentId);
-            return new ResponseEntity<Collection<AttendanceRecordDTO>>(attendanceRecordDTOS, HttpStatus.OK);
+            Collection<AttendanceRecordFullDataDTO> attendanceRecordDTOS = attendanceRecordService.getAttendanceRecordByStudentId(studentId);
+            return new ResponseEntity<Collection<AttendanceRecordFullDataDTO>>(attendanceRecordDTOS, HttpStatus.OK);
         }catch (ResourceNotFoundException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }catch (Exception e){

@@ -7,6 +7,7 @@ import cs544.courseattendancesystem.service.SessionService;
 import cs544.courseattendancesystem.service.SessionServiceImpl;
 import cs544.courseattendancesystem.service.StudentService;
 import cs544.courseattendancesystem.service.dto.AttendanceRecordDTO;
+import cs544.courseattendancesystem.service.dto.AttendanceRecordFullDataDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -58,27 +59,27 @@ public class AttendanceRecordAdapter {
         return attendanceRecord;
     }
 
-    public static AttendanceRecordDTO getAttendanceRecordDTOIncludeAllRecordFromAttendanceRecord(AttendanceRecord attendanceRecord) {
+    public static AttendanceRecordFullDataDTO getAttendanceRecordDTOIncludeAllRecordFromAttendanceRecord(AttendanceRecord attendanceRecord) {
         if (attendanceRecord == null) {
             return null;
         }
 
-        AttendanceRecordDTO dto = new AttendanceRecordDTO();
+        AttendanceRecordFullDataDTO dto = new AttendanceRecordFullDataDTO();
         dto.setId(attendanceRecord.getId());
         dto.setScanDateTime(attendanceRecord.getScanDateTime());
         dto.setStudentId(attendanceRecord.getStudent() != null ? attendanceRecord.getStudent().getId() : null);
         dto.setLocationId(attendanceRecord.getLocation() != null ? attendanceRecord.getLocation().getId() : null);
-//        dto.setLocation(LocationAdapter.getLocationDTOFromLocation(attendanceRecord.getLocation()));
+        dto.setLocation(LocationAdapter.getLocationDTOFromLocation(attendanceRecord.getLocation()));
         dto.setSessionId(attendanceRecord.getSession() != null ? attendanceRecord.getSession().getId() : null);
-//        dto.setSession(SessionAdapter.getSessionDTOFromSession(attendanceRecord.getSession()));
+        dto.setSession(SessionAdapter.getSessionDTOFromSession(attendanceRecord.getSession()));
         return dto;
     }
 
-    public Collection<AttendanceRecordDTO> getAllAttendanceRecord(Collection<AttendanceRecord> attendanceRecords){
+    public Collection<AttendanceRecordFullDataDTO> getAllAttendanceRecord(Collection<AttendanceRecord> attendanceRecords){
         if(attendanceRecords.isEmpty()){
             return null;
         }
-        Collection<AttendanceRecordDTO> attendanceRecordDTOS = new ArrayList<>();
+        Collection<AttendanceRecordFullDataDTO> attendanceRecordDTOS = new ArrayList<>();
         for(AttendanceRecord att : attendanceRecords){
             System.out.println("Each att......" + att);
             attendanceRecordDTOS.add(getAttendanceRecordDTOIncludeAllRecordFromAttendanceRecord(att));

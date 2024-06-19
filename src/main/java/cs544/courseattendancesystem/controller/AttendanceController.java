@@ -37,7 +37,7 @@ public class AttendanceController {
     @GetMapping("/attendance-record")
     public ResponseEntity<?> getAllAttendanceRecord() {
         List<AttendanceRecordDTO> attendanceRecordDTO = attendanceRecordService.getAllAttendanceRecordDTO();
-        if (attendanceRecordDTO.size() == 0) {
+        if (attendanceRecordDTO.isEmpty()) {
             return new ResponseEntity<>(new CustomerErrorType("Attendance record is empty"), HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(attendanceRecordDTO, HttpStatus.OK);

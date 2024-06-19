@@ -12,6 +12,7 @@ import cs544.courseattendancesystem.repository.StudentRepository;
 import cs544.courseattendancesystem.service.dto.CourseOfferingWithDetailsDTO;
 import cs544.courseattendancesystem.service.dto.CourseWithGradeDTO;
 import cs544.courseattendancesystem.service.dto.CourseRegistrationDTO;
+import cs544.courseattendancesystem.service.dto.StudentWithRegisterCourseDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,9 @@ class CourseRegistrationServiceImplTest {
     @Autowired
     private CourseRegistrationService courseRegistrationService;
 
+    @Autowired
+    private StudentService studentService;
+
     @MockBean
     private CourseRegistrationRepository courseRegistrationRepository;
 
@@ -54,7 +58,8 @@ class CourseRegistrationServiceImplTest {
     private CourseOffering courseOffering;
     private CourseRegistration courseRegistration;
     private CourseRegistrationDTO courseRegistrationDTO;
-
+    private List<CourseRegistration> courseRegistrationList;
+    private List<CourseWithGradeDTO> courseWithGradeDTOList;
     @BeforeEach
     public void setUp() {
         student = new Student();
@@ -68,6 +73,7 @@ class CourseRegistrationServiceImplTest {
         courseOffering.setId(1L);
         Faculty faculty = new Faculty(LocalDate.of(1999, 10, 31), "john@miu.edu.tt", "John", "Doe", "john", "123", "tt", Arrays.asList("Listening", "Reading"));
         courseOffering.setFaculty(faculty);
+        student.setFaculty(faculty);
 
         courseRegistration = new CourseRegistration("A");
         courseRegistration.setId(1L);
@@ -78,6 +84,16 @@ class CourseRegistrationServiceImplTest {
         courseRegistrationDTO.setStudentId(student.getId());
         courseRegistrationDTO.setCourseOfferingId(courseOffering.getId());
         courseRegistrationDTO.setGrade("A");
+
+        // Initialize lists
+        courseRegistrationList = new ArrayList<>();
+        courseRegistrationList.add(courseRegistration);
+
+        courseWithGradeDTOList = new ArrayList<>();
+        CourseWithGradeDTO courseWithGradeDTO = new CourseWithGradeDTO();
+        courseWithGradeDTO.setCourseName("Course 1");
+        courseWithGradeDTO.setGrade("A");
+        courseWithGradeDTOList.add(courseWithGradeDTO);
     }
 
     @Test
@@ -164,5 +180,22 @@ class CourseRegistrationServiceImplTest {
         verify(courseOfferingRepository, times(1)).findAll();
         verify(courseRegistrationRepository, times(1)).findByCourseOfferingId(1L);
     }
+
+    @Test
+    void testGetCourseOfferingByStudent() {
+        when(studentRepository.findById(anyLong())).thenReturn(Optional.of(student));
+        when(courseRegistrationRepository.findByStudentId(anyLong())).thenReturn(courseRegistrationList);
+
+        StudentWithRegisterCourseDTO result = courseRegistrationService.getCourseOfferingByStudent(1L);
+
+        assertNotNull(result);
+        assertNotNull(result.getStudent());
+        assertEquals("John", result.getStudent().getFirstName());
+        assertEquals("Doe", result.getStudent().getLastName());
+        assertTrue(result.getCourseWithGradeDTOCollection().size() > 0);
+        assertEquals("Course 1", result.getCourseWithGradeDTOCollection().iterator().next().getCourseName());
+        assertEquals("A", result.getCourseWithGradeDTOCollection().iterator().next().getGrade());
+    }
+
 }
 

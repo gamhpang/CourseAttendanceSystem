@@ -2,10 +2,7 @@ package cs544.courseattendancesystem.controller;
 
 import cs544.courseattendancesystem.domain.CourseOfferingType;
 import cs544.courseattendancesystem.service.CourseRegistrationService;
-import cs544.courseattendancesystem.service.dto.CourseOfferingWithDetailsDTO;
-import cs544.courseattendancesystem.service.dto.CourseWithGradeDTO;
-import cs544.courseattendancesystem.service.dto.StudentDTO;
-import cs544.courseattendancesystem.service.dto.StudentWithRegisterCourseDTO;
+import cs544.courseattendancesystem.service.dto.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -118,24 +115,22 @@ class AdminControllerTest{
         courseWithGradeDTO.setCourseName("Enterprise Architecture");
         courseWithGradeDTO.setGrade("A");
 
-        StudentDTO studentDTO = new StudentDTO();
+        StudentResponseDTO studentDTO = new StudentResponseDTO();
         studentDTO.setId(1L);
-        studentDTO.setFirstName("John");
-        studentDTO.setLastName("Doe");
+        studentDTO.setEmailAddress("johndoe@miu.edu");
 
         StudentWithRegisterCourseDTO studentWithRegisterCourseDTO = new StudentWithRegisterCourseDTO();
         studentWithRegisterCourseDTO.setStudent(studentDTO);
-        studentWithRegisterCourseDTO.setCourseWithGradeDTOCollection(Arrays.asList(courseWithGradeDTO));
+        studentWithRegisterCourseDTO.setCourses(Arrays.asList(courseWithGradeDTO));
 
         when(courseRegistrationService.getCourseOfferingByStudent(1L)).thenReturn(studentWithRegisterCourseDTO);
 
         mockMvc.perform(get("/admin-view/students/1"))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.student.id").value(1L))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.student.firstName").value("John"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.student.lastName").value("Doe"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.courseWithGradeDTOCollection[0].courseName").value("Enterprise Architecture"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.courseWithGradeDTOCollection[0].grade").value("A"));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.student.emailAddress").value("johndoe@miu.edu"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.courses[0].courseName").value("Enterprise Architecture"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.courses[0].grade").value("A"));
     }
 
     @Test

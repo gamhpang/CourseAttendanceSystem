@@ -176,9 +176,12 @@ public class CourseRegistrationServiceImpl implements CourseRegistrationService{
 
     public StudentWithRegisterCourseDTO getCourseOfferingByStudent(long studentId) {
         StudentWithRegisterCourseDTO studentWithRegisterCourseDTO = new StudentWithRegisterCourseDTO();
-        studentWithRegisterCourseDTO.setCourseWithGradeDTOCollection(getCourseOfferingWithGradeDTO(studentId));
         Optional<Student> optionalStudent = studentRepository.findById(studentId);
-        studentWithRegisterCourseDTO.setStudent(StudentAdapter.getStudentDTOFromStudent(optionalStudent.get()));
+        if (optionalStudent.isEmpty()) {
+            throw new ResourceNotFoundException("Student not found with Id: " + studentId);
+        }
+        studentWithRegisterCourseDTO.setStudent(StudentAdapter.getStudentResponseDTOFromStudent(optionalStudent.get()));
+        studentWithRegisterCourseDTO.setCourses(getCourseOfferingWithGradeDTO(studentId));
         return studentWithRegisterCourseDTO;
     }
 }

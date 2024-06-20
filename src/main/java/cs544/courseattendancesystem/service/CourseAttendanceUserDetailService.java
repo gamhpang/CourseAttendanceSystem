@@ -15,7 +15,7 @@ public class CourseAttendanceUserDetailService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findByUserName(username).orElseThrow(() ->
-                new UsernameNotFoundException(String.format("User with email id %s is not exist.", username))
+                new UsernameNotFoundException(String.format("User with user name %s is not exist.", username))
         );
     }
 }

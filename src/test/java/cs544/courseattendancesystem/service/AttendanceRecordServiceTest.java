@@ -79,7 +79,7 @@ public class AttendanceRecordServiceTest {
         attendanceRecordFullDataDTO = new AttendanceRecordFullDataDTO();
         attendanceRecordFullDataDTO.setId(1L);
         attendanceRecordFullDataDTO.setScanDateTime(LocalDateTime.now());
-        attendanceRecordFullDataDTO.setStudentId(1L);
+//        attendanceRecordFullDataDTO.setStudentId(1L);
 
         Mockito.when(attendanceRecordRepository.findById(attendanceRecord.getId()))
                 .thenReturn(Optional.of(attendanceRecord));

@@ -88,9 +88,9 @@ public class StudentViewController {
             Collection<AttendanceRecordFullDataDTO> attendanceRecordDTOS = attendanceRecordService.getAttendanceRecordByStudentId(studentId);
             return new ResponseEntity<Collection<AttendanceRecordFullDataDTO>>(attendanceRecordDTOS, HttpStatus.OK);
         } catch (ResourceNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            return new ResponseEntity<CustomerErrorType>(new CustomerErrorType(e.getMessage()), HttpStatus.NOT_FOUND);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return new ResponseEntity<CustomerErrorType>(new CustomerErrorType(e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

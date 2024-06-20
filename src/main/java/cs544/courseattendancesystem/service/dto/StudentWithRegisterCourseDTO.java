@@ -6,6 +6,6 @@ import java.util.Collection;
 
 @Data
 public class StudentWithRegisterCourseDTO {
-    private StudentDTO student;
-    private Collection<CourseWithGradeDTO> courseWithGradeDTOCollection;
+    private StudentResponseDTO student;
+    private Collection<CourseWithGradeDTO> courses;
 }

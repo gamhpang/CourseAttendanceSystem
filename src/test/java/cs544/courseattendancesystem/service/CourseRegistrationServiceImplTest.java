@@ -1,11 +1,6 @@
 package cs544.courseattendancesystem.service;
 
-import cs544.courseattendancesystem.domain.Course;
-import cs544.courseattendancesystem.domain.CourseOffering;
-import cs544.courseattendancesystem.domain.CourseOfferingType;
-import cs544.courseattendancesystem.domain.CourseRegistration;
-import cs544.courseattendancesystem.domain.Faculty;
-import cs544.courseattendancesystem.domain.Student;
+import cs544.courseattendancesystem.domain.*;
 import cs544.courseattendancesystem.repository.CourseOfferingRepository;
 import cs544.courseattendancesystem.repository.CourseRegistrationRepository;
 import cs544.courseattendancesystem.repository.StudentRepository;
@@ -66,6 +61,8 @@ class CourseRegistrationServiceImplTest {
         student.setId(1L);
         student.setFirstName("John");
         student.setLastName("Doe");
+        student.setEmailAddress("johndoe@miu.edu");
+        student.setGenderType(GenderType.MALE);
 
         courseOffering = new CourseOffering(3, "Room 101", LocalDate.of(2023, 6, 1), LocalDate.of(2023, 12, 1), 30, CourseOfferingType.ON_CAMPUS);
         Course course = new Course(3, "Description", "C-1", "Course 1", "Department 1");
@@ -190,11 +187,10 @@ class CourseRegistrationServiceImplTest {
 
         assertNotNull(result);
         assertNotNull(result.getStudent());
-        assertEquals("John", result.getStudent().getFirstName());
-        assertEquals("Doe", result.getStudent().getLastName());
-        assertTrue(result.getCourseWithGradeDTOCollection().size() > 0);
-        assertEquals("Course 1", result.getCourseWithGradeDTOCollection().iterator().next().getCourseName());
-        assertEquals("A", result.getCourseWithGradeDTOCollection().iterator().next().getGrade());
+        assertEquals("johndoe@miu.edu", result.getStudent().getEmailAddress());
+        assertTrue(result.getCourses().size() > 0);
+        assertEquals("Course 1", result.getCourses().iterator().next().getCourseName());
+        assertEquals("A", result.getCourses().iterator().next().getGrade());
     }
 
 }

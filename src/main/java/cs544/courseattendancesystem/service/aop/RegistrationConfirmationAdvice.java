@@ -5,6 +5,7 @@ import cs544.courseattendancesystem.service.EmailService;
 import cs544.courseattendancesystem.service.StudentService;
 import cs544.courseattendancesystem.service.dto.CourseRegistrationDTO;
 import cs544.courseattendancesystem.service.dto.StudentDTO;
+import cs544.courseattendancesystem.service.dto.StudentResponseDTO;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.AfterReturning;

@@ -7,6 +7,7 @@ import cs544.courseattendancesystem.domain.UserRole;
 import cs544.courseattendancesystem.repository.FacultyRepository;
 import cs544.courseattendancesystem.service.dto.FacultyDTO;
 import cs544.courseattendancesystem.service.dto.StudentDTO;
+import cs544.courseattendancesystem.service.dto.StudentResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -22,7 +23,6 @@ public class StudentAdapter {
         studentDTO.setFirstName(student.getFirstName());
         studentDTO.setLastName(student.getLastName());
         studentDTO.setUserName(student.getUserName());
-        studentDTO.setPassword(studentDTO.getPassword());
         studentDTO.setAlternateId(student.getAlternateId());
         studentDTO.setBarCode(student.getBarCode());
         studentDTO.setStudentId(student.getStudentId());
@@ -32,8 +32,24 @@ public class StudentAdapter {
         studentDTO.setBirthDate(student.getBirthDate());
         studentDTO.setEmailAddress(student.getEmailAddress());
         studentDTO.setGenderType(student.getGenderType());
-//        studentDTO.setUser(student.getUser());
         return studentDTO;
+    }
+
+    public static StudentResponseDTO getStudentResponseDTOFromStudent(Student student){
+        StudentResponseDTO studentResponseDTO = new StudentResponseDTO();
+        studentResponseDTO.setId(student.getId());
+        studentResponseDTO.setEntry(student.getEntry());
+        studentResponseDTO.setStudentName(student.getFirstName() + " " + student.getLastName());
+        studentResponseDTO.setUserName(student.getUserName());
+        studentResponseDTO.setBirthDate(student.getBirthDate());
+        studentResponseDTO.setEmailAddress(student.getEmailAddress());
+        studentResponseDTO.setGender(student.getGenderType().toString());
+        studentResponseDTO.setAdviserName(FacultyAdapter.getFacultyDTOFromFaculty(student.getFaculty()).getFirstName() + " " + FacultyAdapter.getFacultyDTOFromFaculty(student.getFaculty()).getLastName());
+        studentResponseDTO.setAlternateId(student.getAlternateId());
+        studentResponseDTO.setBarCode(student.getBarCode());
+        studentResponseDTO.setStudentId(student.getStudentId());
+        studentResponseDTO.setApplicantId(student.getApplicantId());
+        return studentResponseDTO;
     }
 
     public static Student getStudentFromStudentDTO(StudentDTO studentDTO){
@@ -54,15 +70,14 @@ public class StudentAdapter {
         user.setPassword(new BCryptPasswordEncoder().encode(studentDTO.getPassword()));
         user.setUserRole(UserRole.STUDENT);
         student.setUser(user);
-//        student.setUser(new User(studentDTO.getUserName(), studentDTO.getPassword(), UserRole.STUDENT));
         return student;
     }
 
-    public static List<StudentDTO> getStudentListFromStudentDTO(List<Student> studentList){
-        List<StudentDTO> studentDTOList = new ArrayList<StudentDTO>();
+    public static List<StudentResponseDTO> getStudentListFromStudentDTO(List<Student> studentList){
+        List<StudentResponseDTO> studentResponseDTOs = new ArrayList<StudentResponseDTO>();
         for(Student stu : studentList){
-            studentDTOList.add(getStudentDTOFromStudent(stu));
+            studentResponseDTOs.add(getStudentResponseDTOFromStudent(stu));
         }
-        return studentDTOList;
+        return studentResponseDTOs;
     }
 }

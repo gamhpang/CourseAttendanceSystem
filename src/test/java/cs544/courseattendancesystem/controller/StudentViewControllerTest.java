@@ -131,19 +131,17 @@ public class StudentViewControllerTest {
 
     @Test
     @WithMockUser
-    void testGetAllAttendanceRecord() throws Exception {
-        // Prepare test data
+    void testGetAttendanceFromCourseOfferings_CourseOfferingNotFound() throws Exception {
         long studentId = 1L;
-        Collection<AttendanceRecordFullDataDTO> attendanceRecords = Arrays.asList(new AttendanceRecordFullDataDTO(), new AttendanceRecordFullDataDTO());
+        long offeringId = 1L;
+        StudentDTO studentDTO = new StudentDTO();
 
-        // Mock the service method
-        Mockito.when(attendanceRecordService.getAttendanceRecordByStudentId(studentId)).thenReturn(attendanceRecords);
+        Mockito.when(studentService.getStudent(studentId)).thenReturn(studentDTO);
+        Mockito.when(courseOfferingService.getCourseOffering(offeringId)).thenReturn(null);
 
-        // Perform the GET request and check the response
-        mockMvc.perform(get("/student-view/attendance-records")
+        mockMvc.perform(get("/student-view/course-offerings/{offeringId}/attendance", offeringId)
                         .header("studentId", studentId))
-                .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.length()").value(attendanceRecords.size()));
+                .andExpect(status().isNotFound());
     }
 
     @Test
@@ -161,19 +159,20 @@ public class StudentViewControllerTest {
 
     @Test
     @WithMockUser
-    void testGetAttendanceFromCourseOfferings_CourseOfferingNotFound() throws Exception {
+    void testGetAllAttendanceRecord() throws Exception {
+        // Prepare test data
         long studentId = 1L;
-        long offeringId = 1L;
-        StudentDTO studentDTO = new StudentDTO();
+        Collection<AttendanceRecordFullDataDTO> attendanceRecords = Arrays.asList(new AttendanceRecordFullDataDTO(), new AttendanceRecordFullDataDTO());
 
-        Mockito.when(studentService.getStudent(studentId)).thenReturn(studentDTO);
-        Mockito.when(courseOfferingService.getCourseOffering(offeringId)).thenReturn(null);
+        // Mock the service method
+        Mockito.when(attendanceRecordService.getAttendanceRecordByStudentId(studentId)).thenReturn(attendanceRecords);
 
-        mockMvc.perform(get("/student-view/course-offerings/{offeringId}/attendance", offeringId)
+        // Perform the GET request and check the response
+        mockMvc.perform(get("/student-view/attendance-records")
                         .header("studentId", studentId))
-                .andExpect(status().isNotFound());
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.length()").value(attendanceRecords.size()));
     }
-
 
     public static String asJsonString(final Object obj) {
         try {

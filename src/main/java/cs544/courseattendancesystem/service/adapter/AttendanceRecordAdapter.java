@@ -69,11 +69,8 @@ public class AttendanceRecordAdapter {
         AttendanceRecordFullDataDTO dto = new AttendanceRecordFullDataDTO();
         dto.setId(attendanceRecord.getId());
         dto.setScanDateTime(attendanceRecord.getScanDateTime());
-        dto.setStudentId(attendanceRecord.getStudent() != null ? attendanceRecord.getStudent().getId() : null);
-        dto.setLocationId(attendanceRecord.getLocation() != null ? attendanceRecord.getLocation().getId() : null);
-        dto.setLocation(LocationAdapter.getLocationDTOFromLocation(attendanceRecord.getLocation()));
         dto.setSessionId(attendanceRecord.getSession() != null ? attendanceRecord.getSession().getId() : null);
-        dto.setSession(SessionAdapter.getSessionDTOFromSession(attendanceRecord.getSession()));
+        dto.setLocation(LocationAdapter.getLocationDTOFromLocation(attendanceRecord.getLocation()));
         return dto;
     }
 

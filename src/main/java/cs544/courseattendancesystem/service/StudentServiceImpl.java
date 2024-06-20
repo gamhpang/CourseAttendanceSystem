@@ -4,14 +4,17 @@ package cs544.courseattendancesystem.service;
 import cs544.courseattendancesystem.domain.AuditData;
 import cs544.courseattendancesystem.domain.Faculty;
 import cs544.courseattendancesystem.domain.Student;
+import cs544.courseattendancesystem.exception.DuplicateEntryException;
 import cs544.courseattendancesystem.exception.ResourceNotFoundException;
 import cs544.courseattendancesystem.repository.CourseRegistrationRepository;
 import cs544.courseattendancesystem.repository.FacultyRepository;
 import cs544.courseattendancesystem.repository.StudentRepository;
 import cs544.courseattendancesystem.service.adapter.StudentAdapter;
 import cs544.courseattendancesystem.service.dto.StudentDTO;
+import cs544.courseattendancesystem.service.dto.StudentResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.neo4j.Neo4jProperties;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -24,7 +27,7 @@ import java.util.Optional;
 
 
 @Service
-public class StudentServiceImpl implements StudentService{
+public class StudentServiceImpl implements StudentService {
     @Autowired
     private StudentRepository studentRepository;
 
@@ -35,54 +38,74 @@ public class StudentServiceImpl implements StudentService{
     private CourseRegistrationRepository courseRegistrationRepository;
 
     @Override
-    public StudentDTO createStudentByDTO(StudentDTO studentDTO) {
+    public StudentResponseDTO createStudentByDTO(StudentDTO studentDTO) {
         Optional<Faculty> faculty = facultyRepository.findById(studentDTO.getFacultyId());
         System.out.println("This is Faculty => " + faculty);
-        if(faculty.isEmpty()){
-            throw new ResourceNotFoundException("There is no Faculty.");
+        if (faculty.isEmpty()) {
+            throw new ResourceNotFoundException("Faculty not found with Id: " + studentDTO.getFacultyId());
         }
+        // Get student from DTO
         Student student = StudentAdapter.getStudentFromStudentDTO(studentDTO);
-        student.setFaculty(faculty.get());
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if(authentication.isAuthenticated()){
-            AuditData auditData = new AuditData();
-            auditData.setCreatedBy(authentication.getName());
-            auditData.setCreatedOn(LocalDateTime.now());
-            student.setAuditData(auditData);
+        try {
+            // Set AdviserFaculty
+            student.setFaculty(faculty.get());
+            // Save student
+            studentRepository.save(student);
+
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if (authentication.isAuthenticated()) {
+                AuditData auditData = new AuditData();
+                auditData.setCreatedBy(authentication.getName());
+                auditData.setCreatedOn(LocalDateTime.now());
+                student.setAuditData(auditData);
+            }
+            System.out.println("Save successfully...");
+            return StudentAdapter.getStudentResponseDTOFromStudent(student);
+        }catch (DataIntegrityViolationException e){
+            if (e.getCause() instanceof org.hibernate.exception.ConstraintViolationException) {
+                throw new DuplicateEntryException("Duplicate user name entry '" + studentDTO.getUserName());
+            } else {
+                throw e;
+            }
         }
-        studentRepository.save(student);
-        System.out.println("Save successfully...");
-        return StudentAdapter.getStudentDTOFromStudent(student);
     }
 
     @Override
     public StudentDTO getStudent(long id) {
         Optional<Student> student = studentRepository.findById(id);
-        if(student.isEmpty()){
-            throw new ResourceNotFoundException("There is no Student.");
+        if (student.isEmpty()) {
+            throw new ResourceNotFoundException("Student not found with Id: " + id);
         }
         return StudentAdapter.getStudentDTOFromStudent(student.get());
     }
 
-    @Override
-    public Student getStudentById(long id){
+    public StudentResponseDTO getStudentByStudent(long id){
         Optional<Student> student = studentRepository.findById(id);
-        if(student.isEmpty()){
-            throw new ResourceNotFoundException("There is no Student.");
+        if (student.isEmpty()) {
+            throw new ResourceNotFoundException("Student not found with Id: " + id);
+        }
+        return StudentAdapter.getStudentResponseDTOFromStudent(student.get());
+    }
+
+    @Override
+    public Student getStudentById(long id) {
+        Optional<Student> student = studentRepository.findById(id);
+        if (student.isEmpty()) {
+            throw new ResourceNotFoundException("There are no Student.");
         }
         return student.get();
     }
 
     @Override
-    public StudentDTO updateStudent(long studentId, StudentDTO studentDTO){
+    public StudentResponseDTO updateStudent(long studentId, StudentDTO studentDTO) {
         Optional<Student> optionalStudent = studentRepository.findById(studentId);
         Optional<Faculty> faculty = facultyRepository.findById(studentDTO.getFacultyId());
         System.out.println("Optional Student => " + optionalStudent);
-        if(optionalStudent.isEmpty()){
-            throw new ResourceNotFoundException("There is no Student.");
+        if (optionalStudent.isEmpty()) {
+            throw new ResourceNotFoundException("Student not found with Id: " + studentId);
         }
-        if(faculty.isEmpty()){
-            throw new ResourceNotFoundException("There is no Faculty.");
+        if (faculty.isEmpty()) {
+            throw new ResourceNotFoundException("Faculty not found with Id: " + studentDTO.getFacultyId());
         }
         Student student = optionalStudent.get();
         student.setEntry(studentDTO.getEntry());
@@ -99,9 +122,9 @@ public class StudentServiceImpl implements StudentService{
         student.setUserName(studentDTO.getUserName());
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if(authentication.isAuthenticated()){
+        if (authentication.isAuthenticated()) {
             AuditData auditData = student.getAuditData();
-            if(auditData != null){
+            if (auditData != null) {
                 auditData.setUpdatedBy(authentication.getName());
                 auditData.setUpdatedOn(LocalDateTime.now());
                 student.setAuditData(auditData);
@@ -110,7 +133,7 @@ public class StudentServiceImpl implements StudentService{
 
         studentRepository.save(student);
         System.out.println("Save Successfully.....");
-        return StudentAdapter.getStudentDTOFromStudent(student);
+        return StudentAdapter.getStudentResponseDTOFromStudent(student);
     }
 
     @Override
@@ -120,7 +143,7 @@ public class StudentServiceImpl implements StudentService{
     }
 
     @Override
-    public Collection<StudentDTO> getAllStudents() {
+    public Collection<StudentResponseDTO> getAllStudents() {
         List<Student> studentList = studentRepository.findAll();
         return StudentAdapter.getStudentListFromStudentDTO(studentList);
     }

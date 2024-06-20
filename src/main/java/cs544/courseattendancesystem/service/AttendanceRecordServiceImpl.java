@@ -2,6 +2,7 @@ package cs544.courseattendancesystem.service;
 
 import cs544.courseattendancesystem.domain.AttendanceRecord;
 import cs544.courseattendancesystem.domain.Student;
+import cs544.courseattendancesystem.exception.ResourceNotFoundException;
 import cs544.courseattendancesystem.repository.AttendanceRecordRepository;
 import cs544.courseattendancesystem.service.adapter.AttendanceRecordAdapter;
 import cs544.courseattendancesystem.service.dto.AttendanceRecordDTO;
@@ -71,6 +72,10 @@ public class AttendanceRecordServiceImpl implements AttendanceRecordService {
 
     @Override
     public Collection<AttendanceRecordFullDataDTO> getAttendanceRecordByStudentId(long studentId) {
+        Collection<AttendanceRecord> attendanceRecords = attendanceRecordRepository.findByStudentId(studentId);
+        if (attendanceRecords.size() == 0){
+            throw new ResourceNotFoundException("Attendance record not found with studentId: " + studentId);
+        }
         return attendanceRecordAdapter.getAllAttendanceRecord(attendanceRecordRepository.findByStudentId(studentId));
     }
 }

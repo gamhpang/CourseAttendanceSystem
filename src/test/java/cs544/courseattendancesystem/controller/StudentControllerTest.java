@@ -3,6 +3,7 @@ package cs544.courseattendancesystem.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import cs544.courseattendancesystem.service.StudentService;
 import cs544.courseattendancesystem.service.dto.StudentDTO;
+import cs544.courseattendancesystem.service.dto.StudentResponseDTO;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -44,12 +45,10 @@ class StudentControllerTest {
         // Prepare test data
         StudentDTO studentDTO = new StudentDTO();
         studentDTO.setId(1L);
-        studentDTO.setFirstName("John Doe");
         studentDTO.setEmailAddress("johndoe@example.com");
 
-        StudentDTO createdStudentDTO = new StudentDTO();
+        StudentResponseDTO createdStudentDTO = new StudentResponseDTO();
         createdStudentDTO.setId(1L);
-        createdStudentDTO.setFirstName("John Doe");
         createdStudentDTO.setEmailAddress("johndoe@example.com");
 
         // Mock the service method
@@ -61,55 +60,49 @@ class StudentControllerTest {
                         .content(asJsonString(studentDTO)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1L))
-                .andExpect(jsonPath("$.firstName").value("John Doe"));
+                .andExpect(jsonPath("$.emailAddress").value("johndoe@example.com"));
     }
 
     @Test
     @WithMockUser
     public void testGetStudent() throws Exception {
-        StudentDTO studentDTO = new StudentDTO();
-        studentDTO.setFirstName("John");
-        studentDTO.setLastName("Doe");
+        StudentResponseDTO studentDTO = new StudentResponseDTO();
+        studentDTO.setEmailAddress("johndoe@miu.edu");
 
-        when(studentService.getStudent(anyLong())).thenReturn(studentDTO);
+        when(studentService.getStudentByStudent(anyLong())).thenReturn(studentDTO);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/sys-admin/students/1")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.firstName").value("John"))
-                .andExpect(jsonPath("$.lastName").value("Doe"));
+                .andExpect(jsonPath("$.emailAddress").value("johndoe@miu.edu"));
     }
 
     @Test
     @WithMockUser
     public void testGetAllStudents() throws Exception {
-        StudentDTO student1 = new StudentDTO();
-        student1.setFirstName("John");
-        student1.setLastName("Doe");
+        StudentResponseDTO student1 = new StudentResponseDTO();
+        student1.setEmailAddress("joe@miu.edu");
 
-        StudentDTO student2 = new StudentDTO();
-        student2.setFirstName("Jane");
-        student2.setLastName("Smith");
+        StudentResponseDTO student2 = new StudentResponseDTO();
+        student2.setEmailAddress("hope@miu.edu");
 
-        Collection<StudentDTO> studentList = Arrays.asList(student1, student2);
+        Collection<StudentResponseDTO> studentList = Arrays.asList(student1, student2);
 
         when(studentService.getAllStudents()).thenReturn(studentList);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/sys-admin/students")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].firstName").value("John"))
-                .andExpect(jsonPath("$[0].lastName").value("Doe"))
-                .andExpect(jsonPath("$[1].firstName").value("Jane"))
-                .andExpect(jsonPath("$[1].lastName").value("Smith"));
+                .andExpect(jsonPath("$[0].emailAddress").value("joe@miu.edu"))
+                .andExpect(jsonPath("$[1].emailAddress").value("hope@miu.edu"));
     }
 
     @Test
     @WithMockUser
     public void testUpdateStudent() throws Exception {
-        StudentDTO studentDTO = new StudentDTO();
-        studentDTO.setFirstName("John");
-        studentDTO.setLastName("Doe");
+        StudentResponseDTO studentDTO = new StudentResponseDTO();
+        studentDTO.setStudentName("Joe Doe");
+        studentDTO.setEmailAddress("joe@miu.edu");
 
         when(studentService.updateStudent(anyLong(), Mockito.any(StudentDTO.class))).thenReturn(studentDTO);
 
@@ -117,8 +110,8 @@ class StudentControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"firstName\":\"John\",\"lastName\":\"Doe\",\"facultyId\":1}"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.firstName").value("John"))
-                .andExpect(jsonPath("$.lastName").value("Doe"));
+                .andExpect(jsonPath("$.studentName").value("Joe Doe"))
+                .andExpect(jsonPath("$.emailAddress").value("joe@miu.edu"));
     }
 
     @Test

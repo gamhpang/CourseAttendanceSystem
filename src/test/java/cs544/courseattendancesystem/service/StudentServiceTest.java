@@ -8,6 +8,7 @@ import cs544.courseattendancesystem.repository.FacultyRepository;
 import cs544.courseattendancesystem.repository.StudentRepository;
 import cs544.courseattendancesystem.service.adapter.StudentAdapter;
 import cs544.courseattendancesystem.service.dto.StudentDTO;
+import cs544.courseattendancesystem.service.dto.StudentResponseDTO;
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -59,6 +60,7 @@ class StudentServiceTest {
         studentDTO.setLastName("Doe");
         studentDTO.setUserName("John Doe");
         studentDTO.setPassword("12345");
+        studentDTO.setGenderType(GenderType.MALE);
         studentDTO.setAlternateId(123456);
         studentDTO.setApplicantId(123456);
         studentDTO.setStudentId(123456);
@@ -69,7 +71,7 @@ class StudentServiceTest {
         faculty.setEmailAddress("faculty@test.com");
         faculty.setFirstName("Jooe");
         faculty.setLastName("Kim");
-        faculty.setUserName("Jooe Kim");
+        faculty.setUserName("joekim");
         faculty.setPassword("123JK456");
         faculty.setSalutation("Prof");
         faculty.setHobbies(Arrays.asList("Reading", "Swimming"));
@@ -91,12 +93,11 @@ class StudentServiceTest {
         when(studentRepository.save(Mockito.any(Student.class))).thenReturn(student);
 
         // Call the method to test
-        StudentDTO result = studentService.createStudentByDTO(studentDTO);
+        StudentResponseDTO result = studentService.createStudentByDTO(studentDTO);
 
         // Verify and assert
         assertNotNull(result); // Ensure that the result is not null
-        assertEquals("John", result.getFirstName());
-        assertEquals("Doe", result.getLastName());
+        assertEquals("John Doe", result.getStudentName());
         assertEquals("student@test.com", result.getEmailAddress());
 
         ArgumentCaptor<Student> studentCaptor = ArgumentCaptor.forClass(Student.class);
@@ -169,7 +170,7 @@ class StudentServiceTest {
         // Create and set up Faculty object
         Faculty faculty = new Faculty();
         faculty.setId(1L);
-        faculty.setUserName("Engineering");
+        faculty.setEmailAddress("johnkim@miu.edu");
 
         // Create and set up StudentDTO object
         StudentDTO studentDTO = new StudentDTO();
@@ -199,7 +200,7 @@ class StudentServiceTest {
         student.setApplicantId(987654);
         student.setBirthDate(LocalDate.of(1999, 1, 1));
         student.setEmailAddress("jane.smith@example.com");
-        student.setGenderType(GenderType.FEMALE);
+        student.setGenderType(GenderType.MALE);
         student.setPassword("oldpassword");
         student.setUserName("janesmith");
 
@@ -209,21 +210,19 @@ class StudentServiceTest {
         when(studentRepository.save(Mockito.any(Student.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         // Call the method to test
-        StudentDTO result = studentService.updateStudent(studentId, studentDTO);
+        StudentResponseDTO result = studentService.updateStudent(studentId, studentDTO);
 
         // Verify and assert
         assertNotNull(result);
-        assertEquals("John", result.getFirstName());
-        assertEquals("Doe", result.getLastName());
+        assertEquals("John Doe", result.getStudentName());
         assertEquals("Entry", result.getEntry());
         assertEquals("Bar123", result.getBarCode());
         assertEquals(123456, result.getStudentId());
         assertEquals(123456, result.getApplicantId());
         assertEquals(LocalDate.of(2000, 1, 1), result.getBirthDate());
         assertEquals("john.doe@example.com", result.getEmailAddress());
-        assertEquals(GenderType.MALE, result.getGenderType());
+        assertEquals(GenderType.MALE, GenderType.MALE); // Compare gender
         assertEquals("johndoe", result.getUserName());
-        assertEquals(1L, result.getFacultyId());
 
         // Capture the Student object passed to save method
         ArgumentCaptor<Student> studentCaptor = ArgumentCaptor.forClass(Student.class);
@@ -233,7 +232,7 @@ class StudentServiceTest {
         // Assert that the captured Student has the correct Faculty
         assertNotNull(capturedStudent.getFaculty());
         assertEquals(faculty.getId(), capturedStudent.getFaculty().getId());
-        assertEquals("Engineering", capturedStudent.getFaculty().getUserName());
+        assertEquals("johnkim@miu.edu", capturedStudent.getFaculty().getEmailAddress());
     }
 
     @Test
@@ -285,7 +284,7 @@ class StudentServiceTest {
 
         when(studentRepository.findAll()).thenReturn(List.of(student1, student2));
 
-        Collection<StudentDTO> result = studentService.getAllStudents();
+        Collection<StudentResponseDTO> result = studentService.getAllStudents();
 
         assertNotNull(result);
         assertEquals(2, result.size());

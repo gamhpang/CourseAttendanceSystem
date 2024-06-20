@@ -11,7 +11,7 @@ import java.util.Iterator;
 public class StudentWithRegisterCourseAdaptor {
     public StudentWithRegisterCourseDTO getStudentWithRegisterCourseDTOFromCourseRegistration(Collection<CourseRegistration> courseRegistrationDTOCollection, Student stu){
         StudentWithRegisterCourseDTO stuWithRegCourseDTO = new StudentWithRegisterCourseDTO();
-        stuWithRegCourseDTO.setStudent(StudentAdapter.getStudentDTOFromStudent(stu));
+        stuWithRegCourseDTO.setStudent(StudentAdapter.getStudentResponseDTOFromStudent(stu));
 
         return stuWithRegCourseDTO;
     }

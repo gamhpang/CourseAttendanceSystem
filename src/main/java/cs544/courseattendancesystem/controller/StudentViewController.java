@@ -74,7 +74,7 @@ public class StudentViewController {
     }
 
     @PostMapping("/course-registrations")
-    public ResponseEntity<Void> createCourseRegistration(@RequestBody CourseRegistrationDTO dto) {
+    public ResponseEntity<CourseRegistrationDTO> createCourseRegistration(@RequestBody CourseRegistrationDTO dto) {
         courseRegistrationService.createCourseRegistration(dto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }

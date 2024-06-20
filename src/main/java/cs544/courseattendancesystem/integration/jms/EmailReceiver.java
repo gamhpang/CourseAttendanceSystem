@@ -23,8 +23,7 @@ public class EmailReceiver {
 
     @JmsListener(destination = "emailQueue")
     public void receive(String message) {
-        String[] parts = message.split(":", 2);
-        String[] confirmationParts = parts[0].split(":", 3);
+        String[] confirmationParts = message.split(":", 3);
         String to = confirmationParts[0];
         String subject = confirmationParts[1];
         String body = confirmationParts[2];

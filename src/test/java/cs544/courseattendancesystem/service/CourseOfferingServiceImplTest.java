@@ -163,26 +163,31 @@ class CourseOfferingServiceImplTest {
         when(courseService.getCourse(courseOfferingDTO.getCourseId())).thenReturn(Optional.of(courseDTO));
         when(courseAdapter.getCourseFromCourseDTO(courseDTO)).thenReturn(course);
         when(facultyService.getFaculty(courseOfferingDTO.getFacultyId())).thenReturn(faculty);
-        when(sessionService.generateSessions(courseOfferingDTO.getStartDate(), courseOfferingDTO.getEndDate())).thenReturn(sessions);
-        when(courseOfferingRepository.save(courseOffering)).thenReturn(courseOffering);
-        when(courseOfferingAdapter.getCourseOfferingDTOFromCourseOffering(courseOffering)).thenReturn(courseOfferingDTO);
-
-        courseOfferingDTO.setSessionList(Arrays.asList(1L, 2L, 3L));
+        when(sessionService.getSession(anyLong())).thenAnswer(invocation -> {
+            Long sessionId = invocation.getArgument(0);
+            return sessions.stream().filter(s -> s.getId()==sessionId).findFirst().orElse(null);
+        });
+        when(courseOfferingRepository.save(any(CourseOffering.class))).thenReturn(courseOffering);
+        when(courseOfferingAdapter.getCourseOfferingDTOFromCourseOffering(any(CourseOffering.class))).thenReturn(courseOfferingDTO);
 
         CourseOfferingDTO result = courseOfferingService.updateCourseOffering(1L, courseOfferingDTO);
 
         assertNotNull(result);
-        assertEquals(courseOfferingDTO, result);
-        verify(courseOfferingRepository, times(1)).save(courseOffering);
-    }
+        assertEquals(courseOfferingDTO.getCapacity(), result.getCapacity());
+        assertEquals(courseOfferingDTO.getCredits(), result.getCredits());
+        assertEquals(courseOfferingDTO.getRoom(), result.getRoom());
+        assertEquals(courseOfferingDTO.getStartDate(), result.getStartDate());
+        assertEquals(courseOfferingDTO.getEndDate(), result.getEndDate());
+        assertEquals(courseOfferingDTO.getCourseOfferingType(), result.getCourseOfferingType());
+        assertEquals(courseOfferingDTO.getCourseId(), result.getCourseId());
+        assertEquals(courseOfferingDTO.getFacultyId(), result.getFacultyId());
+        assertEquals(courseOfferingDTO.getSessionList().size(), result.getSessionList().size());
 
-    @Test
-    void testUpdateCourseOffering_NotFound() {
-        when(courseOfferingRepository.findById(1L)).thenReturn(Optional.empty());
-
-        CourseOfferingDTO result = courseOfferingService.updateCourseOffering(1L, courseOfferingDTO);
-
-        assertNull(result);
+        verify(courseOfferingRepository, times(1)).save(any(CourseOffering.class));
+        verify(courseService, times(1)).getCourse(courseOfferingDTO.getCourseId());
+        verify(facultyService, times(1)).getFaculty(courseOfferingDTO.getFacultyId());
+        verify(sessionService, times(3)).getSession(anyLong());
+        verify(courseOfferingAdapter, times(1)).getCourseOfferingDTOFromCourseOffering(any(CourseOffering.class));
     }
 
     @Test

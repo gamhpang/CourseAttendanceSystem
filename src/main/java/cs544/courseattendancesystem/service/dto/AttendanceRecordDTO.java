@@ -12,5 +12,7 @@ public class AttendanceRecordDTO {
     private long studentId;
     private long locationId;
     private long sessionId;
+    private String locationName;
+
     public AttendanceRecordDTO(){}
 }

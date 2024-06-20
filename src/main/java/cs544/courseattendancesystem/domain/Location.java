@@ -18,7 +18,7 @@ public class Location {
     @JoinColumn(name = "type_id")
     private LocationType locationType;
 
-    protected Location(){}
+    public Location(){}
     public Location(String name, int capacity) {
         this.name = name;
         this.capacity = capacity;

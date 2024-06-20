@@ -1,5 +1,6 @@
 package cs544.courseattendancesystem.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import cs544.courseattendancesystem.service.StudentService;
 import cs544.courseattendancesystem.service.dto.StudentDTO;
 import org.junit.jupiter.api.Test;
@@ -13,6 +14,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -35,23 +38,28 @@ class StudentControllerTest {
     private StudentService studentService;
 
     @Test
-    public void testCreateStudent() throws Exception {
-        // Set up data
+    void testCreateStudent_Success() throws Exception {
+        // Prepare test data
         StudentDTO studentDTO = new StudentDTO();
-        studentDTO.setFirstName("John");
-        studentDTO.setLastName("Doe");
-        studentDTO.setFacultyId(1L);
+        studentDTO.setId(1L);
+        studentDTO.setFirstName("John Doe");
+        studentDTO.setEmailAddress("johndoe@example.com");
 
-        when(studentService.createStudentByDTO(Mockito.any(StudentDTO.class))).thenReturn(studentDTO);
+        StudentDTO createdStudentDTO = new StudentDTO();
+        createdStudentDTO.setId(1L);
+        createdStudentDTO.setFirstName("John Doe");
+        createdStudentDTO.setEmailAddress("johndoe@example.com");
 
-        // Perform the HTTP request and verify the response
-        mockMvc.perform(MockMvcRequestBuilders.post("/sys-admin/students/create")
+        // Mock the service method
+        Mockito.when(studentService.createStudentByDTO(studentDTO)).thenReturn(createdStudentDTO);
+
+        // Perform the POST request and check the response
+        mockMvc.perform(post("/sys-admin/students")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"firstName\":\"John\",\"lastName\":\"Doe\",\"facultyId\":1}"))
-                .andExpect(status().isOk())  // Assert that the response status is 200 OK
-                .andExpect(jsonPath("$.firstName").value("John"))
-                .andExpect(jsonPath("$.lastName").value("Doe"))
-                .andExpect(jsonPath("$.facultyId").value(1));
+                        .content(asJsonString(studentDTO)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(1L))
+                .andExpect(jsonPath("$.firstName").value("John Doe"));
     }
 
     @Test
@@ -117,6 +125,14 @@ class StudentControllerTest {
                 .andExpect(status().isOk());
 
         Mockito.verify(studentService, Mockito.times(1)).deleteStudent(1L);
+    }
+
+    public static String asJsonString(final Object obj) {
+        try {
+            return new ObjectMapper().writeValueAsString(obj);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

@@ -17,7 +17,6 @@ public class FacultyAdapter {
         faculty.setEmailAddress(facultyDTO.getEmailAddress());
         faculty.setHobbies(facultyDTO.getHobbies());
         faculty.setGenderType(facultyDTO.getGenderType());
-        faculty.setUserName(facultyDTO.getUserName());
 //        facultyDTO.getBirthDate(),facultyDTO.getEmailAddress(), facultyDTO.getFirstName(),facultyDTO.getLastName(),facultyDTO.getUserName(),facultyDTO.getSalutation(),facultyDTO.getHobbies());
 
         return faculty;

@@ -30,11 +30,14 @@ public class AttendanceRecordServiceImpl implements AttendanceRecordService {
 
     @Override
     public AttendanceRecordDTO createAttendance(AttendanceRecordDTO attendanceRecordDTO) {
+        System.out.println(attendanceRecordDTO);
+        System.out.println("------------------------");
         AttendanceRecord record = new AttendanceRecord();
         record.setScanDateTime(attendanceRecordDTO.getScanDateTime());
         record.setStudent(studentService.getStudentById(attendanceRecordDTO.getStudentId()));
         record.setLocation(locationService.getLocationById(attendanceRecordDTO.getLocationId()));
         record.setSession(sessionService.getSession(attendanceRecordDTO.getSessionId()));
+        System.out.println(record+"0-------------------------");
         attendanceRecordRepository.save(record);
         AttendanceRecordDTO dto = attendanceRecordAdapter.getAttendanceRecordDTOFromAttendanceRecord(record);
         return dto;
@@ -68,8 +71,6 @@ public class AttendanceRecordServiceImpl implements AttendanceRecordService {
 
     @Override
     public Collection<AttendanceRecordFullDataDTO> getAttendanceRecordByStudentId(long studentId) {
-        System.out.println("At the service........." + studentId);
-
         return attendanceRecordAdapter.getAllAttendanceRecord(attendanceRecordRepository.findByStudentId(studentId));
     }
 }

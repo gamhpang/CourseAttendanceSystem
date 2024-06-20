@@ -1,5 +1,6 @@
 package cs544.courseattendancesystem.controller;
 
+import cs544.courseattendancesystem.exception.MissingHeaderException;
 import cs544.courseattendancesystem.exception.ResourceNotFoundException;
 import cs544.courseattendancesystem.service.*;
 import cs544.courseattendancesystem.service.dto.*;
@@ -36,8 +37,10 @@ public class StudentViewController {
     private AttendanceRecordService attendanceRecordService;
 
     @GetMapping("/course-offerings/{offeringId}/attendance")
-    public ResponseEntity<?> getAttendanceFromCourseOfferings(@RequestHeader long studentId, @PathVariable long offeringId) {
-
+    public ResponseEntity<?> getAttendanceFromCourseOfferings(@RequestHeader(value = "studentId", required = false) Long studentId, @PathVariable long offeringId) {
+        if (studentId == null) {
+            throw new MissingHeaderException("studentId");
+        }
         StudentDTO studentDTO = studentService.getStudent(studentId);
         if (studentDTO == null) {
             throw new ResourceNotFoundException("Student not found with Id: " + studentId);
@@ -62,22 +65,26 @@ public class StudentViewController {
 
 
     @GetMapping("/course-offerings")
-    public ResponseEntity<List<CourseWithGradeDTO>> getCoursesWithGrade(@RequestHeader long studentId){
-
+    public ResponseEntity<List<CourseWithGradeDTO>> getCoursesWithGrade(@RequestHeader(value = "studentId", required = false) Long studentId){
+        if (studentId == null) {
+            throw new MissingHeaderException("studentId");
+        }
         List<CourseWithGradeDTO> courseWithGradeDTOS = courseRegistrationService.getCourseOfferingWithGradeDTO(studentId);
         return new ResponseEntity<>(courseWithGradeDTOS, HttpStatus.OK);
     }
 
     @PostMapping("/course-registrations")
-    public ResponseEntity<Void> createCourseRegistration(@RequestBody CourseRegistrationDTO dto) {
+    public ResponseEntity<CourseRegistrationDTO> createCourseRegistration(@RequestBody CourseRegistrationDTO dto) {
         courseRegistrationService.createCourseRegistration(dto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @GetMapping("/attendance-records")
-    public ResponseEntity<?> getAllAttendanceRecord(@RequestHeader long studentId) {
+    public ResponseEntity<?> getAllAttendanceRecord(@RequestHeader(value = "studentId", required = false) Long studentId) {
+        if (studentId == null) {
+            throw new MissingHeaderException("studentId");
+        }
         try {
-            System.out.println("Student ID: " + studentId);
             Collection<AttendanceRecordFullDataDTO> attendanceRecordDTOS = attendanceRecordService.getAttendanceRecordByStudentId(studentId);
             return new ResponseEntity<Collection<AttendanceRecordFullDataDTO>>(attendanceRecordDTOS, HttpStatus.OK);
         } catch (ResourceNotFoundException e) {

@@ -13,7 +13,7 @@ import java.time.LocalTime;
 @Data
 public class Session {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private long id;
 
     private LocalDate sessionDate;

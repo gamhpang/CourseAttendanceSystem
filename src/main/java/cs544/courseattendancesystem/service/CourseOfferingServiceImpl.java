@@ -3,6 +3,7 @@ package cs544.courseattendancesystem.service;
 import cs544.courseattendancesystem.domain.*;
 import cs544.courseattendancesystem.exception.ResourceNotFoundException;
 import cs544.courseattendancesystem.repository.CourseOfferingRepository;
+import cs544.courseattendancesystem.repository.SessionRepository;
 import cs544.courseattendancesystem.service.adapter.CourseAdapter;
 import cs544.courseattendancesystem.service.adapter.CourseOfferingAdapter;
 import cs544.courseattendancesystem.service.dto.CourseDTO;
@@ -35,8 +36,6 @@ public class CourseOfferingServiceImpl implements CourseOfferingService {
     private CourseAdapter courseAdapter;
     @Autowired
     private CourseOfferingAdapter courseOfferingAdapter;
-
-
 
     @Override
     public CourseOfferingDTO createCourseOffering(CourseOfferingDTO courseOfferingDTO) {
@@ -118,8 +117,8 @@ public class CourseOfferingServiceImpl implements CourseOfferingService {
     public CourseOfferingDTO updateCourseOffering(long courseOfferingId, CourseOfferingDTO courseOfferingDTO) {
         CourseOffering courseOffering = courseOfferingRepository.findById(courseOfferingId).orElse(null);
         if (courseOffering != null) {
-            boolean datesChanged = !courseOffering.getStartDate().equals(courseOfferingDTO.getStartDate()) ||
-                    !courseOffering.getEndDate().equals(courseOfferingDTO.getEndDate());
+//            boolean datesChanged = !courseOffering.getStartDate().equals(courseOfferingDTO.getStartDate()) ||
+//                    !courseOffering.getEndDate().equals(courseOfferingDTO.getEndDate());
 
             //Update the courseOffering Data
             courseOffering.setCapacity(courseOfferingDTO.getCapacity());
@@ -135,19 +134,21 @@ public class CourseOfferingServiceImpl implements CourseOfferingService {
             Faculty faculty = facultyService.getFaculty(courseOfferingDTO.getFacultyId());
             courseOffering.setFaculty(faculty);
 
-            if (datesChanged) {
-                // Remove existing sessions and generate new ones if the dates have changed
-                courseOffering.getSessionList().clear();
-                List<Session> sessions = sessionService.generateSessions(courseOfferingDTO.getStartDate(), courseOfferingDTO.getEndDate());
-                courseOffering.setSessionList(sessions);
-            } else {
+//            if (datesChanged) {
+//                // Remove existing sessions and generate new ones if the dates have changed
+//                //courseOffering.getSessionList().clear();
+//                System.out.println(datesChanged);
+//                System.out.println(courseOfferingDTO.getStartDate()+courseOfferingDTO.getEndDate().toString());
+//                List<Session> sessions = sessionService.generateSessions(courseOfferingDTO.getStartDate(), courseOfferingDTO.getEndDate());
+//                courseOffering.setSessionList(sessions);
+//            }
+////            } else {
                 //Update the session List based on the provided DTO
                 List<Session> sessionList = new ArrayList<>();
                 courseOfferingDTO.getSessionList().forEach(session -> {
                     sessionList.add(sessionService.getSession(session));
                 });
                 courseOffering.setSessionList(sessionList);
-            }
             courseOfferingRepository.save(courseOffering);
             return courseOfferingAdapter.getCourseOfferingDTOFromCourseOffering(courseOffering);
         }

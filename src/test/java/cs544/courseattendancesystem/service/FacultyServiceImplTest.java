@@ -80,7 +80,6 @@ class FacultyServiceImplTest {
         facultyDTO.setBirthDate(LocalDate.of(1990, 1, 1));
         facultyDTO.setEmailAddress("john.doe@example.com");
         facultyDTO.setSalutation("Mr.");
-        facultyDTO.setUserName("john.doe");
         facultyDTO.setHobbies(Arrays.asList("Reading", "Gardening"));
         facultyDTO.setGenderType(MALE);
 

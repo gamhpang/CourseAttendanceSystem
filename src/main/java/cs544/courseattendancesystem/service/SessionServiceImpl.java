@@ -34,11 +34,15 @@ public class SessionServiceImpl implements SessionService{
         for(LocalDate date = startDate; !date.isAfter(endDate); date=date.plusDays(1)){
             if(date.getDayOfWeek() != DayOfWeek.SUNDAY){
                 //// Add morning session for all days exceptSunday
-                sessions.add(new Session(date,morningStartTime,morningEndTime));
+               Session session =  new Session(date,morningStartTime,morningEndTime);
+               sessionRepository.save(session);
+               sessions.add(session);
 
                 // Add afternoon session for all days except Saturday and Sunday
                 if(date.getDayOfWeek() != DayOfWeek.SATURDAY){
-                    sessions.add(new Session(date,afternoonStartTime,afternoonEndTime));
+                    Session s = new Session(date,afternoonStartTime,afternoonEndTime);
+                    sessionRepository.save(s);
+                    sessions.add(s);
                 }
             }
         }

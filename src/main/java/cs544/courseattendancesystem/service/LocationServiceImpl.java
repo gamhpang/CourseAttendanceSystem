@@ -1,5 +1,6 @@
 package cs544.courseattendancesystem.service;
 
+import cs544.courseattendancesystem.domain.AuditData;
 import cs544.courseattendancesystem.domain.Location;
 import cs544.courseattendancesystem.domain.LocationType;
 import cs544.courseattendancesystem.exception.ResourceNotFoundException;
@@ -9,8 +10,11 @@ import cs544.courseattendancesystem.service.adapter.LocationAdapter;
 import cs544.courseattendancesystem.service.dto.LocationDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Slf4j
@@ -30,6 +34,16 @@ public class LocationServiceImpl implements LocationService {
 
         Location location = new Location(name, capacity);
         location.setLocationType(locationType);
+
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(authentication.isAuthenticated()){
+            AuditData auditData = new AuditData();
+            auditData.setCreatedBy(authentication.getName());
+            auditData.setCreatedOn(LocalDateTime.now());
+            location.setAuditData(auditData);
+        }
+
         locationRepository.save(location);
 
         return LocationAdapter.getLocationDTOFromLocation(location);
@@ -40,6 +54,16 @@ public class LocationServiceImpl implements LocationService {
         Location location = findLocationById(locationDTO.getLocationId());
         location.setName(locationDTO.getName());
         location.setCapacity(locationDTO.getCapacity());
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(authentication.isAuthenticated()){
+            AuditData auditData = location.getAuditData();
+            System.out.println("Audit=======================" + auditData);
+            auditData.setUpdatedBy(authentication.getName());
+            auditData.setUpdatedOn(LocalDateTime.now());
+            location.setAuditData(auditData);
+        }
+
         locationRepository.save(location);
 
         return LocationAdapter.getLocationDTOFromLocation(location);

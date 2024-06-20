@@ -1,6 +1,7 @@
 package cs544.courseattendancesystem.service;
 
 
+import cs544.courseattendancesystem.domain.AuditData;
 import cs544.courseattendancesystem.domain.Faculty;
 import cs544.courseattendancesystem.domain.Student;
 import cs544.courseattendancesystem.exception.ResourceNotFoundException;
@@ -10,7 +11,13 @@ import cs544.courseattendancesystem.repository.StudentRepository;
 import cs544.courseattendancesystem.service.adapter.StudentAdapter;
 import cs544.courseattendancesystem.service.dto.StudentDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.neo4j.Neo4jProperties;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -29,6 +36,10 @@ public class StudentServiceImpl implements StudentService{
 
     @Override
     public StudentDTO createStudentByDTO(StudentDTO studentDTO) {
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+//        System.out.println("Authen name => ==============================" + authentication.getName());
+
         Optional<Faculty> faculty = facultyRepository.findById(studentDTO.getFacultyId());
         System.out.println("This is Faculty => " + faculty);
         if(faculty.isEmpty()){
@@ -36,6 +47,13 @@ public class StudentServiceImpl implements StudentService{
         }
         Student student = StudentAdapter.getStudentFromStudentDTO(studentDTO);
         student.setFaculty(faculty.get());
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(authentication.isAuthenticated()){
+            AuditData auditData = new AuditData();
+            auditData.setCreatedBy(authentication.getName());
+            auditData.setCreatedOn(LocalDateTime.now());
+            student.setAuditData(auditData);
+        }
         studentRepository.save(student);
         System.out.println("Save successfully...");
         return StudentAdapter.getStudentDTOFromStudent(student);
@@ -83,6 +101,15 @@ public class StudentServiceImpl implements StudentService{
         student.setFirstName(studentDTO.getFirstName());
         student.setLastName(studentDTO.getLastName());
         student.setUserName(studentDTO.getUserName());
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(authentication.isAuthenticated()){
+            AuditData auditData = student.getAuditData();
+            auditData.setUpdatedBy(authentication.getName());
+            auditData.setUpdatedOn(LocalDateTime.now());
+            student.setAuditData(auditData);
+        }
+
         studentRepository.save(student);
         System.out.println("Save Successfully.....");
         return StudentAdapter.getStudentDTOFromStudent(student);

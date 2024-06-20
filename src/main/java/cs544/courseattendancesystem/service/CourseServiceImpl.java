@@ -1,13 +1,17 @@
 package cs544.courseattendancesystem.service;
 
+import cs544.courseattendancesystem.domain.AuditData;
 import cs544.courseattendancesystem.domain.Course;
 import cs544.courseattendancesystem.repository.CourseRepository;
 import cs544.courseattendancesystem.service.adapter.CourseAdapter;
 import cs544.courseattendancesystem.service.dto.CourseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -33,6 +37,15 @@ public class CourseServiceImpl implements CourseService{
             }
         });
         course.setPrerequisites(preCourses);
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(authentication.isAuthenticated()){
+            AuditData auditData = new AuditData();
+            auditData.setCreatedBy(authentication.getName());
+            auditData.setCreatedOn(LocalDateTime.now());
+            course.setAuditData(auditData);
+        }
+
         courseRepository.save(course);
         return courseAdapter.getCourseDTOFromCourse(course);
     }
@@ -65,6 +78,15 @@ public class CourseServiceImpl implements CourseService{
                 }
             });
             course.setPrerequisites(preCourses);
+
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if(authentication.isAuthenticated()){
+                AuditData auditData = course.getAuditData();
+                auditData.setUpdatedBy(authentication.getName());
+                auditData.setUpdatedOn(LocalDateTime.now());
+                course.setAuditData(auditData);
+            }
+
            courseRepository.save(course);
             return courseAdapter.getCourseDTOFromCourse(course);
         }

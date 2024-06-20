@@ -1,5 +1,6 @@
 package cs544.courseattendancesystem.controller;
 
+import cs544.courseattendancesystem.config.BaseTest;
 import cs544.courseattendancesystem.domain.CourseOfferingType;
 import cs544.courseattendancesystem.service.CourseRegistrationService;
 import cs544.courseattendancesystem.service.dto.CourseOfferingWithDetailsDTO;
@@ -24,14 +25,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class AdminControllerTest {
+class AdminControllerTest extends BaseTest {
 
     @Autowired
     private MockMvc mockMvc;
 
     @MockBean
     private CourseRegistrationService courseRegistrationService;
-
     @Test
     void testGetAllCourseOfferingsWithDetails() throws Exception {
         // Prepare test data

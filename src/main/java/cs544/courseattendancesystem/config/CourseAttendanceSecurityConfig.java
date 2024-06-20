@@ -33,10 +33,9 @@ public class CourseAttendanceSecurityConfig {
                         auth -> {
                             auth
                                     .requestMatchers("/auth/**").permitAll()
-                                    .requestMatchers("/sys-admin/**").permitAll()
+                                    .requestMatchers("/sys-admin/**").authenticated()
                                     .requestMatchers("/admin-view/**").authenticated()
                                     .requestMatchers("/student-view/**").authenticated();
-//                                    .requestMatchers("/adsweb/api/v1/get/**").authenticated();
                         }
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

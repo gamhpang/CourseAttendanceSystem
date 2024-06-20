@@ -49,6 +49,7 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+
         <!-- Security JWT -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

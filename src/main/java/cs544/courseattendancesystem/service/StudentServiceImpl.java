@@ -36,10 +36,6 @@ public class StudentServiceImpl implements StudentService{
 
     @Override
     public StudentDTO createStudentByDTO(StudentDTO studentDTO) {
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-//        System.out.println("Authen name => ==============================" + authentication.getName());
-
         Optional<Faculty> faculty = facultyRepository.findById(studentDTO.getFacultyId());
         System.out.println("This is Faculty => " + faculty);
         if(faculty.isEmpty()){
@@ -105,9 +101,11 @@ public class StudentServiceImpl implements StudentService{
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if(authentication.isAuthenticated()){
             AuditData auditData = student.getAuditData();
-            auditData.setUpdatedBy(authentication.getName());
-            auditData.setUpdatedOn(LocalDateTime.now());
-            student.setAuditData(auditData);
+            if(auditData != null){
+                auditData.setUpdatedBy(authentication.getName());
+                auditData.setUpdatedOn(LocalDateTime.now());
+                student.setAuditData(auditData);
+            }
         }
 
         studentRepository.save(student);

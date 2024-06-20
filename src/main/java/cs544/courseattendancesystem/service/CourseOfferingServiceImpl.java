@@ -143,9 +143,12 @@ public class CourseOfferingServiceImpl implements CourseOfferingService {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             if (authentication.isAuthenticated()) {
                 AuditData auditData = courseOffering.getAuditData();
-                auditData.setUpdatedBy(authentication.getName());
-                auditData.setUpdatedOn(LocalDateTime.now());
-                courseOffering.setAuditData(auditData);
+                if(auditData!=null){
+                    auditData.setUpdatedBy(authentication.getName());
+                    auditData.setUpdatedOn(LocalDateTime.now());
+                    courseOffering.setAuditData(auditData);
+                }
+
             }
 
             courseOfferingRepository.save(courseOffering);

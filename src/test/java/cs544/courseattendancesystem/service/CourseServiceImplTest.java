@@ -8,8 +8,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
+import org.springframework.test.context.web.WebAppConfiguration;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -17,9 +19,12 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.*;
 
+@SpringJUnitConfig
+@WebAppConfiguration
 public class CourseServiceImplTest {
 
     @Mock
@@ -45,10 +50,11 @@ public class CourseServiceImplTest {
     }
 
     @Test
+    @WithMockUser
     public void testCreateCourse() {
-        Mockito.when(courseRepository.save(any(Course.class))).thenReturn(course);
-        Mockito.when(courseAdapter.getCourseDTOFromCourse(any(Course.class))).thenReturn(courseDTO);
-        Mockito.when(courseRepository.findById(anyLong())).thenReturn(Optional.of(course));
+        when(courseRepository.save(any(Course.class))).thenReturn(course);
+        when(courseAdapter.getCourseDTOFromCourse(any(Course.class))).thenReturn(courseDTO);
+        when(courseRepository.findById(anyLong())).thenReturn(Optional.of(course));
 
         CourseDTO createdCourse = courseService.createCourse(courseDTO);
 
@@ -58,8 +64,8 @@ public class CourseServiceImplTest {
 
     @Test
     public void testGetCourse_Found() {
-        Mockito.when(courseRepository.findById(1L)).thenReturn(Optional.of(course));
-        Mockito.when(courseAdapter.getCourseDTOFromCourse(any(Course.class))).thenReturn(courseDTO);
+        when(courseRepository.findById(1L)).thenReturn(Optional.of(course));
+        when(courseAdapter.getCourseDTOFromCourse(any(Course.class))).thenReturn(courseDTO);
 
         Optional<CourseDTO> foundCourse = courseService.getCourse(1L);
 
@@ -69,7 +75,7 @@ public class CourseServiceImplTest {
 
     @Test
     public void testGetCourse_NotFound() {
-        Mockito.when(courseRepository.findById(1L)).thenReturn(Optional.empty());
+        when(courseRepository.findById(1L)).thenReturn(Optional.empty());
 
         Optional<CourseDTO> foundCourse = courseService.getCourse(1L);
 
@@ -81,24 +87,22 @@ public class CourseServiceImplTest {
         List<Course> courseList = new ArrayList<>();
         courseList.add(course);
 
-        List<CourseDTO> courseDTOList = new ArrayList<>();
-        courseDTOList.add(courseDTO);
-
-        Mockito.when(courseRepository.findAll()).thenReturn(courseList);
-        Mockito.when(courseAdapter.getCourseDTOFromCourse(any(Course.class))).thenReturn(courseDTO);
+        when(courseRepository.findAll()).thenReturn(courseList);
+        when(courseAdapter.getCourseDTOFromCourse(any(Course.class))).thenReturn(courseDTO);
 
         Collection<CourseDTO> allCourses = courseService.getAllCourses();
 
         assertNotNull(allCourses);
         assertEquals(1, allCourses.size());
+        assertTrue(allCourses.contains(courseDTO));
     }
 
     @Test
+    @WithMockUser
     public void testUpdateCourse_Found() {
-        Mockito.when(courseRepository.findById(1L)).thenReturn(Optional.of(course));
-        Mockito.when(courseRepository.save(any(Course.class))).thenReturn(course);
-        Mockito.when(courseAdapter.getCourseDTOFromCourse(any(Course.class))).thenReturn(courseDTO);
-        Mockito.when(courseRepository.findById(anyLong())).thenReturn(Optional.of(course));
+        when(courseRepository.findById(1L)).thenReturn(Optional.of(course));
+        when(courseRepository.save(any(Course.class))).thenReturn(course);
+        when(courseAdapter.getCourseDTOFromCourse(any(Course.class))).thenReturn(courseDTO);
 
         CourseDTO updatedCourse = courseService.updateCourse(1L, courseDTO);
 
@@ -108,7 +112,7 @@ public class CourseServiceImplTest {
 
     @Test
     public void testUpdateCourse_NotFound() {
-        Mockito.when(courseRepository.findById(1L)).thenReturn(Optional.empty());
+        when(courseRepository.findById(1L)).thenReturn(Optional.empty());
 
         CourseDTO updatedCourse = courseService.updateCourse(1L, courseDTO);
 
@@ -117,10 +121,10 @@ public class CourseServiceImplTest {
 
     @Test
     public void testDeleteCourse() {
-        Mockito.doNothing().when(courseRepository).deleteById(1L);
+        doNothing().when(courseRepository).deleteById(1L);
 
         courseService.deleteCourse(1L);
 
-        Mockito.verify(courseRepository, Mockito.times(1)).deleteById(1L);
+        verify(courseRepository, times(1)).deleteById(1L);
     }
 }

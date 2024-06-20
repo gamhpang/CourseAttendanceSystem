@@ -13,6 +13,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Arrays;
@@ -41,6 +42,7 @@ public class LocationServiceTest {
     }
 
     @Test
+    @WithMockUser
     public void testCreateLocation() {
         // Mocking behavior for LocationTypeRepository
         LocationType mockLocationType = new LocationType();
@@ -63,6 +65,7 @@ public class LocationServiceTest {
     }
 
     @Test
+    @WithMockUser
     public void testUpdateLocation() {
         Location existingLocation = new Location("Existing Location", 50);
         existingLocation.setLocationType(new LocationType("Existing Location Type"));

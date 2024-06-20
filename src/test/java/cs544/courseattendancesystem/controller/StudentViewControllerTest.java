@@ -11,6 +11,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
@@ -48,6 +49,7 @@ public class StudentViewControllerTest {
     private AttendanceRecordService attendanceRecordService;
 
     @Test
+    @WithMockUser
     void testGetCourseWithGrade() throws Exception {
         // Prepare test data
         List<CourseWithGradeDTO> courseWithGrades = Arrays.asList(
@@ -93,6 +95,7 @@ public class StudentViewControllerTest {
     }
 
     @Test
+    @WithMockUser
     void testCreateCourseRegistration() throws Exception {
         // Prepare test data
         CourseRegistrationDTO courseRegistrationDTO = new CourseRegistrationDTO();
@@ -111,6 +114,7 @@ public class StudentViewControllerTest {
     }
 
     @Test
+    @WithMockUser
     void testGetCourseOfferingByOfferingId() throws Exception {
         // Prepare test data
         long offeringId = 1L;
@@ -126,6 +130,7 @@ public class StudentViewControllerTest {
     }
 
     @Test
+    @WithMockUser
     void testGetAllAttendanceRecord() throws Exception {
         // Prepare test data
         long studentId = 1L;
@@ -142,6 +147,7 @@ public class StudentViewControllerTest {
     }
 
     @Test
+    @WithMockUser
     void testGetAttendanceFromCourseOfferings_StudentNotFound() throws Exception {
         long studentId = 1L;
         long offeringId = 1L;
@@ -154,6 +160,7 @@ public class StudentViewControllerTest {
     }
 
     @Test
+    @WithMockUser
     void testGetAttendanceFromCourseOfferings_CourseOfferingNotFound() throws Exception {
         long studentId = 1L;
         long offeringId = 1L;

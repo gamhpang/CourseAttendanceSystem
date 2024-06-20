@@ -82,9 +82,11 @@ public class CourseServiceImpl implements CourseService{
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             if(authentication.isAuthenticated()){
                 AuditData auditData = course.getAuditData();
-                auditData.setUpdatedBy(authentication.getName());
-                auditData.setUpdatedOn(LocalDateTime.now());
-                course.setAuditData(auditData);
+                if(auditData != null){
+                    auditData.setUpdatedBy(authentication.getName());
+                    auditData.setUpdatedOn(LocalDateTime.now());
+                    course.setAuditData(auditData);
+                }
             }
 
            courseRepository.save(course);

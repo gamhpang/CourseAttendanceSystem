@@ -1,10 +1,6 @@
 package cs544.courseattendancesystem.service;
 
-import cs544.courseattendancesystem.domain.Course;
-import cs544.courseattendancesystem.domain.CourseOffering;
-import cs544.courseattendancesystem.domain.CourseOfferingType;
-import cs544.courseattendancesystem.domain.Faculty;
-import cs544.courseattendancesystem.domain.Session;
+import cs544.courseattendancesystem.domain.*;
 import cs544.courseattendancesystem.exception.ResourceNotFoundException;
 import cs544.courseattendancesystem.repository.CourseOfferingRepository;
 import cs544.courseattendancesystem.service.adapter.CourseAdapter;
@@ -18,9 +14,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.test.context.support.WithMockUser;
 
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
 
@@ -70,6 +68,8 @@ class CourseOfferingServiceImplTest {
     private Faculty faculty;
     private List<Session> sessions;
 
+    private AuditData auditData;
+
     @BeforeEach
     public void setUp() {
         // Initialize test data before each test
@@ -88,6 +88,7 @@ class CourseOfferingServiceImplTest {
     }
 
     @Test
+    @WithMockUser
     void testCreateCourseOffering_Success() {
         //Define behaviour
         when(courseService.getCourse(courseOfferingDTO.getCourseId())).thenReturn(Optional.of(courseDTO));
@@ -158,6 +159,7 @@ class CourseOfferingServiceImplTest {
     }
 
     @Test
+    @WithMockUser
     void testUpdateCourseOffering_Success() {
         when(courseOfferingRepository.findById(1L)).thenReturn(Optional.of(courseOffering));
         when(courseService.getCourse(courseOfferingDTO.getCourseId())).thenReturn(Optional.of(courseDTO));
@@ -167,6 +169,7 @@ class CourseOfferingServiceImplTest {
             Long sessionId = invocation.getArgument(0);
             return sessions.stream().filter(s -> s.getId()==sessionId).findFirst().orElse(null);
         });
+
         when(courseOfferingRepository.save(any(CourseOffering.class))).thenReturn(courseOffering);
         when(courseOfferingAdapter.getCourseOfferingDTOFromCourseOffering(any(CourseOffering.class))).thenReturn(courseOfferingDTO);
 

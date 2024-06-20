@@ -58,10 +58,11 @@ public class LocationServiceImpl implements LocationService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if(authentication.isAuthenticated()){
             AuditData auditData = location.getAuditData();
-            System.out.println("Audit=======================" + auditData);
-            auditData.setUpdatedBy(authentication.getName());
-            auditData.setUpdatedOn(LocalDateTime.now());
-            location.setAuditData(auditData);
+            if(auditData != null){
+                auditData.setUpdatedBy(authentication.getName());
+                auditData.setUpdatedOn(LocalDateTime.now());
+                location.setAuditData(auditData);
+            }
         }
 
         locationRepository.save(location);

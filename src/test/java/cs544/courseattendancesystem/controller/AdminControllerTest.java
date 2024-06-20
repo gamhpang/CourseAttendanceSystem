@@ -1,6 +1,5 @@
 package cs544.courseattendancesystem.controller;
 
-import cs544.courseattendancesystem.config.BaseTest;
 import cs544.courseattendancesystem.domain.CourseOfferingType;
 import cs544.courseattendancesystem.service.CourseRegistrationService;
 import cs544.courseattendancesystem.service.dto.CourseOfferingWithDetailsDTO;
@@ -12,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
@@ -25,7 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class AdminControllerTest extends BaseTest {
+class AdminControllerTest{
 
     @Autowired
     private MockMvc mockMvc;
@@ -33,6 +33,7 @@ class AdminControllerTest extends BaseTest {
     @MockBean
     private CourseRegistrationService courseRegistrationService;
     @Test
+    @WithMockUser
     void testGetAllCourseOfferingsWithDetails() throws Exception {
         // Prepare test data
         Collection<CourseOfferingWithDetailsDTO> courseOfferings = Arrays.asList(
@@ -75,6 +76,7 @@ class AdminControllerTest extends BaseTest {
     }
 
     @Test
+    @WithMockUser
     void testGetCourseOfferingWithDetailsById() throws Exception {
         // Prepare test data
         CourseOfferingWithDetailsDTO courseOffering = new CourseOfferingWithDetailsDTO(1L, 3.0, "Room 101", LocalDate.of(2023, 6, 1), LocalDate.of(2023, 12, 1), 30, CourseOfferingType.ON_CAMPUS, 1L, "Course 1", "CSE101", "CS", 1L, "Faculty 1", null);
@@ -99,6 +101,7 @@ class AdminControllerTest extends BaseTest {
     }
 
     @Test
+    @WithMockUser
     void testGetCourseOfferingWithDetailsById_NotFound() throws Exception {
         // Mock the service method to return null
         when(courseRegistrationService.getCourseOfferingDetailsWithId(1L)).thenReturn(null);
@@ -109,6 +112,7 @@ class AdminControllerTest extends BaseTest {
     }
 
     @Test
+    @WithMockUser
     void testGetCourseOfferingByStudent() throws Exception {
         CourseWithGradeDTO courseWithGradeDTO = new CourseWithGradeDTO();
         courseWithGradeDTO.setCourseName("Enterprise Architecture");
@@ -135,6 +139,7 @@ class AdminControllerTest extends BaseTest {
     }
 
     @Test
+    @WithMockUser
     void testGetCourseOfferingByStudent_NotFound() throws Exception {
         when(courseRegistrationService.getCourseOfferingByStudent(1L)).thenReturn(null);
 

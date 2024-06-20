@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.mockito.Mockito;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -47,6 +48,7 @@ class StudentServiceTest {
     private Faculty faculty;
 
     @Test
+    @WithMockUser
     void createStudentByDTO() {
         // Setup data
         StudentDTO studentDTO = new StudentDTO();
@@ -56,6 +58,7 @@ class StudentServiceTest {
         studentDTO.setFirstName("John");
         studentDTO.setLastName("Doe");
         studentDTO.setUserName("John Doe");
+        studentDTO.setPassword("12345");
         studentDTO.setAlternateId(123456);
         studentDTO.setApplicantId(123456);
         studentDTO.setStudentId(123456);
@@ -159,6 +162,7 @@ class StudentServiceTest {
     }
 
     @Test
+    @WithMockUser
     void updateStudent() {
         long studentId = 1L;
 
@@ -233,6 +237,7 @@ class StudentServiceTest {
     }
 
     @Test
+    @WithMockUser
     public void testUpdateStudentNotFound() {
         long studentId = 1L;
         StudentDTO studentDTO = new StudentDTO();

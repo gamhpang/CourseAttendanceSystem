@@ -11,6 +11,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -37,6 +38,7 @@ public class CourseOfferingControllerTest {
     private CourseOfferingService courseOfferingService;
 
     @Test
+    @WithMockUser
     void testGetAllCourseOfferings() throws Exception{
         // Prepare test data
         List<CourseOfferingDTO> courseOfferingDTOS = Arrays.asList(
@@ -71,6 +73,7 @@ public class CourseOfferingControllerTest {
     }
 
     @Test
+    @WithMockUser
     void testGetCourseOfferingById() throws Exception{
         // Prepare test data
         CourseOfferingDTO courseOfferingDTO = new CourseOfferingDTO(1L, 3, "Room 101", LocalDate.of(2023, 6, 1), LocalDate.of(2023, 12, 1), 30, CourseOfferingType.ON_CAMPUS, 1L, 1L, Arrays.asList(1L, 2L));
@@ -93,6 +96,7 @@ public class CourseOfferingControllerTest {
     }
 
     @Test
+    @WithMockUser
     void testGetCourseOfferingById_NotFound() throws Exception {
         // Mock the service method to return null
         Mockito.when(courseOfferingService.getCourseOffering(1L)).thenReturn(null);
@@ -103,6 +107,7 @@ public class CourseOfferingControllerTest {
     }
 
     @Test
+    @WithMockUser
     void testUpdateCourseOffering() throws Exception {
         // Prepare the test data
         CourseOfferingDTO updatedCourseOfferingDTO = new CourseOfferingDTO(1L, 4, "Room 101 Updated", LocalDate.of(2023, 6, 1), LocalDate.of(2023, 12, 1), 30, CourseOfferingType.ON_CAMPUS, 1L, 1L, Arrays.asList(1L, 2L));
@@ -130,6 +135,7 @@ public class CourseOfferingControllerTest {
     }
 
     @Test
+    @WithMockUser
     void testCreateCourseOffering() throws Exception {
         CourseOfferingDTO courseOfferingDTO = new CourseOfferingDTO(1L, 3, "Room 101", LocalDate.of(2023, 6, 1), LocalDate.of(2023, 12, 1), 30, CourseOfferingType.ON_CAMPUS, 1L, 1L, Arrays.asList(1L, 2L));
         Mockito.when(courseOfferingService.createCourseOffering(courseOfferingDTO)).thenReturn(courseOfferingDTO);
@@ -152,6 +158,7 @@ public class CourseOfferingControllerTest {
     }
 
     @Test
+    @WithMockUser
     void testDeleteCourseOffering() throws Exception {
         //Prepare test data
         CourseOfferingDTO courseOfferingDTO = new CourseOfferingDTO(1L, 3, "Room 101", LocalDate.of(2023, 6, 1), LocalDate.of(2023, 12, 1), 30, CourseOfferingType.ON_CAMPUS, 1L, 1L, Arrays.asList(1L, 2L));

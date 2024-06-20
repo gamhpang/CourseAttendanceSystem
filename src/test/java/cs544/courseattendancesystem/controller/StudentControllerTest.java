@@ -11,6 +11,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -38,6 +39,7 @@ class StudentControllerTest {
     private StudentService studentService;
 
     @Test
+    @WithMockUser
     void testCreateStudent_Success() throws Exception {
         // Prepare test data
         StudentDTO studentDTO = new StudentDTO();
@@ -63,6 +65,7 @@ class StudentControllerTest {
     }
 
     @Test
+    @WithMockUser
     public void testGetStudent() throws Exception {
         StudentDTO studentDTO = new StudentDTO();
         studentDTO.setFirstName("John");
@@ -78,6 +81,7 @@ class StudentControllerTest {
     }
 
     @Test
+    @WithMockUser
     public void testGetAllStudents() throws Exception {
         StudentDTO student1 = new StudentDTO();
         student1.setFirstName("John");
@@ -101,6 +105,7 @@ class StudentControllerTest {
     }
 
     @Test
+    @WithMockUser
     public void testUpdateStudent() throws Exception {
         StudentDTO studentDTO = new StudentDTO();
         studentDTO.setFirstName("John");
@@ -117,6 +122,7 @@ class StudentControllerTest {
     }
 
     @Test
+    @WithMockUser
     public void testDeleteStudent() throws Exception {
         doNothing().when(studentService).deleteStudent(anyLong());
 

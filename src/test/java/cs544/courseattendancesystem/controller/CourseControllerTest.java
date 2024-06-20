@@ -12,6 +12,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
@@ -41,6 +42,7 @@ public class CourseControllerTest {
     }
 
     @Test
+    @WithMockUser
     public void testGetAllCourses() throws Exception {
         Collection<CourseDTO> courseList = new ArrayList<>();
         courseList.add(courseDTO);
@@ -53,6 +55,7 @@ public class CourseControllerTest {
     }
 
     @Test
+    @WithMockUser
     public void testGetCourseById_NotFound() throws Exception {
         Mockito.when(courseService.getCourse(1L)).thenReturn(Optional.empty());
 
@@ -62,6 +65,7 @@ public class CourseControllerTest {
     }
 
     @Test
+    @WithMockUser
     public void testGetCourseById_Found() throws Exception {
         Mockito.when(courseService.getCourse(1L)).thenReturn(Optional.of(courseDTO));
 
@@ -71,6 +75,7 @@ public class CourseControllerTest {
     }
 
     @Test
+    @WithMockUser
     public void testAddCourse() throws Exception {
         Mockito.when(courseService.createCourse(Mockito.any(CourseDTO.class))).thenReturn(courseDTO);
 
@@ -82,6 +87,7 @@ public class CourseControllerTest {
     }
 
     @Test
+    @WithMockUser
     public void testUpdateCourse() throws Exception {
         Mockito.when(courseService.updateCourse(Mockito.eq(1L), Mockito.any(CourseDTO.class))).thenReturn(courseDTO);
 
@@ -93,6 +99,7 @@ public class CourseControllerTest {
     }
 
     @Test
+    @WithMockUser
     public void testDeleteCourse() throws Exception {
         Mockito.doNothing().when(courseService).deleteCourse(1L);
 

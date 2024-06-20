@@ -3,6 +3,7 @@ package cs544.courseattendancesystem.repository;
 import cs544.courseattendancesystem.domain.CourseOffering;
 import cs544.courseattendancesystem.domain.CourseRegistration;
 import cs544.courseattendancesystem.domain.Student;
+import cs544.courseattendancesystem.domain.User;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
@@ -31,12 +32,21 @@ public class CourseRegistrationRepositoryTest {
     @Test
     public void testFindByStudentId() {
         // Given
+        User user = new User();
+        user.setUsername("john.doe");
+        user.setPassword("password");  // Set all required fields for User entity
+
+        entityManager.persist(user);
+        entityManager.flush(); // Ensure user is persisted and has an ID assigned
+
         Student student = new Student();
         student.setFirstName("John");
+        student.setLastName("Doe");
         student.setBirthDate(LocalDate.of(2000, 1, 1));
         student.setEmailAddress("john.doe@example.com");
+        student.setUser(user);  // Set the user for the student
 
-        // Save student first
+        // Save student
         entityManager.persist(student);
         entityManager.flush(); // Ensure student is persisted and has an ID assigned
 
@@ -46,18 +56,18 @@ public class CourseRegistrationRepositoryTest {
         courseOffering.setEndDate(LocalDate.of(2023, 12, 1));
         courseOffering.setCapacity(30);
 
-        // Save courseOffering first
+        // Save courseOffering
         entityManager.persist(courseOffering);
         entityManager.flush(); // Ensure courseOffering is persisted and has an ID assigned
 
         CourseRegistration registration1 = new CourseRegistration();
         registration1.setStudent(student);
-        registration1.setCourseOffering(courseOffering); // Now courseOffering is managed
+        registration1.setCourseOffering(courseOffering);
         registration1.setGrade("A");
 
         CourseRegistration registration2 = new CourseRegistration();
         registration2.setStudent(student);
-        registration2.setCourseOffering(courseOffering); // Now courseOffering is managed
+        registration2.setCourseOffering(courseOffering);
         registration2.setGrade("B");
 
         courseRegistrationRepository.save(registration1);
@@ -75,17 +85,31 @@ public class CourseRegistrationRepositoryTest {
     @Test
     public void testFindByCourseOfferingId() {
         // Given
+        User user1 = new User();
+        user1.setUsername("alice.smith");
+        user1.setPassword("password");
+
+        User user2 = new User();
+        user2.setUsername("bob.johnson");
+        user2.setPassword("password");
+
+        entityManager.persist(user1);
+        entityManager.persist(user2);
+        entityManager.flush(); // Ensure users are saved and have IDs assigned
+
         Student student1 = new Student();
         student1.setFirstName("Alice");
         student1.setLastName("Jane");
         student1.setBirthDate(LocalDate.of(2001, 2, 2));
         student1.setEmailAddress("alice.smith@example.com");
+        student1.setUser(user1);  // Set the user for the student
 
         Student student2 = new Student();
         student2.setFirstName("Bob");
         student2.setLastName("Johnson");
         student2.setBirthDate(LocalDate.of(2002, 3, 3));
         student2.setEmailAddress("bob.johnson@example.com");
+        student2.setUser(user2);  // Set the user for the student
 
         entityManager.persist(student1);
         entityManager.persist(student2);

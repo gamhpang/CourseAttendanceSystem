@@ -12,6 +12,7 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
@@ -46,6 +47,7 @@ public class SystemAdminControllerTest {
     }
 
     @Test
+    @WithMockUser
     public void testCreateLocation() throws Exception {
         // Prepare test data
         LocationDTO locationDTO = new LocationDTO();
@@ -72,6 +74,7 @@ public class SystemAdminControllerTest {
     }
 
     @Test
+    @WithMockUser
     public void testGetLocation() throws Exception {
         LocationDTO locationDTO = new LocationDTO();
         locationDTO.setLocationId(1L);
@@ -93,6 +96,7 @@ public class SystemAdminControllerTest {
     }
 
     @Test
+    @WithMockUser
     public void testGetAllLocations() throws Exception {
         // Mock data
         LocationDTO location1 = new LocationDTO();
@@ -131,6 +135,7 @@ public class SystemAdminControllerTest {
     }
 
     @Test
+    @WithMockUser
     public void testUpdateLocation() throws Exception {
         // Mock data
         LocationDTO locationDTO = new LocationDTO();
@@ -158,6 +163,7 @@ public class SystemAdminControllerTest {
     }
 
     @Test
+    @WithMockUser
     public void testDeleteLocation() throws Exception {
         long locationId = 1L;
 

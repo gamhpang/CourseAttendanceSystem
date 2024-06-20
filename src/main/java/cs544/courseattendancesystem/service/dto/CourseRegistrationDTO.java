@@ -12,7 +12,6 @@ public class CourseRegistrationDTO {
     private String studentName;
     private long courseOfferingId;
     private String grade;
-    private LocalDateTime registrationEndDate;
     public CourseRegistrationDTO(){}
 
     public CourseRegistrationDTO(long id, long studentId, String studentName, long courseOfferingId, String grade) {

@@ -1,6 +1,5 @@
 package cs544.courseattendancesystem.service;
 
-import cs544.courseattendancesystem.domain.CourseRegistration;
 import cs544.courseattendancesystem.service.dto.CourseOfferingWithDetailsDTO;
 import cs544.courseattendancesystem.service.dto.CourseWithGradeDTO;
 import cs544.courseattendancesystem.service.dto.CourseRegistrationDTO;

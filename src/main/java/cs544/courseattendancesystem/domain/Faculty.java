@@ -22,7 +22,7 @@ public class Faculty extends Person{
     }
 
     public Faculty(LocalDate birthDate, String emailAddress, String firstName, String lastName, String userName, String password, String salutation, List<String> hobbies) {
-        super(birthDate, emailAddress, firstName, lastName, userName, password);
+        super(birthDate, emailAddress, firstName, lastName, userName, password, UserRole.ADMIN);
         this.salutation = salutation;
         this.hobbies = hobbies;
     }

@@ -1,6 +1,7 @@
 package cs544.courseattendancesystem.service.dto;
 
 import cs544.courseattendancesystem.domain.GenderType;
+import cs544.courseattendancesystem.domain.User;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -13,6 +14,8 @@ public class PersonDTO {
     private String firstName;
     private String lastName;
     private String userName;
+    private String password;
+    private User user;
     private GenderType genderType;
 
     public PersonDTO(){}

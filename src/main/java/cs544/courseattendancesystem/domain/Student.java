@@ -24,7 +24,7 @@ public class Student extends Person{
     public Student(){}
 
     public Student(LocalDate birthDate, String emailAddress, String firstName, String lastName, String userName, String password, String entry, long alternateId, long applicantId, long studentId, String barCode) {
-        super(birthDate, emailAddress, firstName, lastName, userName, password);
+        super(birthDate, emailAddress, firstName, lastName, userName, password, UserRole.STUDENT);
         this.entry = entry;
         this.alternateId = alternateId;
         this.applicantId = applicantId;

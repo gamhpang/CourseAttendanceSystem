@@ -30,12 +30,21 @@ public abstract class Person implements IRole {
     public abstract String getRole();
     public Person(){}
 
-    public Person(LocalDate birthDate, String emailAddress, String firstName, String lastName, String userName, String password) {
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id", unique = true, nullable = false)
+    private User user;
+
+    public Person(LocalDate birthDate, String emailAddress, String firstName, String lastName, String userName, String password, UserRole userRole) {
         this.birthDate = birthDate;
         this.emailAddress = emailAddress;
         this.firstName = firstName;
         this.lastName = lastName;
         this.userName = userName;
         this.password = password;
+        User user = new User();
+        user.setUsername(userName);
+        user.setPassword(password);
+        user.setUserRole(userRole);
+        this.user = user;
     }
 }

@@ -1,8 +1,11 @@
 package cs544.courseattendancesystem.controller;
 
+import cs544.courseattendancesystem.domain.User;
+import cs544.courseattendancesystem.domain.UserRole;
 import cs544.courseattendancesystem.exception.ResourceNotFoundException;
 import cs544.courseattendancesystem.service.StudentService;
 import cs544.courseattendancesystem.service.dto.StudentDTO;
+import cs544.courseattendancesystem.service.dto.UserRequestDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

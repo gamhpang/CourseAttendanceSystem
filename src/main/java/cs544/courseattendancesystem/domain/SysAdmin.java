@@ -17,7 +17,7 @@ public class SysAdmin extends Person{
     protected SysAdmin(){}
 
     public SysAdmin(LocalDate birthDate, String emailAddress, String firstName, String lastName, String userName, String password, LocalDate hireDate) {
-        super(birthDate, emailAddress, firstName, lastName, userName, password);
+        super(birthDate, emailAddress, firstName, lastName, userName, password, UserRole.SYS_ADMIN);
         this.hireDate = hireDate;
     }
 }

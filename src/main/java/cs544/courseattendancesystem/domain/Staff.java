@@ -16,7 +16,7 @@ public class Staff extends Person{
     protected Staff(){}
 
     public Staff(LocalDate birthDate, String emailAddress, String firstName, String lastName, String userName, String password, LocalDate hireDate) {
-        super(birthDate, emailAddress, firstName, lastName, userName, password);
+        super(birthDate, emailAddress, firstName, lastName, userName, password, UserRole.ADMIN);
         this.hireDate = hireDate;
     }
 }

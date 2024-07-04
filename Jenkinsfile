@@ -1,9 +1,5 @@
 pipeline {
-	agent any
-	environment {
-		mavenHome = tool 'jenkins-maven'
-	}
-	
+	agent any	
 	stages {
 		stage('Build'){
 			steps {
